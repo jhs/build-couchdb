@@ -27,7 +27,7 @@ modern operating systems.
 
 On Ubuntu and Debian:
 
-    apt-get install make gcc zlib1g-dev libssl-dev libreadline5-dev bison ruby
+    sudo apt-get install make gcc zlib1g-dev libssl-dev libreadline5-dev bison ruby
 
 On OSX, install XCode.
 
@@ -38,6 +38,7 @@ submodules.
 
     git clone git://github.com/couchone/build-couchdb
     cd build-couchdb
+    git submodule init
     git submodule update
 
 ## How to Build CouchDB
