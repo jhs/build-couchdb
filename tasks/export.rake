@@ -29,10 +29,13 @@ namespace :export do
 
       ENV['source'] = HERE
       Rake::Task['export:component'].execute
-      FileUtils.rm_f "#{ENV['target']}/tasks/export.rake" # No need for this anymore.
 
       # This does not support foreach --recursive because the path would be calculated wrong.
       sh "git submodule foreach 'rake -f #{HERE}/Rakefile export:component source=#{HERE}/$path target=#{ENV['target']}/$path'"
+
+      # Strip out things definitely not needed.
+      FileUtils.rm_rf "#{ENV['target']}/tasks/export.rake"
+      FileUtils.rm_rf "#{ENV['target']}/ruby-inabox/components/ruby-1.8.7-p249"
     end
   end
 
