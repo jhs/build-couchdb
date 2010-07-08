@@ -1,5 +1,5 @@
 # Couch servers for users stuff.
-load File.dirname(__FILE__) + '/places.rake'
+
 require 'tmpdir'
 
 namespace :tracemonkey do

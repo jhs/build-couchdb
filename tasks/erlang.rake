@@ -1,5 +1,4 @@
 # Erlang-related tasks
-load File.dirname(__FILE__) + '/places.rake'
 
 require 'pathname'
 
