@@ -55,7 +55,7 @@ In other words, to build CouchDB, run
 
     . ruby-inabox/env.sh
 
-CouchDB and all its dependencies will be installed in `ruby-inabox/build`. To
+CouchDB and all its dependencies will be installed in `build/`. To
 uninstall, simply delete that directory.
 
 ## Usage

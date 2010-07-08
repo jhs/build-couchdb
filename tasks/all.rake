@@ -10,7 +10,7 @@ namespace :build do
 
   desc 'Confirm the correct Ruby environment for development and deployment'
   task :confirm_ruby => :os_dependencies do
-    expectation = "#{BUILD}/bin"
+    expectation = "#{RUBY_BUILD}/bin"
     %w[ ruby gem rake ].each do |cmd|
       raise "#{cmd} not running from #{expectation}. Did you source env.sh?" unless `which #{cmd}`.chomp.match(Regexp.new "#{expectation}/#{cmd}$")
     end
@@ -94,14 +94,14 @@ namespace :build do
       Dir.mktmpdir "autoconf-#{version}_build" do |dir|
         Dir.chdir dir do
           begin
-            makeinfo = File.new("#{BUILD}/bin/makeinfo", 'w')
+            makeinfo = File.new("#{RUBY_BUILD}/bin/makeinfo", 'w')
             makeinfo.chmod 0700
             makeinfo.close
             sh "#{DEPS}/autoconf-#{version}/configure --prefix=#{BUILD} --program-suffix=#{version}"
             sh 'make'
             sh 'make install'
           ensure
-            File.unlink "#{BUILD}/bin/makeinfo"
+            File.unlink "#{RUBY_BUILD}/bin/makeinfo"
           end
         end
       end
@@ -148,7 +148,12 @@ namespace :build do
   end
 
   desc 'Completely uninstall everything except source'
-  task :distclean do
+  task :distclean => :clean do
+    sh "rm -rf #{RUBY_BUILD}"
+  end
+
+  desc 'Clean all CouchDB-related build output'
+  task :clean do
     sh "rm -rf #{BUILD}"
   end
 
