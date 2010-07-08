@@ -14,11 +14,11 @@ releases) side-by-side.
 Build CouchDB is developed and tested on the following operating systems:
 
  * Ubuntu 10.04 LTS (Lucid Lynx)
+ * Apple OSX
 
 The following systems are planned for support in the near future:
 
  * MS Windows Vista, Windows 7
- * Apple OSX
 
 ## Requirements
 
