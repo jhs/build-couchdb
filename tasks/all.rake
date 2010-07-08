@@ -52,7 +52,7 @@ namespace :build do
           sh 'make install'
 
           if DISTRO[0] == :osx
-            target = "#{BUILD}/lib/couchdb/erlang/lib/couch-0.11.0/priv/lib/couch_icu_driver.so"
+            target = Dir.glob("#{BUILD}/lib/couchdb/erlang/lib/couch-*/priv/lib/couch_icu_driver.so").last
             sh "install_name_tool -change libicuuc.44.dylib #{BUILD}/lib/libicuuc.44.dylib #{target}"
             sh "install_name_tool -change libicui18n.44.dylib #{BUILD}/lib/libicui18n.44.dylib #{target}"
             sh "install_name_tool -change ../lib/libicudata.44.0.dylib #{BUILD}/lib/libicudata.44.0.dylib #{target}"
