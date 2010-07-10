@@ -55,6 +55,13 @@ In other words, to build CouchDB, run
 
     . ruby-inabox/env.sh
 
+If you do not use Bash as your shell, try the following (e.g. zsh):
+
+    bash -c '. ruby-inabox/env.sh && exec zsh'
+
+That will set up the environment with the Bash script, then drop into your
+normal shell, with the path and other settings intact.
+
 CouchDB and all its dependencies will be installed in `build/`. To
 uninstall, simply delete that directory.
 
