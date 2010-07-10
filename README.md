@@ -51,6 +51,7 @@ Install [Cygwin][cygwin]
      1. "bison: A parser generator that is compatible with YACC"
      2. "gcc: C compiler upgrade helper"
      3. "make: The GNU version of the 'make' utility"
+     3. "libncurses-devel: (devel) libraries for terminal handling"
      4. "ruby: Interpreted object-oriented scripting language"
      5. **Optional:** "git: Fast Version Control System - core files"
  9. Click Next to begin installation
