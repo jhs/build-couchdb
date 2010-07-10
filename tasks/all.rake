@@ -94,14 +94,16 @@ namespace :build do
       Dir.mktmpdir "autoconf-#{version}_build" do |dir|
         Dir.chdir dir do
           begin
-            makeinfo = File.new("#{RUBY_BUILD}/bin/makeinfo", 'w')
-            makeinfo.chmod 0700
-            makeinfo.close
+			%w[ makeinfo help2man ].each do |unneeded|
+			  un = File.new("#{RUBY_BUILD}/bin/#{unneeded}", 'w')
+			  un.chmod 0700
+			  un.close
+            end
             sh "#{DEPS}/autoconf-#{version}/configure --prefix=#{BUILD} --program-suffix=#{version}"
             sh 'make'
             sh 'make install'
           ensure
-            File.unlink "#{RUBY_BUILD}/bin/makeinfo"
+			%w[ makeinfo help2man ].each { |x| File.unlink "#{RUBY_BUILD}/bin/#{x}" }
           end
         end
       end

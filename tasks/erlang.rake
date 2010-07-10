@@ -11,16 +11,23 @@ namespace :erlang do
     Dir.chdir source
     with_autoconf '2.59' do
       begin
-        sh './otp_build autoconf'
+	    prep = 'echo No prep'
+		prep = 'eval `./otp_build env_win32`' if DISTRO[0] == :windows
+	    sh "#{prep} && ./otp_build autoconf"
 
         configure = [
           "CFLAGS='-g -O2 -fno-strict-aliasing'",
           './configure',
           "--prefix=#{BUILD}",
           "--without-javac",
-          '--enable-smp-support', '--enable-hybrid-heap', '--enable-threads', '--disable-hipe', '--enable-kernel-poll',
+          '--enable-smp-support', '--enable-hybrid-heap', '--enable-threads', '--disable-hipe',
           '--enable-sctp', '--enable-dynamic-ssl-lib', '--without-ssl-zlib',
         ]
+		
+		# Trying env CC=gcc configure with just prefix and --without-javac [ssl stuff]
+		
+		configure.push '--enable-kernel-poll' unless DISTRO[0] == :windows
+		
         if [:ubuntu, :debian].include? DISTRO[0]
           configure.push '--enable-clock-gettime'
           configure.push '--host=x86_64-linux-gnu', '--build=x86_64-linux-gnu' if DISTRO[1] == '9.10'
@@ -39,7 +46,7 @@ namespace :erlang do
         end
       ensure
         Dir.chdir source
-        sh 'git reset --hard && git clean -fd'
+        sh 'echo git reset --hard && git clean -fd'
       end
     end
   end

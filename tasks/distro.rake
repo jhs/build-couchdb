@@ -1,5 +1,5 @@
 
-task :known_distro => [ :known_mac, :known_ubuntu, :known_debian ] do
+task :known_distro => [ :known_mac, :known_ubuntu, :known_debian, :known_windows ] do
   raise 'Unknown distribution, build not supported' unless Kernel.const_defined? 'DISTRO'
 end
 
@@ -19,4 +19,10 @@ end
 task :known_debian do
   ver = '/etc/debian_version'
   DISTRO = [:debian, File.new(ver).readline.chomp] if !File.exist?('/etc/lsb-release') && File.exist?(ver)
+end
+
+task :known_windows do
+  if RUBY_PLATFORM.match /cygwin/
+    DISTRO = [:windows, 'cygwin']
+  end
 end
