@@ -15,10 +15,7 @@ Build CouchDB is developed and tested on the following operating systems:
 
  * Ubuntu 10.04 LTS (Lucid Lynx)
  * Apple OSX
-
-The following systems are planned for support in the near future:
-
- * MS Windows Vista, Windows 7
+ * Windows Server 2003, Windows 7
 
 ## Requirements
 
@@ -30,9 +27,10 @@ However, to contribute to Build CouchDB development, you will want Git.
 
 Installing Git is not covered here. On Linux, the OS package will do fine. On
 OSX, I have no idea. On Windows, you can add git from within the "Devel" section
-in the Cygwin "Select Packages" window. Or, consider using msysgit at
-http://code.google.com/p/msysgit/downloads/list. Build CouchDB is confirmed to
-work with the Git-1.7.0.2-preview20100309.exe version.
+in the Cygwin "Select Packages" window. msysGit also provides [Windows Git
+downloads][msysgit] which work.
+
+ [msysgit]: http://code.google.com/p/msysgit/downloads/list
 
 ### Windows
 
@@ -50,8 +48,8 @@ Install [Cygwin][cygwin]
  8. In the "Select Packages" window, in the "Devel" section, click the following
      1. "bison: A parser generator that is compatible with YACC"
      2. "gcc: C compiler upgrade helper"
-     3. "make: The GNU version of the 'make' utility"
      3. "libncurses-devel: (devel) libraries for terminal handling"
+     3. "make: The GNU version of the 'make' utility"
      4. "ruby: Interpreted object-oriented scripting language"
      5. **Optional:** "git: Fast Version Control System - core files"
  9. Click Next to begin installation
@@ -60,8 +58,12 @@ Install [Cygwin][cygwin]
      Enter.
  12. Type: `/usr/bin/rebaseall && exit`
 
+*Note:* [Cygwin crashes in Amazon EC2 high-compute instances][hc_bug]. Use a
+different type of machine.
+
  [cygwin]: http://www.cygwin.com/
  [dl_cygwin]: http://www.cygwin.com/setup.exe
+ [hc_bug]: http://www.cygwin.com/ml/cygwin/2009-05/msg00274.html
 
 ### OSX
 
