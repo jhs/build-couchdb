@@ -25,16 +25,61 @@ The following systems are planned for support in the near future:
 You need only the basic GNU development toolchain.  These are often included in
 modern operating systems.
 
-On Ubuntu and Debian:
+The prepped zip and tar files are best for the vast majority of CouchDB usage.
+However, to contribute to Build CouchDB development, you will want Git.
+
+Installing Git is not covered here. On Linux, the OS package will do fine. On
+OSX, I have no idea. On Windows, you can add git from within the "Devel" section
+in the Cygwin "Select Packages" window. Or, consider using msysgit at
+http://code.google.com/p/msysgit/downloads/list. Build CouchDB is confirmed to
+work with the Git-1.7.0.2-preview20100309.exe version.
+
+### Windows
+
+Install [Cygwin][cygwin]
+
+ 1. Run the [Cygwin installer][dl_cygwin]
+ 2. Select "Install from Internet", then click Next
+ 3. Accept the default options by clicking Next
+ 4. Accept the default Local Package Directory by clicking Next
+ 5. Choose your Internet settings (Direct Connection is usually correct), then
+    click Next
+ 6. Choose a download site (http://mirrors.kernel.org is usually fast),
+    then click Next
+ 7. An information message about upgrades may pop up. If so, click OK.
+ 8. In the "Select Packages" window, in the "Devel" section, click the following
+     1. "bison: A parser generator that is compatible with YACC"
+     2. "gcc: C compiler upgrade helper"
+     3. "make: The GNU version of the 'make' utility"
+     3. "libncurses-devel: (devel) libraries for terminal handling"
+     4. "ruby: Interpreted object-oriented scripting language"
+     5. **Optional:** "git: Fast Version Control System - core files"
+ 9. Click Next to begin installation
+ 10. After installation is complete, click Finish
+ 11. Click the Start button. At the prompt, type "\cygwin\bin\ash" and press
+     Enter.
+ 12. Type: `/usr/bin/rebaseall && exit`
+
+ [cygwin]: http://www.cygwin.com/
+ [dl_cygwin]: http://www.cygwin.com/setup.exe
+
+### OSX
+
+Install XCode.
+
+### Ubuntu and Debian:
 
     sudo apt-get install make gcc zlib1g-dev libssl-dev libreadline5-dev bison ruby
 
-On OSX, install XCode.
-
 ## Getting the Code
 
-You will need the Git tool. Check out the code and pull in the third-party
-submodules.
+### From the Prepped Download
+
+Please see http://www.couch.io/get where the downloads do not exist yet.
+
+### With Git
+
+Check out the code and also the third-party submodules.
 
     git clone git://github.com/jhs/build-couchdb
     cd build-couchdb
