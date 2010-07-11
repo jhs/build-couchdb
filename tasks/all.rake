@@ -89,25 +89,6 @@ namespace :build do
     end
   end
 
-  %w[ 2.13 2.59 ].each do |version|
-    file "#{BUILD}/bin/autoconf#{version}" do
-      Dir.mktmpdir "autoconf-#{version}_build" do |dir|
-        Dir.chdir dir do
-          begin
-            makeinfo = File.new("#{RUBY_BUILD}/bin/makeinfo", 'w')
-            makeinfo.chmod 0700
-            makeinfo.close
-            sh "#{DEPS}/autoconf-#{version}/configure --prefix=#{BUILD} --program-suffix=#{version}"
-            sh 'make'
-            sh 'make install'
-          ensure
-            File.unlink "#{RUBY_BUILD}/bin/makeinfo"
-          end
-        end
-      end
-    end
-  end
-
   desc 'Confirm (and install if possible) the OS dependencies'
   task :os_dependencies => [:mac_dependencies, :ubuntu_dependencies, :debian_dependencies]
 
