@@ -10,5 +10,6 @@ Bugs
 
  * all.rake is legacy code which should be refactored into meaningful .rake
    components
+ * Cannot use Git as a shortcut to clean up the source trees after building
 
 vim: tw=80
