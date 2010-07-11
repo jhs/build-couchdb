@@ -31,7 +31,7 @@ namespace :erlang do
         sh 'make'
         sh 'make install'
 
-        if [:ubuntu, :debian].include? DISTRO[0]
+        if [:ubuntu, :debian].include?(DISTRO[0]) && ENV['bind_cap']
           %w[ beam beam.smp ].each do |program|
             path = Pathname.new(ERL_BIN).realpath.parent.parent + 'erts-5.7.5' + 'bin' + program
             sh "sudo setcap cap_net_bind_service=+ep #{path}"
