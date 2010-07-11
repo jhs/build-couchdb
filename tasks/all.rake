@@ -17,22 +17,7 @@ namespace :build do
   end
 
   desc 'Hook into the Ruby in a Box environment to get everything else built and installed'
-  task :ruby_inabox => [:confirm_ruby, :gems, :couchdb]
-
-  desc 'Install gem dependencies for the Rails app  '
-  task :gems => :confirm_ruby do
-    installed_gems = `gem list --local`.split "\n"
-    [ # Gem sets listed in dependency-order, final gem is the target.
-      #%w[ activesupport actionpack actionmailer activerecord activeresource rails ],
-    ].each do |gem_set|
-      if installed_gems.none? { |x| x.match gem_set.last }
-        gem_set.each do |gem|
-          gem_file = Dir.glob("#{DEPS}/gems/#{gem}-[0-9]*.gem").first
-          sh "gem install --local --no-rdoc --no-ri #{gem_file}"
-        end
-      end
-    end
-  end
+  task :ruby_inabox => [:confirm_ruby, :couchdb]
 
   desc 'Build CouchDB'
   task :couchdb => ['erlang:build', :os_dependencies, 'tracemonkey:build', :icu, COUCH_BIN]
