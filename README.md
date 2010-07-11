@@ -46,18 +46,14 @@ submodules.
 Since CouchDB will be built and installed in an isolated, private location, you
 must set several environment variables to access it, the shell search path,
 Ruby gems, and Heaven knows what else. All of this is handled through one shell
-script, `ruby-inabox/env.sh`, which has the following properties.
+script, `env.sh`, which has the following properties.
 
  * If CouchDB has not yet been built, it will kick off the process.
  * It is idempotent. Source it whenever you like.
 
 In other words, to build CouchDB, run
 
-    . ruby-inabox/env.sh
-
-If you do not use Bash as your shell, try the following (e.g. zsh):
-
-    bash -c '. ruby-inabox/env.sh && exec zsh'
+    . ./env.sh
 
 That will set up the environment with the Bash script, then drop into your
 normal shell, with the path and other settings intact.
