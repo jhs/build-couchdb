@@ -8,9 +8,11 @@ if [ -z "$this_file" ]; then
     this_file="$0"
 fi
 
-# Set this for ruby-inabox to find this project.
+# Set these for ruby-inabox to find this project.
+include_parent_build=1
 project_parent=$(dirname "$this_file")
 ruby_env_sh="$project_parent/dependencies/ruby-inabox/env.sh"
+
 unset this_file
 
 # TODO: The idea here is, if Rake is available from the system, just skip the Ruby build.
