@@ -6,7 +6,6 @@ require 'fileutils'
 
 namespace :build do
   COUCH_BIN = "#{BUILD}/bin/couchdb"
-  ICU_BIN   = "#{BUILD}/bin/icu-config"
 
   desc 'Confirm the correct Ruby environment for development and deployment'
   task :confirm_ruby => :os_dependencies do
@@ -20,7 +19,7 @@ namespace :build do
   task :ruby_inabox => [:confirm_ruby, :couchdb]
 
   desc 'Build CouchDB'
-  task :couchdb => ['erlang:build', :os_dependencies, 'tracemonkey:build', :icu, COUCH_BIN]
+  task :couchdb => ['erlang:build', :os_dependencies, 'tracemonkey:build', 'icu:build', COUCH_BIN]
 
   file COUCH_BIN => AUTOCONF_259 do
     source = "#{DEPS}/couchdb"
@@ -47,30 +46,6 @@ namespace :build do
       end
     ensure
       Dir.chdir(source) { sh "git ls-files --others --ignored --exclude-standard | xargs rm -vf" }
-    end
-  end
-
-  desc 'Build libicu'
-  task :icu => ICU_BIN
-
-  file ICU_BIN do
-    src = "#{DEPS}/icu4c-4_4/source"
-    Dir.mktmpdir "icu_build" do |dir|
-      begin
-        Dir.chdir dir do
-          sh "#{src}/configure --prefix=#{BUILD}"
-          sh 'make'
-          sh 'make install'
-
-          if DISTRO[0] == :osx
-            sh "install_name_tool -change libicudata.44.dylib #{BUILD}/lib/libicudata.44.dylib #{BUILD}/lib/libicuuc.44.dylib"
-            sh "install_name_tool -change libicudata.44.dylib #{BUILD}/lib/libicudata.44.dylib #{BUILD}/lib/libicui18n.44.dylib"
-            sh "install_name_tool -change libicuuc.44.dylib #{BUILD}/lib/libicuuc.44.dylib #{BUILD}/lib/libicui18n.44.dylib"
-          end
-        end
-      ensure
-        Dir.chdir(src) { sh 'make distclean' if File.exist? 'Makefile' }
-      end
     end
   end
 

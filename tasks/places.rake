@@ -3,6 +3,7 @@ RUBY_BUILD = "#{HERE}/ruby-inabox/build" unless Kernel.const_defined? 'BUILD'
 BUILD = "#{HERE}/build"             unless Kernel.const_defined? 'BUILD'
 JS_LIB = "#{BUILD}/bin/js-config"   unless Kernel.const_defined? 'JS_LIB'
 ERL_BIN = "#{BUILD}/bin/erl"        unless Kernel.const_defined? 'ERL_BIN'
+ICU_BIN = "#{BUILD}/bin/icu-config" unless Kernel.const_defined? 'ICU_BIN'
 
 PIDS = "#{BUILD}/var/run/couchdb" unless Kernel.const_defined? 'PIDS'
 directory PIDS
