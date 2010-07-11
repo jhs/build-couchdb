@@ -8,7 +8,7 @@ def package_dep opts
   Rake.application.in_explicit_namespace(':') do
     task "package:#{package}" => :known_distro do
       unless [:ubuntu, :debian].include? DISTRO[0]
-        puts "WARNING: Skipping package requirement '#{package}' on a non-Linux platform"
+        puts "Skipping package requirement '#{package}' on a non-Linux platform"
       else
         installed = `dpkg --list`.split("\n").map { |x| x.split[1] } # Hm, this is out of scope if defined outside.
         if installed.none? { |pkg| pkg == package }
