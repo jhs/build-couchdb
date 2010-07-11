@@ -55,11 +55,10 @@ In other words, to build CouchDB, run
 
     . ./env.sh
 
-That will set up the environment with the Bash script, then drop into your
-normal shell, with the path and other settings intact.
+That will set up the environment (PATH, etc.) *in the current shell only*.
 
-CouchDB and all its dependencies will be installed in `build/`. To
-uninstall, simply delete that directory.
+CouchDB and all its dependencies will be installed in `build/`. To uninstall,
+simply delete that directory.
 
 ## Usage
 
