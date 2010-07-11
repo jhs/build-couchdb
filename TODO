@@ -11,5 +11,7 @@ Bugs
  * all.rake is legacy code which should be refactored into meaningful .rake
    components
  * Cannot use Git as a shortcut to clean up the source trees after building
+ * There should be no os_dependencies task. Dependencies should be satisfied
+   as needed as specified by task definitions
 
 vim: tw=80
