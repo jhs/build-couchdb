@@ -1,0 +1,8 @@
+Planned Features
+================
+
+ * No dependency on ruby-inabox. This code's ancestor was a Rails project with
+   complex, specific gem dependencies. It is overkill to build Ruby from
+   scratch, at least on Linux and OSX.
+
+vim: tw=80
