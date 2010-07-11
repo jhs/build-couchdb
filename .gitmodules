@@ -7,3 +7,6 @@
 [submodule "ruby-inabox"]
 	path = ruby-inabox
 	url = git://github.com/jhs/ruby-inabox.git
+[submodule "dependencies/ruby-inabox"]
+	path = dependencies/ruby-inabox
+	url = git://github.com/jhs/ruby-inabox
