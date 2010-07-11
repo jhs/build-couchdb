@@ -5,4 +5,10 @@ Planned Features
    complex, specific gem dependencies. It is overkill to build Ruby from
    scratch, at least on Linux and OSX.
 
+Bugs
+====
+
+ * all.rake is legacy code which should be refactored into meaningful .rake
+   components
+
 vim: tw=80
