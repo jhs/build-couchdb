@@ -16,7 +16,7 @@ namespace :build do
   end
 
   desc 'Hook into the Ruby in a Box environment to get everything else built and installed'
-  task :ruby_inabox => [:confirm_ruby, :couchdb]
+  task :ruby_inabox => :couchdb
 
   desc 'Build CouchDB'
   task :couchdb => ['erlang:build', :os_dependencies, 'tracemonkey:build', 'icu:build', COUCH_BIN]
@@ -94,10 +94,10 @@ namespace :build do
     end
   end
 
-  desc 'Completely uninstall everything except source'
-  task :distclean => :clean do
-    sh "rm -rf #{RUBY_BUILD}"
-  end
+  #desc 'Completely uninstall everything except source'
+  #task :distclean => :clean do
+  #  sh "rm -rf #{RUBY_BUILD}"
+  #end
 
   desc 'Clean all CouchDB-related build output'
   task :clean do
