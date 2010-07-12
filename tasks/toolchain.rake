@@ -2,8 +2,6 @@
 
 namespace :toolchain do
 
-  directory "#{BUILD}/bin"
-
   %w[ 2.13 2.59 ].each do |version|
     label = "AUTOCONF_#{version.gsub /\W/, ''}"
     raise "Woah, why am I bothering to build autoconf #{version}? There is no #{label} constant" unless Object.const_defined? label
