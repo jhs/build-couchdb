@@ -27,7 +27,7 @@ modern operating systems.
 
 On Ubuntu and Debian:
 
-    sudo apt-get install make gcc zlib1g-dev libssl-dev libreadline5-dev bison ruby
+    sudo apt-get install make gcc zlib1g-dev libssl-dev libreadline5-dev bison rake
 
 On OSX, install XCode.
 
