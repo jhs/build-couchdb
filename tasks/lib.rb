@@ -1,6 +1,6 @@
 # Miscellaneous utilities
 
-load File.dirname(__FILE__) + '/places.rake'
+require File.dirname(__FILE__) + '/places'
 
 def package_dep opts
   program_file, package = opts.first

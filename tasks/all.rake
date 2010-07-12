@@ -21,7 +21,9 @@ namespace :build do
   desc 'Build CouchDB'
   task :couchdb => ['erlang:build', :os_dependencies, 'tracemonkey:build', 'icu:build', COUCH_BIN]
 
-  file COUCH_BIN => AUTOCONF_259 do
+  directory "#{BUILD}/var/run/couchdb"
+
+  file COUCH_BIN => [AUTOCONF_259, "#{BUILD}/var/run/couchdb"] do
     source = "#{DEPS}/couchdb"
     begin
       Dir.chdir(source) { sh "./bootstrap" } # TODO: Use the built-in autoconf (with_autoconf '2.59') instead of depending on the system.

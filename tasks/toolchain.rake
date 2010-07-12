@@ -4,9 +4,9 @@ namespace :toolchain do
 
   %w[ 2.13 2.59 ].each do |version|
     label = "AUTOCONF_#{version.gsub /\W/, ''}"
-    raise "Woah, why am I bothering to build autoconf #{version}? There is no #{label} constant" unless Kernel.const_defined? label
+    raise "Woah, why am I bothering to build autoconf #{version}? There is no #{label} constant" unless Object.const_defined? label
 
-    file Kernel.const_get(label) do
+    file Object.const_get(label) do
       Dir.mktmpdir "autoconf-#{version}_build" do |dir|
         Dir.chdir dir do
           begin

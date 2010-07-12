@@ -1,6 +1,6 @@
 
 task :known_distro => [ :known_mac, :known_ubuntu, :known_debian ] do
-  raise 'Unknown distribution, build not supported' unless Kernel.const_defined? 'DISTRO'
+  raise 'Unknown distribution, build not supported' unless Object.const_defined? 'DISTRO'
 end
 
 task :known_mac do

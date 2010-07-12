@@ -1,5 +1,4 @@
 # Exporting the code for consumption
-load File.dirname(__FILE__) + '/places.rake'
 
 require 'pathname'
 require 'fileutils'
