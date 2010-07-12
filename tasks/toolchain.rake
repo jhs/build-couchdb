@@ -6,7 +6,7 @@ namespace :toolchain do
     label = "AUTOCONF_#{version.gsub /\W/, ''}"
     raise "Woah, why am I bothering to build autoconf #{version}? There is no #{label} constant" unless Object.const_defined? label
 
-    file Object.const_get(label) => "#{BUILD}/bin" do
+    file Object.const_get(label) => 'environment:path' do
       Dir.mktmpdir "autoconf-#{version}_build" do |dir|
         Dir.chdir dir do
           begin
