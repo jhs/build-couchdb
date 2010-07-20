@@ -36,6 +36,7 @@ namespace :build do
                 }.fetch DISTRO[0], ''
           sh "env #{env} #{source}/configure --prefix=#{BUILD} --with-erlang=#{BUILD}/lib/erlang/usr/include"
           sh "make"
+          sh "make check"
           sh 'make install'
 
           if DISTRO[0] == :osx
