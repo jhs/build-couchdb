@@ -1,6 +1,7 @@
 # Erlang-related tasks
 
 require 'pathname'
+require 'fileutils'
 
 namespace :erlang do
   desc 'Build Erlang/OTP'
@@ -26,6 +27,10 @@ namespace :erlang do
           configure.push '--host=x86_64-linux-gnu', '--build=x86_64-linux-gnu' if DISTRO[1] == '9.10'
         end
         configure.push '--enable-darwin-64bit' if DISTRO[0] == :osx
+
+        %w[ wx debugger ].each do |lib|
+          FileUtils.touch "#{DEPS}/otp/lib/#{lib}/SKIP"
+        end
 
         sh configure.join(' ')
         sh 'make'
