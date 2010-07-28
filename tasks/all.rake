@@ -23,7 +23,7 @@ namespace :build do
 
   directory "#{BUILD}/var/run/couchdb"
 
-  file COUCH_BIN => [AUTOCONF_259, "#{BUILD}/var/run/couchdb"] do
+  file COUCH_BIN => [AUTOCONF_259, "#{BUILD}/var/run/couchdb", 'environment:path'] do
     source = "#{DEPS}/couchdb"
     begin
       Dir.chdir(source) { sh "./bootstrap" } # TODO: Use the built-in autoconf (with_autoconf '2.59') instead of depending on the system.
