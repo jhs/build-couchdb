@@ -45,6 +45,7 @@ namespace :erlang do
       ensure
         Dir.chdir source
         sh 'git reset --hard && git clean -fd'
+        sh "git ls-files --others --ignored --exclude-standard | xargs rm -vf"
       end
     end
   end
