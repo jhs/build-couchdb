@@ -58,7 +58,12 @@ namespace :erlang do
     end
   end
 
-  task :post_install => ERL_BIN do
-    puts "I should do something about #{OTP_REMOVE.inspect}"
+  task :clean do
+    lib = "'#{BUILD}/lib/erlang/lib'"
+    (OTP_REMOVE + OTP_SKIP_COMPILE).each do |component|
+      sh "rm -rf #{lib}/#{component}-*"
+    end
+    sh "find #{lib} -type d -name src -print0 | xargs -0 rm -rf"
   end
+
 end

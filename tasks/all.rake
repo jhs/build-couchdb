@@ -19,7 +19,11 @@ namespace :build do
   task :ruby_inabox => :couchdb
 
   desc 'Build CouchDB'
-  task :couchdb => ['erlang:build', :os_dependencies, 'tracemonkey:build', 'icu:build', COUCH_BIN]
+  task :couchdb => ['erlang:build', :os_dependencies, 'tracemonkey:build', 'icu:build', COUCH_BIN] do
+    # After everything is installed, Erlang can be stripped.
+    Rake::Task['erlang:clean'].reenable
+    Rake::Task['erlang:clean'].invoke
+  end
 
   directory "#{BUILD}/var/run/couchdb"
 
