@@ -14,6 +14,7 @@ releases) side-by-side.
 Build CouchDB is developed and tested on the following operating systems:
 
  * Ubuntu 10.04 LTS (Lucid Lynx)
+ * Ubuntu 9.10 (Karmic Koala)
  * Apple OSX
 
 The following systems are planned for support in the near future:
@@ -22,8 +23,8 @@ The following systems are planned for support in the near future:
 
 ## Requirements
 
-You need only the basic GNU development toolchain.  These are often included in
-modern operating systems.
+You need only the basic GNU development toolchain, plus Rake.  These are
+included in modern operating systems.
 
 On Ubuntu and Debian:
 
@@ -43,30 +44,25 @@ submodules.
 
 ## How to Build CouchDB
 
-Since CouchDB will be built and installed in an isolated, private location, you
-must set several environment variables to access it, the shell search path,
-Ruby gems, and Heaven knows what else. All of this is handled through one shell
-script, `env.sh`, which has the following properties.
+Just run Rake.
 
- * If CouchDB has not yet been built, it will kick off the process.
- * It is idempotent. Source it whenever you like.
+    rake
 
-In other words, to build CouchDB, run
-
-    . ./env.sh
-
-That will set up the environment (PATH, etc.) *in the current shell only*.
-
-CouchDB and all its dependencies will be installed in `build/`. To uninstall,
+CouchDB and all its dependencies will install in the `build/`. To uninstall,
 simply delete that directory.
 
 ## Usage
 
-It's CouchDB! Just type `couchdb`.
+It's CouchDB! Just type `couchdb`. (But remember the path)
 
-    $ couchdb
+    $ build/bin/couchdb
     Apache CouchDB 0.12.0aa63efb6-git (LogLevel=info) is starting.
     Apache CouchDB has started. Time to relax.
     [info] [<0.33.0>] Apache CouchDB has started on http://127.0.0.1:5984/
+
+You can of course call it by absolute path. If your username is `amit` and you
+checked out the code in your home directory, you would run:
+
+    /home/amit/build-couchdb/build/bin/couchdb
 
 vim: tw=80
