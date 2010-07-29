@@ -4,6 +4,3 @@
 [submodule "dependencies/otp"]
 	path = dependencies/otp
 	url = git://github.com/erlang/otp.git
-[submodule "dependencies/ruby-inabox"]
-	path = dependencies/ruby-inabox
-	url = git://github.com/jhs/ruby-inabox
