@@ -7,6 +7,14 @@ namespace :erlang do
   desc 'Build Erlang/OTP'
   task :build => [:known_distro, ERL_BIN]
 
+  # Some libraries needn't be compiled. Others can be deleted later.
+  OTP_REMOVE = %w[ compiler syntax_tools public_key parsetools ic erts ]
+  OTP_SKIP_COMPILE = %w[
+    appmon asn1 common_test cosEvent cosEventDomain cosFileTransfer cosNotification cosProperty cosTime cosTransactions
+    wx debugger ssh test_server toolbar odbc orber otp_mibs os_mon reltool snmp observer dialyzer docbuilder edoc et
+    eunit gs hipe runtime_tools erl_interface percept pman tools inviso tv typer webtool jinterface megaco mnesia
+  ]
+
   file ERL_BIN => AUTOCONF_259 do
     source = "#{DEPS}/otp"
     Dir.chdir source
@@ -28,7 +36,7 @@ namespace :erlang do
         end
         configure.push '--enable-darwin-64bit' if DISTRO[0] == :osx
 
-        %w[ wx debugger ].each do |lib|
+        OTP_SKIP_COMPILE.each do |lib|
           FileUtils.touch "#{DEPS}/otp/lib/#{lib}/SKIP"
         end
 
@@ -48,5 +56,9 @@ namespace :erlang do
         sh "git ls-files --others --ignored --exclude-standard | xargs rm -vf"
       end
     end
+  end
+
+  task :post_install => ERL_BIN do
+    puts "I should do something about #{OTP_REMOVE.inspect}"
   end
 end
