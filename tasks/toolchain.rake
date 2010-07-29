@@ -1,8 +1,12 @@
 # Build toolchain
 
+require 'fileutils'
+
 namespace :toolchain do
 
-  %w[ 2.13 2.59 ].each do |version|
+  autotools_versions = %w[ 2.13 2.59 ]
+
+  autotools_versions.each do |version|
     label = "AUTOCONF_#{version.gsub /\W/, ''}"
     raise "Woah, why am I bothering to build autoconf #{version}? There is no #{label} constant" unless Object.const_defined? label
 
@@ -22,6 +26,16 @@ namespace :toolchain do
           end
         end
       end
+    end
+  end
+
+  task :clean do
+    %w[ info share/emacs share/autoconf ].each do |dir|
+      FileUtils.rm_rf "#{BUILD}/#{dir}"
+    end
+
+    autotools_versions.each do |ver|
+      Dir.glob("#{BUILD}/bin/*#{ver}").each { |file| FileUtils.rm_f file }
     end
   end
 

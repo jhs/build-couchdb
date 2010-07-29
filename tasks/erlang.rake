@@ -64,6 +64,7 @@ namespace :erlang do
       sh "rm -rf #{lib}/#{component}-*"
     end
     sh "find #{lib} -type d -name src -print0 | xargs -0 rm -rf"
+    sh "find '#{BUILD}/lib/erlang' -type d -name include -print0 | xargs -0 rm -rf"
   end
 
 end
