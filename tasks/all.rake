@@ -42,11 +42,12 @@ namespace :build do
         Dir.chdir dir do
           env = { :ubuntu => "LDFLAGS='-R#{BUILD}/lib -L#{BUILD}/lib' CFLAGS='-I#{BUILD}/include/js'",
                   :debian => "LDFLAGS='-R#{BUILD}/lib -L#{BUILD}/lib' CFLAGS='-I#{BUILD}/include/js'",
+                  :fedora => "LDFLAGS='-R#{BUILD}/lib -L#{BUILD}/lib' CFLAGS='-I#{BUILD}/include/js'",
                   :osx    => "LDFLAGS='-R#{BUILD}/lib -L#{BUILD}/lib' CFLAGS='-I#{BUILD}/include/js'",
                 }.fetch DISTRO[0], ''
           sh "env #{env} #{source}/configure --prefix=#{BUILD} --with-erlang=#{BUILD}/lib/erlang/usr/include"
           sh "make"
-          sh "make check"
+          sh "make check" unless [:osx, :fedora].include? DISTRO[0]
           sh 'make install'
 
           if DISTRO[0] == :osx

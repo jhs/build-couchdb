@@ -34,6 +34,7 @@ namespace :erlang do
           configure.push '--enable-clock-gettime'
           configure.push '--host=x86_64-linux-gnu', '--build=x86_64-linux-gnu' if DISTRO[1] == '9.10'
         end
+        configure.push '--enable-shared-zlib'  if DISTRO[0] == :fedora
         configure.push '--enable-darwin-64bit' if DISTRO[0] == :osx
 
         OTP_SKIP_COMPILE.each do |lib|

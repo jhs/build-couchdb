@@ -1,5 +1,5 @@
 
-task :known_distro => [ :known_mac, :known_ubuntu, :known_debian ] do
+task :known_distro => [ :known_mac, :known_ubuntu, :known_debian, :known_redhat ] do
   raise 'Unknown distribution, build not supported' unless Object.const_defined? 'DISTRO'
 end
 
@@ -19,4 +19,11 @@ end
 task :known_debian do
   ver = '/etc/debian_version'
   DISTRO = [:debian, File.new(ver).readline.chomp] if !File.exist?('/etc/lsb-release') && File.exist?(ver)
+end
+
+task :known_redhat do
+  if File.exist? '/etc/fedora-release'
+    release = File.new('/etc/fedora-release').readline.match(/Fedora release (\d+)/)[1]
+    DISTRO = [:fedora, release]
+  end
 end

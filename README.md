@@ -15,6 +15,7 @@ Build CouchDB is developed and tested on the following operating systems:
 
  * Ubuntu 10.04 LTS (Lucid Lynx)
  * Ubuntu 9.10 (Karmic Koala)
+ * Fedora 13
  * Apple OSX
 
 The following systems are planned for support in the near future:
@@ -23,12 +24,16 @@ The following systems are planned for support in the near future:
 
 ## Requirements
 
-You need only the basic GNU development toolchain, plus Rake.  These are
-included in modern operating systems.
+You need only a few packages provided by the operating system.
 
 On Ubuntu and Debian:
 
     sudo apt-get install make gcc zlib1g-dev libssl-dev libreadline5-dev bison rake
+
+On Fedora:
+
+    sudo yum install gcc gcc-c++ libtool ncurses-devel libcurl-devel \
+                     zlib-devel openssl-devel rubygem-rake
 
 On OSX, install XCode.
 

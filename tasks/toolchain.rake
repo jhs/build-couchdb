@@ -13,16 +13,21 @@ namespace :toolchain do
     file Object.const_get(label) => 'environment:path' do
       Dir.mktmpdir "autoconf-#{version}_build" do |dir|
         Dir.chdir dir do
+          fakes = %w[ makeinfo help2man ]
           begin
-            makeinfo = File.new("#{BUILD}/bin/makeinfo", 'w')
-            makeinfo.chmod 0700
-            makeinfo.close
+            fakes.each do |name|
+              fake = File.new("#{BUILD}/bin/#{name}", 'w')
+              fake.chmod 0700
+              fake.close
+            end
 
             sh "#{DEPS}/autoconf-#{version}/configure --prefix=#{BUILD} --program-suffix=#{version}"
             sh 'make'
             sh 'make install'
           ensure
-            File.unlink "#{BUILD}/bin/makeinfo" if File.exist? "#{BUILD}/bin/makeinfo"
+            fakes.each do |name|
+              FileUtils.rm_f "#{BUILD}/bin/#{name}"
+            end
           end
         end
       end
