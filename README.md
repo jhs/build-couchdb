@@ -6,8 +6,8 @@ sources, CouchDB plus all of its dependencies. It is the most straightforward
 and reliable procedure to build official CouchDB releases from source.
 
 Build CouchDB builds an isolated, independent server. You do not need
-administrator access. You can run several couches (for example, 0.10, 0.11, 1.0
-releases) side-by-side.
+administrator access to run it. You can run several couches (for example, 0.10,
+0.11, 1.0 releases) side-by-side.
 
 ## Supported Platforms
 
