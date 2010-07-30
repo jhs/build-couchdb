@@ -11,7 +11,7 @@ namespace :build do
   task :confirm_ruby => :os_dependencies do
     expectation = "#{RUBY_BUILD}/bin"
     %w[ ruby gem rake ].each do |cmd|
-      raise "#{cmd} not running from #{expectation}. Did you source env.sh?" unless `which #{cmd}`.chomp.match(Regexp.new "#{expectation}/#{cmd}$")
+      raise "#{cmd} not running from #{expectation}. Did you source env.sh?" unless `which #{cmd}`.chomp.match(Regexp.new("#{expectation}/#{cmd}$"))
     end
   end
 

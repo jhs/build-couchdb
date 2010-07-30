@@ -3,7 +3,7 @@
 require File.dirname(__FILE__) + '/places'
 
 def package_dep opts
-  program_file, package = opts.first
+  program_file, package = opts.to_a.first
 
   Rake.application.in_explicit_namespace(':') do
     task "package:#{package}" => :known_distro do
@@ -55,7 +55,7 @@ def with_autoconf ver
     files.each { |x| ln_canonical x }
     yield
   ensure
-    files.each { |x| FileUtils.rm_f(canonical_path x) }
+    files.each { |x| FileUtils.rm_f(canonical_path(x)) }
   end
 end
 
