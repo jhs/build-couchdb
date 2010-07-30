@@ -9,9 +9,9 @@ namespace :environment do
     ENV['PATH'] = "#{BUILD}/bin:#{ENV['PATH']}" unless ENV['PATH'].split(/:/).include? "#{BUILD}/bin"
   end
 
-  desc 'Output a shell script suitable to use this software'
+  desc 'Output a shell script suitable to use this software (best with --silent)'
   task :code => :path do
-    puts "export PATH=#{ENV['PATH']}"
+    puts "export PATH='#{ENV['PATH']}'"
   end
 
   desc 'Run a subshell with this environment loaded'

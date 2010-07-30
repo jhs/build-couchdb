@@ -70,4 +70,12 @@ checked out the code in your home directory, you would run:
 
     /home/amit/build-couchdb/build/bin/couchdb
 
+## Conveniently Add CouchDB to the PATH
+
+The `env` task will output a script which will add this CouchDB build to your
+path. Then you can simply type `couchdb`. To load these settings into your
+current shell, run:
+
+    eval `rake env --silent`
+
 vim: tw=80
