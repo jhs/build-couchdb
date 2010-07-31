@@ -32,7 +32,7 @@ On Ubuntu and Debian:
 
 On Fedora:
 
-    sudo yum install gcc gcc-c++ libtool ncurses-devel libcurl-devel \
+    sudo yum install gcc gcc-c++ libtool libcurl-devel \
                      zlib-devel openssl-devel rubygem-rake
 
 On OSX, install XCode.

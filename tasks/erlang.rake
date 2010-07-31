@@ -27,14 +27,21 @@ namespace :erlang do
           './configure',
           "--prefix=#{BUILD}",
           "--without-javac",
-          '--enable-smp-support', '--enable-hybrid-heap', '--enable-threads', '--disable-hipe', '--enable-kernel-poll',
-          '--enable-sctp', '--enable-dynamic-ssl-lib', '--without-ssl-zlib',
+          "--without-termcap",
+          "--enable-shared-zlib",
+          '--enable-smp-support',
+          '--enable-hybrid-heap',
+          '--enable-threads',
+          '--disable-hipe',
+          '--enable-kernel-poll',
+          '--enable-sctp',
+          "--with-ssl",
+          '--enable-dynamic-ssl-lib',
         ]
         if [:ubuntu, :debian].include? DISTRO[0]
           configure.push '--enable-clock-gettime'
           configure.push '--host=x86_64-linux-gnu', '--build=x86_64-linux-gnu' if DISTRO[1] == '9.10'
         end
-        configure.push '--enable-shared-zlib'  if DISTRO[0] == :fedora
         configure.push '--enable-darwin-64bit' if DISTRO[0] == :osx
 
         OTP_SKIP_COMPILE.each do |lib|
