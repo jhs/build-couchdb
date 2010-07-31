@@ -77,11 +77,11 @@ namespace :build do
         %w[ quilt unixodbc-dev flex dctrl-tools libsctp-dev libgl1-mesa-dev libglu1-mesa-dev ],
 
         # All Ubuntu gets these.
-        %w[ libxslt1-dev automake help2man libcurl4-openssl-dev libreadline5-dev make bison ruby libtool g++ ],
+        %w[ libxslt1-dev automake libcurl4-openssl-dev make ruby libtool g++ ],
         %w[ zip libcap2-bin ],
 
         # Needed for Varnish
-        %w[ libpcre3-dev ]
+        # %w[ libpcre3-dev ]
       ].flatten
     end
   end
@@ -92,7 +92,7 @@ namespace :build do
       install %w[ quilt unixodbc-dev flex dctrl-tools libsctp-dev libgl1-mesa-dev libglu1-mesa-dev ]
 
       # All Ubuntu gets these.
-      install %w[ libxslt1-dev automake help2man libcurl4-openssl-dev libreadline5-dev make bison ruby libtool g++ ]
+      install %w[ libxslt1-dev automake libcurl4-openssl-dev make ruby libtool g++ ]
       install %w[ zip libcap2-bin ]
 
       # Needed for Varnish

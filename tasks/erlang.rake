@@ -52,12 +52,11 @@ namespace :erlang do
         sh 'make'
         sh 'make install'
 
-        if [:ubuntu, :debian].include?(DISTRO[0]) && ENV['bind_cap']
-          %w[ beam beam.smp ].each do |program|
-            path = Pathname.new(ERL_BIN).realpath.parent.parent + 'erts-5.7.5' + 'bin' + program
-            sh "sudo setcap cap_net_bind_service=+ep #{path}"
-          end
-        end
+        # Cleanup. Much thanks to the Fedora 13 source RPM!
+        erlang = "#{BUILD}/lib/erlang"
+        sh "find #{erlang} -type d -perm 0775 -print0 | xargs -0 chmod 0755"
+        sh "rm -rf #{erlang}/misc"
+
       ensure
         Dir.chdir source
         sh 'git reset --hard && git clean -fd'
@@ -67,12 +66,19 @@ namespace :erlang do
   end
 
   task :clean do
-    lib = "'#{BUILD}/lib/erlang/lib'"
+    erlang = "'#{BUILD}'/lib/erlang"
+    lib = "#{erlang}/lib'"
+
     (OTP_REMOVE + OTP_SKIP_COMPILE).each do |component|
       sh "rm -rf #{lib}/#{component}-*"
     end
-    sh "find #{lib} -type d -name src -print0 | xargs -0 rm -rf"
-    sh "find '#{BUILD}/lib/erlang' -type d -name include -print0 | xargs -0 rm -rf"
+
+    # Remove unnecessary directories for running.
+    %w[ src examples include doc man obj erl_docgen-* misc ].each do |dir|
+      sh "find #{erlang} -type d -name '#{dir}' -print0 | xargs -0 rm -rf"
+    end
+
+    sh "rm #{erlang}/Install"
   end
 
 end
