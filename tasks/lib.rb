@@ -1,5 +1,7 @@
 # Miscellaneous utilities
 
+require 'find'
+
 require File.dirname(__FILE__) + '/places'
 
 def package_dep opts
@@ -70,6 +72,15 @@ def in_build_dir label
   Dir.mktmpdir "#{label}_build" do |dir|
     Dir.chdir dir do
       yield
+    end
+  end
+end
+
+def compress_beams source
+  Find.find(source) do |path|
+    if File.file?(path) && path.match(/\.beam$/) && ENV['skip_compress_beam'].nil?
+      sh "gzip -9 '#{path}'"
+      sh "mv '#{path}'.gz '#{path}'"
     end
   end
 end

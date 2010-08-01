@@ -56,8 +56,7 @@ namespace :erlang do
         erlang = "#{BUILD}/lib/erlang"
         sh "find #{erlang} -type d -perm 0775 -print0 | xargs -0 chmod 0755"
         sh "rm -rf #{erlang}/misc"
-        sh "find #{erlang} -name '*.beam' -exec gzip -9 {} \\;"
-        sh "find #{erlang} -name '*.beam.gz' -exec bash -c 'mv {} `basename \"{}\" .gz`' \\;"
+        compress_beams erlang
 
       ensure
         Dir.chdir source
