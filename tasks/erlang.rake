@@ -68,7 +68,7 @@ namespace :erlang do
 
   task :clean do
     erlang = "'#{BUILD}'/lib/erlang"
-    lib = "#{erlang}/lib'"
+    lib = "#{erlang}/lib"
 
     (OTP_REMOVE + OTP_SKIP_COMPILE).each do |component|
       sh "rm -rf #{lib}/#{component}-*"
