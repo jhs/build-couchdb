@@ -20,6 +20,8 @@ namespace :icu do
             sh "install_name_tool -change libicuuc.44.dylib #{BUILD}/lib/libicuuc.44.dylib #{BUILD}/lib/libicui18n.44.dylib"
           end
         end
+
+        record_manifest 'icu'
       ensure
         Dir.chdir(src) { sh 'make distclean' if File.exist? 'Makefile' }
       end

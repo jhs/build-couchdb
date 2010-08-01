@@ -63,6 +63,8 @@ namespace :build do
             sh "install_name_tool -change @executable_path/libmozjs.dylib #{BUILD}/lib/libmozjs.dylib #{js}"
           end
         end
+
+        record_manifest 'couchdb'
       end
     ensure
       Dir.chdir(source) { sh "git ls-files --others --ignored --exclude-standard | xargs rm -vf" }

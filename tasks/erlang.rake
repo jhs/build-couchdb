@@ -64,6 +64,8 @@ namespace :erlang do
         sh "git ls-files --others --ignored --exclude-standard | xargs rm -vf"
       end
     end
+
+    record_manifest 'erlang'
   end
 
   task :clean do

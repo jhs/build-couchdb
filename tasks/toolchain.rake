@@ -10,7 +10,7 @@ namespace :toolchain do
     label = "AUTOCONF_#{version.gsub /\W/, ''}"
     raise "Woah, why am I bothering to build autoconf #{version}? There is no #{label} constant" unless Object.const_defined? label
 
-    file Object.const_get(label) => 'environment:path' do
+    file Object.const_get(label) => 'environment:path' do |task|
       Dir.mktmpdir "autoconf-#{version}_build" do |dir|
         Dir.chdir dir do
           fakes = %w[ makeinfo help2man ]
@@ -24,6 +24,7 @@ namespace :toolchain do
             sh "#{DEPS}/autoconf-#{version}/configure --prefix=#{BUILD} --program-suffix=#{version}"
             sh 'make'
             sh 'make install'
+            record_manifest task.name
           ensure
             fakes.each do |name|
               FileUtils.rm_f "#{BUILD}/bin/#{name}"

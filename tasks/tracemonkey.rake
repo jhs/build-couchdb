@@ -19,6 +19,8 @@ namespace :tracemonkey do
           sh 'make install'
         end
       end
+
+      record_manifest 'tracemonkey'
     ensure
       Dir.chdir src
       sh 'make distclean' if File.exist? 'Makefile'
