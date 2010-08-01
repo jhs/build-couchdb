@@ -50,6 +50,9 @@ namespace :build do
           sh "make check" unless [:osx, :fedora].include? DISTRO[0]
           sh 'make install'
 
+          sh "find #{BUILD}/lib/couchdb/erlang -name '*.beam' -exec gzip -9 {} \\;"
+          sh "find #{BUILD}/lib/couchdb/erlang -name '*.beam.gz' -exec bash -c 'mv {} `basename \"{}\" .gz`' \\;"
+
           if DISTRO[0] == :osx
             icu = Dir.glob("#{BUILD}/lib/couchdb/erlang/lib/couch-*/priv/lib/couch_icu_driver.so").last
             js  = "#{BUILD}/lib/couchdb/bin/couchjs"
