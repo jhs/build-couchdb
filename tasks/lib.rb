@@ -85,6 +85,40 @@ def compress_beams source
   end
 end
 
+def record_manifest task_name
+  return if ENV['manifest'].nil? || ENV['manifest'] == ""
+
+  task_name = File.basename(task_name) if task_name =~ /\//
+
+  sh "mkdir -p #{MANIFESTS}"
+  seen = {}
+  Dir.glob("#{MANIFESTS}/*").each do |manifest|
+    File.new(manifest).each do |line|
+      path = line.chomp
+      raise "Woa! #{path} is in #{task_name} but was already seen in #{seen[path]}" if seen[path]
+      seen[path] = File.basename(manifest)
+    end
+  end
+
+  unseen = []
+  Find.find(BUILD) do |path|
+    if File.directory? path
+      Find.prune if path == MANIFESTS
+    else
+      if seen[path]
+        puts "#{path} seen: #{seen[path]}"
+      else
+        unseen.push path
+      end
+    end
+  end
+
+  manifest = File.new("#{MANIFESTS}/#{task_name}", 'w')
+  manifest.write(unseen.join("\n"))
+  manifest.write("\n")
+  manifest.close
+end
+
 module Rake
   module TaskManager
     def in_explicit_namespace(name)
