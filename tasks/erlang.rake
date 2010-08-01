@@ -8,11 +8,11 @@ namespace :erlang do
   task :build => [:known_distro, ERL_BIN]
 
   # Some libraries needn't be compiled. Others can be deleted later.
-  OTP_REMOVE = %w[ compiler syntax_tools public_key parsetools ic erts ]
+  OTP_REMOVE = %w[ compiler syntax_tools public_key parsetools ic erts erl_interface ]
   OTP_SKIP_COMPILE = %w[
     appmon asn1 common_test cosEvent cosEventDomain cosFileTransfer cosNotification cosProperty cosTime cosTransactions
     wx debugger ssh test_server toolbar odbc orber otp_mibs os_mon reltool snmp observer dialyzer docbuilder edoc et
-    eunit gs hipe runtime_tools erl_interface percept pman tools inviso tv typer webtool jinterface megaco mnesia
+    eunit gs hipe runtime_tools percept pman tools inviso tv typer webtool jinterface megaco mnesia
   ]
 
   file ERL_BIN => AUTOCONF_259 do
