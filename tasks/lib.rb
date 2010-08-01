@@ -106,7 +106,7 @@ def record_manifest task_name
       Find.prune if path == MANIFESTS
     else
       if seen[path]
-        puts "#{path} seen: #{seen[path]}"
+        #puts "#{path} seen: #{seen[path]}"
       else
         unseen.push path
       end
