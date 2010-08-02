@@ -22,8 +22,7 @@ namespace :build do
   task :couchdb => ['erlang:build', :os_dependencies, 'tracemonkey:build', 'icu:build', COUCH_BIN] do
     # After everything is installed, Erlang can be stripped.
     %w[ erlang toolchain ].each do |section|
-      Rake::Task["#{section}:clean"].reenable
-      Rake::Task["#{section}:clean"].invoke
+      run_task "#{section}:clean"
     end
 
     %w[ include ].each do |dir|

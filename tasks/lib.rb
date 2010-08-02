@@ -119,6 +119,12 @@ def record_manifest task_name
   manifest.close
 end
 
+def run_task name
+  task = Rake::Task[name]
+  task.reenable if task.methods.include?("reenable")
+  task.invoke
+end
+
 module Rake
   module TaskManager
     def in_explicit_namespace(name)
