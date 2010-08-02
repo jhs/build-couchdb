@@ -46,7 +46,7 @@ namespace :build do
                 }.fetch DISTRO[0], ''
           sh "env #{env} #{source}/configure --prefix=#{BUILD} --with-erlang=#{BUILD}/lib/erlang/usr/include"
           sh "make"
-          sh "make check" unless [:osx, :fedora].include? DISTRO[0]
+          sh "make check" if ENV['make_check']
           sh 'make install'
 
           compress_beams "#{BUILD}/lib/couchdb/erlang"
