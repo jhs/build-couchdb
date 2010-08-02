@@ -13,6 +13,7 @@ administrator access to run it. You can run several couches (for example, 0.10,
 
 Build CouchDB is developed and tested on the following operating systems:
 
+ * Debian GNU/Linux 5.0 (Lenny)
  * Ubuntu 10.04 LTS (Lucid Lynx)
  * Ubuntu 9.10 (Karmic Koala)
  * Fedora 13
@@ -27,16 +28,22 @@ The following systems are planned for support in the near future:
 You need only a few packages provided by the operating system. Copy and paste
 the commands below.
 
-On Ubuntu and Debian:
-
-    sudo apt-get install make gcc zlib1g-dev libssl-dev libreadline5-dev rake
-
-On Fedora:
+On **Fedora**:
 
     sudo yum install gcc gcc-c++ libtool libcurl-devel \
                      zlib-devel openssl-devel rubygem-rake
 
-On OSX, install XCode.
+On **Debian**, first install `sudo` and add yourself to `/etc/sudoers`.
+
+    su -
+    apt-get install sudo
+    vi /etc/sudoers # Or your preferred editor
+
+On **Ubuntu and Debian**:
+
+    sudo apt-get install make gcc zlib1g-dev libssl-dev libreadline5-dev rake
+
+On **OSX**, install XCode.
 
 ## Getting the Code
 
