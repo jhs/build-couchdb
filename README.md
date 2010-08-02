@@ -24,7 +24,8 @@ The following systems are planned for support in the near future:
 
 ## Requirements
 
-You need only a few packages provided by the operating system.
+You need only a few packages provided by the operating system. Copy and paste
+the commands below.
 
 On Ubuntu and Debian:
 
