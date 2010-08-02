@@ -29,7 +29,7 @@ the commands below.
 
 On Ubuntu and Debian:
 
-    sudo apt-get install make gcc zlib1g-dev libssl-dev libreadline5-dev bison rake
+    sudo apt-get install make gcc zlib1g-dev libssl-dev libreadline5-dev rake
 
 On Fedora:
 
