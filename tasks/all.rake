@@ -77,7 +77,7 @@ namespace :build do
     if DISTRO[0] == :debian
       install [
         # For building OTP
-        %w[ quilt unixodbc-dev flex dctrl-tools libsctp-dev libgl1-mesa-dev libglu1-mesa-dev ],
+        %w[ flex dctrl-tools libsctp-dev ],
 
         # All Ubuntu gets these.
         %w[ libxslt1-dev automake libcurl4-openssl-dev make ruby libtool g++ ],
@@ -92,7 +92,7 @@ namespace :build do
   task :ubuntu_dependencies => :known_distro do
     if DISTRO[0] == :ubuntu
       # For building OTP
-      install %w[ quilt unixodbc-dev flex dctrl-tools libsctp-dev libgl1-mesa-dev libglu1-mesa-dev ]
+      install %w[ flex dctrl-tools libsctp-dev ]
 
       # All Ubuntu gets these.
       install %w[ libxslt1-dev automake libcurl4-openssl-dev make ruby libtool g++ ]
