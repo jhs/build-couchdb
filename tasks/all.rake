@@ -109,11 +109,6 @@ namespace :build do
     end
   end
 
-  #desc 'Completely uninstall everything except source'
-  #task :distclean => :clean do
-  #  sh "rm -rf #{RUBY_BUILD}"
-  #end
-
   desc 'Clean all CouchDB-related build output'
   task :clean do
     sh "rm -rf #{BUILD}"
