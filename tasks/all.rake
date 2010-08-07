@@ -39,10 +39,11 @@ namespace :build do
 
       Dir.mktmpdir 'couchdb-build' do |dir|
         Dir.chdir dir do
-          env = { :ubuntu => "LDFLAGS='-R#{BUILD}/lib -L#{BUILD}/lib' CFLAGS='-I#{BUILD}/include/js'",
-                  :debian => "LDFLAGS='-R#{BUILD}/lib -L#{BUILD}/lib' CFLAGS='-I#{BUILD}/include/js'",
-                  :fedora => "LDFLAGS='-R#{BUILD}/lib -L#{BUILD}/lib' CFLAGS='-I#{BUILD}/include/js'",
-                  :osx    => "LDFLAGS='-R#{BUILD}/lib -L#{BUILD}/lib' CFLAGS='-I#{BUILD}/include/js'",
+          env = { :ubuntu   => "LDFLAGS='-R#{BUILD}/lib -L#{BUILD}/lib' CFLAGS='-I#{BUILD}/include/js'",
+                  :debian   => "LDFLAGS='-R#{BUILD}/lib -L#{BUILD}/lib' CFLAGS='-I#{BUILD}/include/js'",
+                  :fedora   => "LDFLAGS='-R#{BUILD}/lib -L#{BUILD}/lib' CFLAGS='-I#{BUILD}/include/js'",
+                  :osx      => "LDFLAGS='-R#{BUILD}/lib -L#{BUILD}/lib' CFLAGS='-I#{BUILD}/include/js'",
+                  :opensuse => "LDFLAGS='-R#{BUILD}/lib -L#{BUILD}/lib' CFLAGS='-I#{BUILD}/include/js'",
                 }.fetch DISTRO[0], ''
           sh "env #{env} #{source}/configure --prefix=#{BUILD} --with-erlang=#{BUILD}/lib/erlang/usr/include"
           sh "make"
@@ -71,7 +72,7 @@ namespace :build do
   end
 
   desc 'Confirm (and install if possible) the OS dependencies'
-  task :os_dependencies => [:mac_dependencies, :ubuntu_dependencies, :debian_dependencies]
+  task :os_dependencies => [:mac_dependencies, :ubuntu_dependencies, :debian_dependencies, :opensuse_dependencies]
 
   task :debian_dependencies => :known_distro do
     if DISTRO[0] == :debian
@@ -108,6 +109,18 @@ namespace :build do
       raise 'Please install Xcode from Apple' if DISTRO[0] == :osx and system("#{dep} --version > /dev/null 2> /dev/null") == false
     end
   end
+
+  task :opensuse_dependencies => :known_distro do
+    if DISTRO[0] == :opensuse
+      # For building OTP
+      install %w[ flex lksctp-tools-devel zip]
+
+      # All OpenSUSE gets these.
+      install %w[rubygem-rake gcc-c++ make m4 zlib-devel libopenssl-devel libtool automake libcurl-devel]
+
+    end
+  end
+
 
   #desc 'Completely uninstall everything except source'
   #task :distclean => :clean do

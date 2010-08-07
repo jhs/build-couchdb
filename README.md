@@ -45,6 +45,13 @@ On **Ubuntu and Debian**:
 
 On **OSX**, install XCode.
 
+On **OpenSUSE**:
+
+    sudo zypper install flex lksctp-tools-devel zip \
+				rubygem-rake gcc-c++ make m4 zlib-devel \
+				libopenssl-devel libtool automake libcurl-devel
+
+
 ## Getting the Code
 
 You will need the Git tool. Check out the code and pull in the third-party

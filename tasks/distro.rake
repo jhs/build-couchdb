@@ -1,5 +1,5 @@
 
-task :known_distro => [ :known_mac, :known_ubuntu, :known_debian, :known_redhat ] do
+task :known_distro => [ :known_mac, :known_ubuntu, :known_debian, :known_redhat, :known_opensuse ] do
   raise 'Unknown distribution, build not supported' unless Object.const_defined? 'DISTRO'
 end
 
@@ -27,3 +27,11 @@ task :known_redhat do
     DISTRO = [:fedora, release]
   end
 end
+
+task :known_opensuse do
+  if File.exist? '/etc/SuSE-release'
+    release = File.new('/etc/SuSE-release').readline.match(/openSUSE (\d+)/)[1]
+    DISTRO = [:opensuse, release]
+  end
+end
+

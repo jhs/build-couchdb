@@ -33,9 +33,19 @@ end
 
 # TODO: Get rid of this. Packages should be installed as a dependency of other software, declared by package_dep().
 def install packages
-  installed = `dpkg --list`.split("\n").map { |x| x.split[1] } # Hm, this is out of scope if defined outside.
-  packages.select{ |pkg| ! installed.include? pkg }.each do |package|
-    sh "sudo apt-get -y install #{package}"
+	puts "Required: #{packages.inspect}"
+  case DISTRO[0]
+	when :opensuse
+	  installed = %x[rpm -qa].split("\n")
+	  packages.select{|pkg| ! installed.detect{|d| d =~ /^#{Regexp.escape(pkg)}/ } }.each do |package|
+      # puts "Installing #{package} ..."
+	    %x[sudo zypper install '#{package}']
+    end
+	else 
+	  installed = `dpkg --list`.split("\n").map { |x| x.split[1] } # Hm, this is out of scope if defined outside.
+	  packages.select{ |pkg| ! installed.include? pkg }.each do |package|
+	    sh "sudo apt-get -y install #{package}"
+	  end
   end
 end
 
