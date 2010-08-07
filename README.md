@@ -18,6 +18,7 @@ Build CouchDB is developed and tested on the following operating systems:
  * Ubuntu 9.10 (Karmic Koala)
  * Fedora 13
  * Apple OSX
+ * OpenSUSE 11.3
 
 The following systems are planned for support in the near future:
 
