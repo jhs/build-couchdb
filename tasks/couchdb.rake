@@ -1,4 +1,5 @@
 # Building CouchDB
+require 'uri'
 
 namespace :couchdb do
 
@@ -20,6 +21,29 @@ namespace :couchdb do
 
   file COUCH_BIN => [AUTOCONF_259, "#{BUILD}/var/run/couchdb", 'environment:path'] do
     source = "#{DEPS}/couchdb"
+
+    if ENV['git']
+      remote, commit = ENV['git'].split
+      checkout = "#{HERE}/couchdb-git/#{URI.escape(remote, /[\/:]/)}"
+
+      if File.directory?(checkout) || File.symlink?(checkout)
+        puts "Using #{checkout} for build from Git"
+      elsif File.exists? checkout
+        raise "Don't know what to do with #{checkout}"
+      else
+        sh "git clone '#{remote}' '#{checkout}'"
+      end
+
+      Dir.chdir checkout do
+        sh "git checkout #{commit}"
+        sh "git reset --hard"
+        sh "git clean -f -d"
+        sh "git ls-files --others -i --exclude-standard | xargs rm -v || true"
+      end
+
+      source = checkout
+    end
+
     begin
       Dir.chdir(source) { sh "./bootstrap" } # TODO: Use the built-in autoconf (with_autoconf '2.59') instead of depending on the system.
 
