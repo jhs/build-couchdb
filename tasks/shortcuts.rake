@@ -1,5 +1,5 @@
 desc Rake::Task['couchdb:build'].comment
-task :default => 'couchdb:build'
+task :default => 'couchdb:clean_install'
 
 desc Rake::Task['environment:shell'].comment
 task :sh => 'environment:shell'

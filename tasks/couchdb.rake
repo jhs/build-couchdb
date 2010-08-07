@@ -3,8 +3,10 @@
 namespace :couchdb do
 
   desc 'Build CouchDB'
-  task :build => ['erlang:build', 'build:os_dependencies', 'tracemonkey:build', 'icu:build', COUCH_BIN] do
-    # After everything is installed, Erlang can be stripped.
+  task :build => ['erlang:build', 'build:os_dependencies', 'tracemonkey:build', 'icu:build', COUCH_BIN]
+
+  desc 'Build CouchDB and then clean out unnecessary things like autotools'
+  task :clean_install => :build do
     %w[ erlang toolchain ].each do |section|
       run_task "#{section}:clean"
     end
