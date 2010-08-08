@@ -54,7 +54,7 @@ namespace :couchdb do
                   :fedora => "LDFLAGS='-R#{BUILD}/lib -L#{BUILD}/lib' CFLAGS='-I#{BUILD}/include/js'",
                   :osx    => "LDFLAGS='-R#{BUILD}/lib -L#{BUILD}/lib' CFLAGS='-I#{BUILD}/include/js'",
                 }.fetch DISTRO[0], ''
-          sh "env #{env} #{source}/configure --prefix=#{BUILD} --with-erlang=#{BUILD}/lib/erlang/usr/include"
+          sh "env #{env} #{source}/configure --prefix=#{COUCH_BUILD} --with-erlang=#{BUILD}/lib/erlang/usr/include"
           sh "make"
           sh "make check" if ENV['make_check']
           sh 'make install'
