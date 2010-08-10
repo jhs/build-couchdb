@@ -94,4 +94,35 @@ current shell, run:
 
     eval `rake env --silent`
 
+## Cheat Codes
+
+Build CouchDB supports some fancy tricks by entering cheat codes to the Rake
+command.
+
+### Build any Git fork or tag of CouchDB
+
+Add a `git` parameter with the repository URL, then a space, then the branch,
+tag, or commit hash. (Remember to quote all of thos so Rake sees the space.)
+
+Want to build [GeoCouch][geocouch]? No problem.
+
+    rake git="git://github.com/vmx/couchdb geocouch"
+
+### Install CouchDB somewhere besides `build/`.
+
+Add a `couchdb_build` parameter to place the final couchdb binaries anywhere.
+Note, you still need the main `build/` subdirectory because couchdb dependencies
+such as Erlang and ICU reside there.
+
+However, `couchdb_build` makes it trivial to install several couchdb versions
+side-by-side.
+
+    rake git="git://github.com/vmx/couchdb geocouch" couchdb_build=geocouch
+    rake git="git://git.apache.org/couchdb.git trunk" couchdb_build=trunk
+    for tag in 1.0.1 11.0 11.1; do
+        rake git="git://git.apache.org/couchdb.git tags/$tag" couchdb_build=$tag
+    done
+
+ [geocouch]: http://vmx.cx/cgi-bin/blog/index.cgi/geocouch-the-future-is-now:2010-05-03:en,CouchDB,Python,Erlang,geo
+
 vim: tw=80
