@@ -44,13 +44,13 @@ On **Ubuntu and Debian**:
 
     sudo apt-get install make gcc zlib1g-dev libssl-dev libreadline5-dev rake
 
-On **OSX**, install XCode.
-
 On **OpenSUSE**:
 
     sudo zypper install flex lksctp-tools-devel zip \
 				rubygem-rake gcc-c++ make m4 zlib-devel \
 				libopenssl-devel libtool automake libcurl-devel
+
+On **OSX**, install XCode.
 
 
 ## Getting the Code
