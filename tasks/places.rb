@@ -1,5 +1,5 @@
 DEPS = "#{HERE}/dependencies"
-BUILD = "#{HERE}/build"
+BUILD = ENV['prefix'] || "#{HERE}/build"
 JS_LIB = "#{BUILD}/bin/js-config"
 ERL_BIN = "#{BUILD}/bin/erl"
 ICU_BIN = "#{BUILD}/bin/icu-config"
