@@ -139,4 +139,17 @@ as I use them in quite different situations.
 
  [geocouch]: http://vmx.cx/cgi-bin/blog/index.cgi/geocouch-the-future-is-now:2010-05-03:en,CouchDB,Python,Erlang,geo
 
+### Do not strip down Erlang/OTP
+
+Build CouchDB strips many modules out of the Erlang platform to reduce disk
+usage. (You can see which ones at the top of `tasks/erlang.rake`.) To indicate
+that a package should be kept, set the `otp_keep` variable to space-separated
+library names.
+
+    rake otp_keep="compiler eunit"
+
+Or, you can keep them all this way:
+
+    rake otp_keep="*"
+
 vim: tw=80
