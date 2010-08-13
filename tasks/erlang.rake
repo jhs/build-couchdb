@@ -45,7 +45,6 @@ namespace :erlang do
         configure.push '--enable-darwin-64bit' if DISTRO[0] == :osx
 
         otp_keep = ENV['otp_keep'] || ''
-
         OTP_SKIP_COMPILE.each do |lib|
           FileUtils.touch "#{DEPS}/otp/lib/#{lib}/SKIP" unless otp_keep == '*' || otp_keep.split.include?(lib)
         end
@@ -74,6 +73,7 @@ namespace :erlang do
     erlang = "'#{BUILD}'/lib/erlang"
     lib = "#{erlang}/lib"
 
+    otp_keep = ENV['otp_keep'] || ''
     (OTP_REMOVE + OTP_SKIP_COMPILE).each do |component|
       sh "rm -rf #{lib}/#{component}-*" unless otp_keep == '*' || otp_keep.split.include?(component)
     end
