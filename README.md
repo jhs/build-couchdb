@@ -12,10 +12,11 @@ I followed the Fedora instructions, with the following exceptions:
 
  * I did not use yum to install rubygem-rake or libcurl-devel.
  * I used [Ruby Version Manager][rvm] to install the latest release of Ruby v 1.8.7.  This installed a version of rake, too.
- * I downloaded and installed the latest release of cURL from source (http://curl.haxx.se/docs/install.html).
+ * I downloaded and installed the latest release of [cURL][curl] from source.
  * I had to modify one file in the git repo: tasks/distro.rake
 
 [rvm]: http://rvm.beginrescueend.com
+[curl]: http://curl.haxx.se/docs/install.html
 
 Build CouchDB
 =============
