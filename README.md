@@ -1,9 +1,17 @@
 Build CouchDB Fork for Red Hat Enterprise Linux
 ===============================================
 
-Replace this text with some instructions.
+I created this fork to document and share the steps on how to setup build-couchdb on RHEL.
 
-They should tell you how to make it work.
+I am running: 
+  * Red Hat Enterprise Linux Server release 5.5 (Tikanga) 
+  * Linux 2.6.18-194.3.1.el5 #1 SMP Sun May 2 04:22:18 EDT 2010 i686 athlon i386 GNU/Linux
+
+I followed the Fedora instructions, with the following exceptions:
+  * I did not use yum to install rubygem-rake or libcurl-devel.
+  * I used Ruby Version Manager (rvm.beginrescueend.com) to install the latest release of Ruby v 1.8.7.  This installed a version of rake, too.
+  * I downloaded and installed the latest release of cURL from source (http://curl.haxx.se/docs/install.html).
+  * I had to modify one file in the git repo: tasks/distro.rake
 
 Build CouchDB
 =============
