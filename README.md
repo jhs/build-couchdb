@@ -1,3 +1,10 @@
+Build CouchDB Fork for Red Hat Enterprise Linux
+===============================================
+
+Replace this text with some instructions.
+
+They should tell you how to make it work.
+
 Build CouchDB
 =============
 
