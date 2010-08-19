@@ -55,11 +55,11 @@ On **Scientific Linux**
 
     sudo yum install --enablerepo=dag gcc gcc-c++ libtool zlib-devel openssl-devel js-devel
 
-    You also must install a recent copy of Ruby and libcurl as the ones
-    available in the provided yum repositories are too old to use.
+You also must install a recent copy of Ruby and libcurl as the ones
+available in the provided yum repositories are too old to use.
 
-    It is sufficient to perform a standard three-finger salute to install
-    ruby and libcurl
+It is sufficient to perform a standard three-finger salute to install
+ruby and libcurl
 
         ./configure
         make
