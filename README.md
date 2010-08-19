@@ -19,6 +19,7 @@ Build CouchDB is developed and tested on the following operating systems:
  * Fedora 13
  * Apple OSX
  * OpenSUSE 11.3
+ * Scientific Linux 5.3
 
 The following systems are planned for support in the near future:
 
@@ -49,6 +50,20 @@ On **OpenSUSE**:
     sudo zypper install flex lksctp-tools-devel zip \
 				rubygem-rake gcc-c++ make m4 zlib-devel \
 				libopenssl-devel libtool automake libcurl-devel
+
+On **Scientific Linux**
+
+    sudo yum install --enablerepo=dag gcc gcc-c++ libtool zlib-devel openssl-devel js-devel
+
+    You also must install a recent copy of Ruby and libcurl as the ones
+    available in the provided yum repositories are too old to use.
+
+    It is sufficient to perform a standard three-finger salute to install
+    ruby and libcurl
+
+        ./configure
+        make
+        make install
 
 On **OSX**, install XCode.
 
