@@ -54,7 +54,7 @@ On **OpenSUSE**:
 On **Scientific Linux**
 
     sudo yum install --enablerepo=dag gcc gcc-c++ libtool zlib-devel openssl-devel js-devel \
-	autoconf213
+				autoconf213
 
 You also must install a recent copy of Ruby and libcurl as the ones
 available in the provided yum repositories are too old to use.
