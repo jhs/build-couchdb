@@ -53,7 +53,7 @@ On **OpenSUSE**:
 
 On **Scientific Linux**
 
-    sudo yum install --enablerepo=dag gcc gcc-c++ libtool zlib-devel openssl-devel js-devel \
+    sudo yum install --enablerepo=dag gcc gcc-c++ libtool zlib-devel openssl-devel \
 				autoconf213
 
 You also must install a recent copy of Ruby and libcurl as the ones
