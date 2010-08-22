@@ -1,6 +1,7 @@
 # Miscellaneous utilities
 
 require 'find'
+require 'tmpdir'
 
 require File.dirname(__FILE__) + '/places'
 

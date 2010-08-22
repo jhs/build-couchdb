@@ -1,5 +1,6 @@
 # Build toolchain
 
+require 'tmpdir'
 require 'fileutils'
 
 namespace :toolchain do

@@ -1,5 +1,7 @@
 # libicu
 
+require 'tmpdir'
+
 namespace :icu do
 
   desc 'Build libicu'

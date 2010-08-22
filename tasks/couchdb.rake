@@ -1,5 +1,7 @@
 # Building CouchDB
+
 require 'uri'
+require 'tmpdir'
 
 namespace :couchdb do
 
