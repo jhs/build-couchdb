@@ -29,13 +29,13 @@ task :known_redhat do
 end
 
 task :known_slf do
-  if RUBY_VERSION <= '1.8.7'
-    raise 'Version of ruby is too old. Consider installing a more recent version'
-  end
-
   if File.exist? '/etc/redhat-release'
     release = File.new('/etc/redhat-release').readline.match(/Scientific Linux SLF release (\d+)/)[1]
     DISTRO = [:slf, release]
+
+    if RUBY_VERSION <= '1.8.7'
+      raise 'Version of ruby is too old. Consider installing a more recent version'
+    end
   end
 end
 
