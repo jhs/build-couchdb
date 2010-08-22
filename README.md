@@ -150,8 +150,8 @@ package (icu, erlang, spidermonkey, etc) owns which files within `build`. A
 trick I do a lot is `cat build/manifest/couchdb | xargs rm` to "uninstall" only
 couchdb so I can try a rebuild.
 
-As I write this, I have no idea how `manifest` interacts with `couchdb_build`
-as I use them in quite different situations.
+I have no idea how `manifest` interacts with `couchdb_build` as I have never
+used them together.
 
  [geocouch]: http://vmx.cx/cgi-bin/blog/index.cgi/geocouch-the-future-is-now:2010-05-03:en,CouchDB,Python,Erlang,geo
 
