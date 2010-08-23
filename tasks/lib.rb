@@ -51,7 +51,7 @@ def install packages
 end
 
 def canonical_path path
-  path.gsub /[\.\d]*$/, ''
+  path.gsub(/[\.\d]*$/, '')
 end
 
 
