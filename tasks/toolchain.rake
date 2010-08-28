@@ -1,5 +1,6 @@
 # Build toolchain
 
+require 'tmpdir'
 require 'fileutils'
 
 namespace :toolchain do
@@ -7,7 +8,7 @@ namespace :toolchain do
   autotools_versions = %w[ 2.13 2.59 ]
 
   autotools_versions.each do |version|
-    label = "AUTOCONF_#{version.gsub /\W/, ''}"
+    label = "AUTOCONF_#{version.gsub(/\W/, '')}"
     raise "Woah, why am I bothering to build autoconf #{version}? There is no #{label} constant" unless Object.const_defined? label
 
     file Object.const_get(label) => 'environment:path' do |task|

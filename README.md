@@ -39,6 +39,7 @@ Build CouchDB is developed and tested on the following operating systems:
  * Fedora 13
  * Apple OSX
  * OpenSUSE 11.3
+ * Scientific Linux 5.3
 
 The following systems are planned for support in the near future:
 
@@ -69,6 +70,21 @@ On **OpenSUSE**:
     sudo zypper install flex lksctp-tools-devel zip \
 				rubygem-rake gcc-c++ make m4 zlib-devel \
 				libopenssl-devel libtool automake libcurl-devel
+
+On **Scientific Linux**
+
+    sudo yum install --enablerepo=dag gcc gcc-c++ libtool zlib-devel openssl-devel \
+				autoconf213
+
+You also must install a recent copy of Ruby and libcurl as the ones
+available in the provided yum repositories are too old to use.
+
+It is sufficient to perform a standard three-finger salute to install
+ruby and libcurl
+
+    ./configure
+    make
+    make install
 
 On **OSX**, install XCode.
 
@@ -154,8 +170,8 @@ package (icu, erlang, spidermonkey, etc) owns which files within `build`. A
 trick I do a lot is `cat build/manifest/couchdb | xargs rm` to "uninstall" only
 couchdb so I can try a rebuild.
 
-As I write this, I have no idea how `manifest` interacts with `couchdb_build`
-as I use them in quite different situations.
+I have no idea how `manifest` interacts with `couchdb_build` as I have never
+used them together.
 
  [geocouch]: http://vmx.cx/cgi-bin/blog/index.cgi/geocouch-the-future-is-now:2010-05-03:en,CouchDB,Python,Erlang,geo
 

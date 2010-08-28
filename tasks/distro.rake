@@ -1,4 +1,5 @@
-task :known_distro => [ :known_mac, :known_ubuntu, :known_debian, :known_redhat, :known_opensuse ] do
+
+task :known_distro => [ :known_mac, :known_ubuntu, :known_debian, :known_redhat, :known_opensuse, :known_slf ] do
   raise 'Unknown distribution, build not supported' unless Object.const_defined? 'DISTRO'
 end
 
@@ -28,6 +29,17 @@ task :known_redhat do
   if File.exist? '/etc/redhat-release'
     release = File.new('/etc/redhat-release').readline.match(/Red Hat Enterprise Linux Server release (\d+)/)[1]
     DISTRO = [:fedora, release]
+  end
+end
+
+task :known_slf do
+  if File.exist? '/etc/redhat-release'
+    release = File.new('/etc/redhat-release').readline.match(/Scientific Linux SLF release (\d+)/)[1]
+    DISTRO = [:slf, release]
+
+    if RUBY_VERSION <= '1.8.7'
+      raise 'Version of ruby is too old. Consider installing a more recent version'
+    end
   end
 end
 

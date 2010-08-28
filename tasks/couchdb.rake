@@ -1,5 +1,7 @@
 # Building CouchDB
+
 require 'uri'
+require 'tmpdir'
 
 namespace :couchdb do
 
@@ -54,6 +56,7 @@ namespace :couchdb do
                   :fedora   => "LDFLAGS='-R#{BUILD}/lib -L#{BUILD}/lib' CFLAGS='-I#{BUILD}/include/js'",
                   :osx      => "LDFLAGS='-R#{BUILD}/lib -L#{BUILD}/lib' CFLAGS='-I#{BUILD}/include/js'",
                   :opensuse => "LDFLAGS='-R#{BUILD}/lib -L#{BUILD}/lib' CFLAGS='-I#{BUILD}/include/js'",
+                  :slf      => "LDFLAGS='-R#{BUILD}/lib -L#{BUILD}/lib' CFLAGS='-I#{BUILD}/include/js'",
                 }.fetch DISTRO[0], ''
           sh "env #{env} #{source}/configure --prefix=#{COUCH_BUILD} --with-erlang=#{BUILD}/lib/erlang/usr/include"
           sh "make"

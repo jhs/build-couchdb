@@ -11,7 +11,13 @@ namespace :tracemonkey do
     src = "#{DEPS}/js_src"
     begin
       Dir.chdir src
-      sh 'autoconf2.13'
+
+      if DISTRO[0] == :slf
+          sh 'autoconf-2.13'
+      else
+          sh 'autoconf2.13'
+      end
+
       Dir.mktmpdir 'tracemonkey_build' do |dir|
         Dir.chdir dir do
           sh "#{src}/configure --prefix=#{BUILD} --without-x"

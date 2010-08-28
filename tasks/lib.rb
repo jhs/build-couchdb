@@ -1,6 +1,7 @@
 # Miscellaneous utilities
 
 require 'find'
+require 'tmpdir'
 
 require File.dirname(__FILE__) + '/places'
 
@@ -50,7 +51,7 @@ def install packages
 end
 
 def canonical_path path
-  path.gsub /[\.\d]*$/, ''
+  path.gsub(/[\.\d]*$/, '')
 end
 
 
