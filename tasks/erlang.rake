@@ -55,7 +55,11 @@ namespace :erlang do
 
         # Cleanup. Much thanks to the Fedora 13 source RPM!
         erlang = "#{BUILD}/lib/erlang"
-        sh "find #{erlang} -type d -perm 0775 -print0 | xargs -0 chmod 0755"
+        Find.find(erlang) do |path|
+          if File.directory?(path) && (File.stat(path).mode & 000775 == 0775)
+            FileUtils.chmod 0755, path
+          end
+        end
         sh "rm -rf #{erlang}/misc"
         compress_beams erlang
 
@@ -80,7 +84,9 @@ namespace :erlang do
 
     # Remove unnecessary directories for running.
     %w[ src examples include doc man obj erl_docgen-* misc ].each do |dir|
-      sh "find #{erlang} -type d -name '#{dir}' -print0 | xargs -0 rm -rf"
+      Find.find(erlang) do |path|
+        sh "rm -rf '#{dir}'" if File.directory?(path) && File.basename(path) == dir
+      end
     end
 
     sh "rm #{erlang}/Install"
