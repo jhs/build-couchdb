@@ -6,16 +6,25 @@ require 'tmpdir'
 require File.dirname(__FILE__) + '/places'
 
 def package_dep opts
+  only_distro = opts.delete :distro
   program_file, package = opts.to_a.first
 
   Rake.application.in_explicit_namespace(':') do
     task "package:#{package}" => :known_distro do
-      unless [:ubuntu, :debian].include? DISTRO[0]
-        puts "Skipping package requirement '#{package}' on a non-Linux platform"
-      else
-        installed = `dpkg --list`.split("\n").map { |x| x.split[1] } # Hm, this is out of scope if defined outside.
-        if installed.none? { |pkg| pkg == package }
-          sh "sudo apt-get -y install #{package}"
+      if only_distro.nil? || only_distro == DISTRO[0]
+        case DISTRO[0]
+          when :ubuntu, :debian
+            installed = `dpkg --list`.split("\n").map { |x| x.split[1] } # Hm, this is out of scope if defined outside.
+            if installed.none? { |pkg| pkg == package }
+              sh "sudo apt-get -y install #{package}"
+            end
+          when :solaris
+            installed = `pkg-get -l`.split("\n")
+            if installed.none? { |pkg| pkg == package }
+              sh "sudo pkg-get install #{package}"
+            end
+          else
+            puts "Skipping package requirement '#{package}' on an unsupported platform"
         end
       end
     end
@@ -26,6 +35,12 @@ def package_dep opts
   program_file
 end
 
+# Run GNU Make
+def gmake(cmd="")
+  gmake = DISTRO[0] == :solaris ? 'gmake' : 'make'
+  sh "#{gmake} #{cmd}"
+end
+
 # Mark a program as authorized to listen on a low port in Linux.
 def set_port_cap file
   return unless [:ubuntu, :debian].include? DISTRO[0]
@@ -33,20 +48,25 @@ def set_port_cap file
 end
 
 # TODO: Get rid of this. Packages should be installed as a dependency of other software, declared by package_dep().
-def install packages
-	puts "Required: #{packages.inspect}"
+def install_packages packages
+  puts "Required: #{packages.inspect}"
   case DISTRO[0]
-	when :opensuse
-	  installed = %x[rpm -qa].split("\n")
-	  packages.select{|pkg| ! installed.detect{|d| d =~ /^#{Regexp.escape(pkg)}/ } }.each do |package|
-      # puts "Installing #{package} ..."
-	    %x[sudo zypper install '#{package}']
+    when :opensuse
+      installed = %x[rpm -qa].split("\n")
+      packages.select{|pkg| ! installed.detect{|d| d =~ /^#{Regexp.escape(pkg)}/ } }.each do |package|
+        # puts "Installing #{package} ..."
+        %x[sudo zypper install '#{package}']
+      end
+    when :solaris
+      installed = `pkg-get -l`.split("\n")
+      packages.select{|pkg| ! installed.include? pkg }.each do |package|
+        sh "sudo pkg-get install #{package}"
+      end
+    else
+      installed = `dpkg --list`.split("\n").map { |x| x.split[1] } # Hm, this is out of scope if defined outside.
+      packages.select{ |pkg| ! installed.include? pkg }.each do |package|
+      sh "sudo apt-get -y install #{package}"
     end
-	else 
-	  installed = `dpkg --list`.split("\n").map { |x| x.split[1] } # Hm, this is out of scope if defined outside.
-	  packages.select{ |pkg| ! installed.include? pkg }.each do |package|
-	    sh "sudo apt-get -y install #{package}"
-	  end
   end
 end
 

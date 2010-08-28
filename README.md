@@ -20,6 +20,7 @@ Build CouchDB is developed and tested on the following operating systems:
  * Apple OSX
  * OpenSUSE 11.3
  * Scientific Linux 5.3
+ * Solaris 10, OpenSolaris
 
 The following systems are planned for support in the near future:
 
@@ -55,6 +56,11 @@ On **Scientific Linux**
 
     sudo yum install --enablerepo=dag gcc gcc-c++ libtool zlib-devel openssl-devel \
 				autoconf213
+
+On **Solaris**
+
+    sudo pkg install ss-dev
+    sudo pkg-get install ruby rake
 
 You also must install a recent copy of Ruby and libcurl as the ones
 available in the provided yum repositories are too old to use.

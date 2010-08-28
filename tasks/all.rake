@@ -17,11 +17,11 @@ namespace :build do
   task :ruby_inabox => :couchdb
 
   desc 'Confirm (and install if possible) the OS dependencies'
-  task :os_dependencies => [:mac_dependencies, :ubuntu_dependencies, :debian_dependencies, :opensuse_dependencies]
+  task :os_dependencies => [:mac_dependencies, :ubuntu_dependencies, :debian_dependencies, :opensuse_dependencies, :solaris_dependencies]
 
   task :debian_dependencies => :known_distro do
     if DISTRO[0] == :debian
-      install [
+      install_packages [
         # For building OTP
         %w[ flex dctrl-tools libsctp-dev ],
 
@@ -38,14 +38,14 @@ namespace :build do
   task :ubuntu_dependencies => :known_distro do
     if DISTRO[0] == :ubuntu
       # For building OTP
-      install %w[ flex dctrl-tools libsctp-dev ]
+      install_packages %w[ flex dctrl-tools libsctp-dev ]
 
       # All Ubuntu gets these.
-      install %w[ libxslt1-dev automake libcurl4-openssl-dev make ruby libtool g++ ]
-      install %w[ zip libcap2-bin ]
+      install_packages %w[ libxslt1-dev automake libcurl4-openssl-dev make ruby libtool g++ ]
+      install_packages %w[ zip libcap2-bin ]
 
       # Needed for Varnish
-      #install %w[ libpcre3-dev ]
+      #install_packages %w[ libpcre3-dev ]
     end
   end
 
@@ -58,14 +58,21 @@ namespace :build do
   task :opensuse_dependencies => :known_distro do
     if DISTRO[0] == :opensuse
       # For building OTP
-      install %w[ flex lksctp-tools-devel zip]
+      install_packages %w[ flex lksctp-tools-devel zip]
 
       # All OpenSUSE gets these.
-      install %w[rubygem-rake gcc-c++ make m4 zlib-devel libopenssl-devel libtool automake libcurl-devel]
+      install_packages %w[rubygem-rake gcc-c++ make m4 zlib-devel libopenssl-devel libtool automake libcurl-devel]
 
     end
   end
 
+  task :solaris_dependencies => :known_distro do
+    if DISTRO[0] == :solaris
+      install_packages %w[ gcc4core gcc4g++ arc gmake zlib openssl readline ] # General
+      install_packages %w[ flex ]  # OTP
+      install_packages %w[ automake autoconf curl_devel libtool ]
+    end
+  end
 
   desc 'Clean all CouchDB-related build output'
   task :clean do
