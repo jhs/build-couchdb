@@ -17,7 +17,7 @@ namespace :build do
   task :ruby_inabox => :couchdb
 
   desc 'Confirm (and install if possible) the OS dependencies'
-  task :os_dependencies => [:mac_dependencies, :ubuntu_dependencies, :debian_dependencies, :opensuse_dependencies]
+  task :os_dependencies => [:mac_dependencies, :ubuntu_dependencies, :debian_dependencies, :opensuse_dependencies, :solaris_dependencies]
 
   task :debian_dependencies => :known_distro do
     if DISTRO[0] == :debian
@@ -66,6 +66,13 @@ namespace :build do
     end
   end
 
+  task :solaris_dependencies => :known_distro do
+    if DISTRO[0] == :solaris
+      install_packages %w[ gcc4core gcc4g++ arc gmake zlib openssl readline ] # General
+      install_packages %w[ flex ]  # OTP
+      install_packages %w[ automake autoconf curl_devel libtool ]
+    end
+  end
 
   desc 'Clean all CouchDB-related build output'
   task :clean do

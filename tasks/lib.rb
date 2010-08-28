@@ -18,6 +18,11 @@ def package_dep opts
             if installed.none? { |pkg| pkg == package }
               sh "sudo apt-get -y install #{package}"
             end
+          when :solaris
+            installed = `pkg-get -l`.split("\n")
+            if installed.none? { |pkg| pkg == package }
+              sh "sudo pkg-get install #{package}"
+            end
           else
             puts "Skipping package requirement '#{package}' on an unsupported platform"
         end
@@ -28,6 +33,12 @@ def package_dep opts
   end
 
   program_file
+end
+
+# Run GNU Make
+def gmake(cmd="")
+  gmake = DISTRO[0] == :solaris ? 'gmake' : 'make'
+  sh "#{gmake} #{cmd}"
 end
 
 # Mark a program as authorized to listen on a low port in Linux.
@@ -45,6 +56,11 @@ def install_packages packages
       packages.select{|pkg| ! installed.detect{|d| d =~ /^#{Regexp.escape(pkg)}/ } }.each do |package|
         # puts "Installing #{package} ..."
         %x[sudo zypper install '#{package}']
+      end
+    when :solaris
+      installed = `pkg-get -l`.split("\n")
+      packages.select{|pkg| ! installed.include? pkg }.each do |package|
+        sh "sudo pkg-get install #{package}"
       end
     else
       installed = `dpkg --list`.split("\n").map { |x| x.split[1] } # Hm, this is out of scope if defined outside.

@@ -40,28 +40,36 @@ namespace :couchdb do
         sh "git checkout #{commit}"
         sh "git reset --hard"
         sh "git clean -f -d"
-        sh "git ls-files --others -i --exclude-standard | xargs rm -v || true"
+        rm = (DISTRO[0] == :solaris) ? 'rm' : 'rm -v'
+        sh "git ls-files --others -i --exclude-standard | xargs #{rm} || true"
       end
 
       source = checkout
     end
 
     begin
-      Dir.chdir(source) { sh "./bootstrap" } # TODO: Use the built-in autoconf (with_autoconf '2.59') instead of depending on the system.
+      Dir.chdir(source) do
+        # TODO: Use the built-in autoconf (with_autoconf '2.59') instead of depending on the system.
+        cmd = "./bootstrap"
+        cmd = "SED=`which sed` #{cmd}" if DISTRO[0] == :solaris
+        sh cmd
+      end
 
       Dir.mktmpdir 'couchdb-build' do |dir|
         Dir.chdir dir do
-          env = { :ubuntu   => "LDFLAGS='-R#{BUILD}/lib -L#{BUILD}/lib' CFLAGS='-I#{BUILD}/include/js'",
-                  :debian   => "LDFLAGS='-R#{BUILD}/lib -L#{BUILD}/lib' CFLAGS='-I#{BUILD}/include/js'",
-                  :fedora   => "LDFLAGS='-R#{BUILD}/lib -L#{BUILD}/lib' CFLAGS='-I#{BUILD}/include/js'",
-                  :osx      => "LDFLAGS='-R#{BUILD}/lib -L#{BUILD}/lib' CFLAGS='-I#{BUILD}/include/js'",
-                  :opensuse => "LDFLAGS='-R#{BUILD}/lib -L#{BUILD}/lib' CFLAGS='-I#{BUILD}/include/js'",
-                  :slf      => "LDFLAGS='-R#{BUILD}/lib -L#{BUILD}/lib' CFLAGS='-I#{BUILD}/include/js'",
-                }.fetch DISTRO[0], ''
+          libs = ["#{BUILD}/lib"]
+
+          if DISTRO[0] == :solaris
+            libs += %w[ /opt/csw/lib /opt/csw/gcc4/lib ]
+          end
+
+          ldflags = libs.map{|lib| "-R#{lib} -L#{lib}"}.join(' ')
+          env = "LDFLAGS='#{ldflags}' CFLAGS='-I#{BUILD}/include/js'"
           sh "env #{env} #{source}/configure --prefix=#{COUCH_BUILD} --with-erlang=#{BUILD}/lib/erlang/usr/include"
-          sh "make"
-          sh "make check" if ENV['make_check']
-          sh 'make install'
+
+          gmake
+          gmake "check" if ENV['make_check']
+          gmake "install"
 
           compress_beams "#{COUCH_BUILD}/lib/couchdb/erlang"
 

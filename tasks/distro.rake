@@ -1,5 +1,5 @@
 
-task :known_distro => [ :known_mac, :known_ubuntu, :known_debian, :known_redhat, :known_opensuse, :known_slf ] do
+task :known_distro => [ :known_mac, :known_ubuntu, :known_debian, :known_redhat, :known_opensuse, :known_slf, :known_solaris ] do
   raise 'Unknown distribution, build not supported' unless Object.const_defined? 'DISTRO'
 end
 
@@ -46,3 +46,8 @@ task :known_opensuse do
   end
 end
 
+task :known_solaris do
+  if `uname`.chomp == "SunOS"
+    DISTRO = [:solaris, `uname -r`.chomp]
+  end
+end
