@@ -6,16 +6,20 @@ require 'tmpdir'
 require File.dirname(__FILE__) + '/places'
 
 def package_dep opts
+  only_distro = opts.delete :distro
   program_file, package = opts.to_a.first
 
   Rake.application.in_explicit_namespace(':') do
     task "package:#{package}" => :known_distro do
-      unless [:ubuntu, :debian].include? DISTRO[0]
-        puts "Skipping package requirement '#{package}' on a non-Linux platform"
-      else
-        installed = `dpkg --list`.split("\n").map { |x| x.split[1] } # Hm, this is out of scope if defined outside.
-        if installed.none? { |pkg| pkg == package }
-          sh "sudo apt-get -y install #{package}"
+      if only_distro.nil? || only_distro == DISTRO[0]
+        case DISTRO[0]
+          when :ubuntu, :debian
+            installed = `dpkg --list`.split("\n").map { |x| x.split[1] } # Hm, this is out of scope if defined outside.
+            if installed.none? { |pkg| pkg == package }
+              sh "sudo apt-get -y install #{package}"
+            end
+          else
+            puts "Skipping package requirement '#{package}' on an unsupported platform"
         end
       end
     end
