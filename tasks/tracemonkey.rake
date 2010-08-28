@@ -5,9 +5,9 @@ require 'tmpdir'
 namespace :tracemonkey do
 
   desc 'Build Tracemonkey'
-  task :build => JS_LIB
+  task :build => [:known_distro, 'environment:path', JS_LIB]
 
-  file JS_LIB => ['environment:path', package_dep('/usr/bin/python' => 'python'), AUTOCONF_213] do
+  file JS_LIB => [package_dep('/usr/bin/python' => 'python'), AUTOCONF_213] do
     src = "#{DEPS}/js_src"
     begin
       Dir.chdir src

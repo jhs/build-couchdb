@@ -5,7 +5,7 @@ require 'fileutils'
 
 namespace :erlang do
   desc 'Build Erlang/OTP'
-  task :build => [:known_distro, ERL_BIN]
+  task :build => [:known_distro, 'build:os_dependencies', 'environment:path', ERL_BIN]
 
   # Some libraries needn't be compiled. Others can be deleted later.
   OTP_REMOVE = %w[ compiler syntax_tools public_key parsetools ic erts erl_interface eunit ]

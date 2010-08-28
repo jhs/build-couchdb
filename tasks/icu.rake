@@ -5,7 +5,7 @@ require 'tmpdir'
 namespace :icu do
 
   desc 'Build libicu'
-  task :build => [:known_distro, ICU_BIN]
+  task :build => [:known_distro, 'environment:path', ICU_BIN]
 
   file ICU_BIN do
     src = "#{DEPS}/icu4c-4_4/source"

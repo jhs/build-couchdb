@@ -6,7 +6,7 @@ require 'tmpdir'
 namespace :couchdb do
 
   desc 'Build CouchDB'
-  task :build => ['erlang:build', 'build:os_dependencies', 'tracemonkey:build', 'icu:build', COUCH_BIN]
+  task :build => ['erlang:build', 'build:os_dependencies', 'tracemonkey:build', 'icu:build', :known_distro, 'environment:path', COUCH_BIN]
 
   desc 'Build CouchDB and then clean out unnecessary things like autotools'
   task :clean_install => :build do
@@ -21,7 +21,7 @@ namespace :couchdb do
 
   directory "#{BUILD}/var/run/couchdb"
 
-  file COUCH_BIN => [AUTOCONF_259, "#{BUILD}/var/run/couchdb", 'environment:path'] do
+  file COUCH_BIN => [AUTOCONF_259, "#{BUILD}/var/run/couchdb"] do
     source = "#{DEPS}/couchdb"
 
     if ENV['git']
