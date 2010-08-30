@@ -49,7 +49,6 @@ end
 
 # TODO: Get rid of this. Packages should be installed as a dependency of other software, declared by package_dep().
 def install_packages packages
-  puts "Required: #{packages.inspect}"
   case DISTRO[0]
     when :opensuse
       installed = %x[rpm -qa].split("\n")
