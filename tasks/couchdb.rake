@@ -60,7 +60,7 @@ namespace :couchdb do
           libs = ["#{BUILD}/lib"]
 
           if DISTRO[0] == :solaris
-            libs += %w[ /opt/csw/lib /opt/csw/gcc4/lib ]
+            libs += %w[ /opt/csw/lib /opt/csw/gcc4/lib /opt/csw/lib/i386 ]
           end
 
           ldflags = libs.map{|lib| "-R#{lib} -L#{lib}"}.join(' ')
