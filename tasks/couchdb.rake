@@ -5,8 +5,14 @@ require 'tmpdir'
 
 namespace :couchdb do
 
+  couchdb_build_deps = ['erlang:build', 'build:os_dependencies', 'tracemonkey:build', 'icu:build', :known_distro, 'environment:path']
+
+  desc 'Build the requirements for CouchDB'
+  task :deps => couchdb_build_deps
+  task :dependencies => :deps
+
   desc 'Build CouchDB'
-  task :build => ['erlang:build', 'build:os_dependencies', 'tracemonkey:build', 'icu:build', :known_distro, 'environment:path', COUCH_BIN]
+  task :build => couchdb_build_deps + [COUCH_BIN]
 
   desc 'Build CouchDB and then clean out unnecessary things like autotools'
   task :clean_install => :build do
