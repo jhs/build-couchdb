@@ -27,7 +27,7 @@ namespace :environment do
 
   desc 'Output the ./configure command to build couchdb'
   task :configure do
-    puts "PATH=\"#{BUILD}/bin:$PATH\""
+    puts "export PATH=\"#{BUILD}/bin:$PATH\""
     puts "LDFLAGS='-R#{BUILD}/lib -L#{BUILD}/lib' CFLAGS='-I#{BUILD}/include/js -I#{BUILD}/lib/erlang/usr/include' ./configure"
   end
 
