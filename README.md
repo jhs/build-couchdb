@@ -174,4 +174,22 @@ Or, you can keep them all this way:
 
     rake otp_keep="*"
 
+### How to build only Erlang, couchjs, and OTP so you can build your own CouchDB elsewhere
+
+There is a special shortcut task to build everything CouchDB needs (i.e. its dependencies).
+
+    rake couchdb:deps otp_keep="*"
+
+Be careful not to build the `couchdb` target because after it completes, it will delete Erlang components needed for building (but not running).
+Next, there is a simple task which outputs a `sh` script used to configure any CouchDB checkout.
+
+    rake --silent environment:configure
+
+The output will look similar to this:
+
+    export PATH="/Users/jhs/src/build-couchdb/build/bin:$PATH"
+    LDFLAGS='-R/Users/jhs/src/build-couchdb/build/lib -L/Users/jhs/src/build-couchdb/build/lib' CFLAGS='-I/Users/jhs/src/build-couchdb/build/include/js -I/Users/jhs/src/build-couchdb/build/lib/erlang/usr/include' ./configure
+
+In the CouchDB source, paste the above code after running `./bootstrap`. Next, you can run `make` or `make dev`, or anything.
+
 vim: tw=80
