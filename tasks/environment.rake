@@ -26,8 +26,9 @@ namespace :environment do
   end
 
   desc 'Output the ./configure command to build couchdb'
-  task :configure do
+  task :configure => :known_distro do
     puts "export PATH=\"#{BUILD}/bin:$PATH\""
+    puts "export DYLD_LIBRARY_PATH=\"#{BUILD}/lib:$DYLD_LIBRARY_PATH\"" if DISTRO[0] == :osx
     puts "LDFLAGS='-R#{BUILD}/lib -L#{BUILD}/lib' CFLAGS='-I#{BUILD}/include/js -I#{BUILD}/lib/erlang/usr/include' ./configure"
   end
 
