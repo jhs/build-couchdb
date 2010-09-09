@@ -40,7 +40,7 @@ On **Debian**, first install `sudo` and add yourself to `/etc/sudoers`.
 
     su -
     apt-get install sudo
-    vi /etc/sudoers # Or your preferred editor
+    visudoers
 
 On **Ubuntu and Debian**:
 
