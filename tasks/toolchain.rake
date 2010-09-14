@@ -11,7 +11,8 @@ namespace :toolchain do
     label = "AUTOCONF_#{version.gsub(/\W/, '')}"
     raise "Woah, why am I bothering to build autoconf #{version}? There is no #{label} constant" unless Object.const_defined? label
 
-    file Object.const_get(label) => 'environment:path' do |task|
+    file Object.const_get(label) => [package_dep('/opt/csw/bin/gm4' => 'gm4', :distro => :solaris)] do |task|
+      Rake::Task['environment:path'].invoke
       Dir.mktmpdir "autoconf-#{version}_build" do |dir|
         Dir.chdir dir do
           fakes = %w[ makeinfo help2man ]
@@ -23,8 +24,8 @@ namespace :toolchain do
             end
 
             sh "#{DEPS}/autoconf-#{version}/configure --prefix=#{BUILD} --program-suffix=#{version}"
-            sh 'make'
-            sh 'make install'
+            gmake
+            gmake "install"
             record_manifest task.name
           ensure
             fakes.each do |name|

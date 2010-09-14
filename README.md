@@ -40,6 +40,7 @@ Build CouchDB is developed and tested on the following operating systems:
  * Apple OSX
  * OpenSUSE 11.3
  * Scientific Linux 5.3
+ * Solaris 10, OpenSolaris
 
 The following systems are planned for support in the near future:
 
@@ -59,7 +60,7 @@ On **Debian**, first install `sudo` and add yourself to `/etc/sudoers`.
 
     su -
     apt-get install sudo
-    vi /etc/sudoers # Or your preferred editor
+    visudo
 
 On **Ubuntu and Debian**:
 
@@ -75,6 +76,11 @@ On **Scientific Linux**
 
     sudo yum install --enablerepo=dag gcc gcc-c++ libtool zlib-devel openssl-devel \
 				autoconf213
+
+On **Solaris**
+
+    sudo pkg install ss-dev
+    sudo pkg-get install ruby rake
 
 You also must install a recent copy of Ruby and libcurl as the ones
 available in the provided yum repositories are too old to use.
@@ -187,5 +193,23 @@ library names.
 Or, you can keep them all this way:
 
     rake otp_keep="*"
+
+### How to build only Erlang, couchjs, and OTP so you can build your own CouchDB elsewhere
+
+There is a special shortcut task to build everything CouchDB needs (i.e. its dependencies).
+
+    rake couchdb:deps otp_keep="*"
+
+Be careful not to build the `couchdb` target because after it completes, it will delete Erlang components needed for building (but not running).
+Next, there is a simple task which outputs a `sh` script used to configure any CouchDB checkout.
+
+    rake --silent environment:configure
+
+The output will look similar to this:
+
+    export PATH="/Users/jhs/src/build-couchdb/build/bin:$PATH"
+    LDFLAGS='-R/Users/jhs/src/build-couchdb/build/lib -L/Users/jhs/src/build-couchdb/build/lib' CFLAGS='-I/Users/jhs/src/build-couchdb/build/include/js -I/Users/jhs/src/build-couchdb/build/lib/erlang/usr/include' ./configure
+
+In the CouchDB source, paste the above code after running `./bootstrap`. Next, you can run `make` or `make dev`, or anything.
 
 vim: tw=80
