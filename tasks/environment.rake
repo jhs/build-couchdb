@@ -34,7 +34,7 @@ namespace :environment do
       puts "export PATH=\"#{BUILD}/bin:$PATH\""
     end
     puts "export DYLD_LIBRARY_PATH=\"#{BUILD}/lib:$DYLD_LIBRARY_PATH\"" if DISTRO[0] == :osx
-    puts "LDFLAGS='-R#{BUILD}/lib -L#{BUILD}/lib' CFLAGS='-I#{BUILD}/include/js -I#{BUILD}/lib/erlang/usr/include' ./configure"
+    puts(configure_cmd(".", :prefix => false))
   end
 
 end

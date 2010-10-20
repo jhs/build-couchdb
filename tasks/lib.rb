@@ -155,6 +155,21 @@ def run_task name
   task.invoke
 end
 
+def configure_cmd(source, opts={})
+  libs = ["#{BUILD}/lib"]
+
+  if DISTRO[0] == :solaris
+    libs += %w[ /opt/csw/lib /opt/csw/gcc4/lib /opt/csw/lib/i386 ]
+  end
+
+  ldflags = libs.map{|lib| "-R#{lib} -L#{lib}"}.join(' ')
+  ldflags += ' -llber' if DISTRO[0] == :solaris
+
+  env = "LDFLAGS='#{ldflags}' CFLAGS='-I#{BUILD}/include/js'"
+  prefix = (opts[:prefix].nil? || opts[:prefix]) ? "--prefix=#{COUCH_BUILD}" : ""
+  return "env #{env} #{source}/configure #{prefix} --with-erlang=#{BUILD}/lib/erlang/usr/include"
+end
+
 module Rake
   module TaskManager
     def in_explicit_namespace(name)

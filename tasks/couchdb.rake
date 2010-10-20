@@ -63,17 +63,7 @@ namespace :couchdb do
 
       Dir.mktmpdir 'couchdb-build' do |dir|
         Dir.chdir dir do
-          libs = ["#{BUILD}/lib"]
-
-          if DISTRO[0] == :solaris
-            libs += %w[ /opt/csw/lib /opt/csw/gcc4/lib /opt/csw/lib/i386 ]
-          end
-
-          ldflags = libs.map{|lib| "-R#{lib} -L#{lib}"}.join(' ')
-          ldflags += ' -llber' if DISTRO[0] == :solaris
-
-          env = "LDFLAGS='#{ldflags}' CFLAGS='-I#{BUILD}/include/js'"
-          sh "env #{env} #{source}/configure --prefix=#{COUCH_BUILD} --with-erlang=#{BUILD}/lib/erlang/usr/include"
+          sh(configure_cmd(source, :prefix => true))
 
           gmake
           gmake "check" if ENV['make_check']
