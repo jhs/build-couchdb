@@ -27,8 +27,8 @@ namespace :environment do
 
   desc 'Output the ./configure command to build couchdb'
   task :configure => :known_distro do
-    if true || DISTRO[0] == :solaris
-      Rake::Task["environment:path"].invoke
+    if DISTRO[0] == :solaris
+      run_task("environment:path")
       puts "export PATH=\"#{ENV['PATH']}\""
     else
       puts "export PATH=\"#{BUILD}/bin:$PATH\""
