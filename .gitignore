@@ -1,3 +1,4 @@
 .*.swp
 build
 git-build/*
+rake.log
