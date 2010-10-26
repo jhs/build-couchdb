@@ -62,7 +62,9 @@ namespace :erlang do
           FileUtils.touch "#{DEPS}/otp/lib/#{lib}/SKIP" unless otp_keep == '*' || otp_keep.split.include?(lib)
         end
 
-        sh configure.join(' ')
+        show_file('config.log') do
+          sh configure.join(' ')
+        end
         gmake
         gmake "install"
 

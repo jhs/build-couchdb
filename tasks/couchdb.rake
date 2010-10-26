@@ -63,7 +63,9 @@ namespace :couchdb do
 
       Dir.mktmpdir 'couchdb-build' do |dir|
         Dir.chdir dir do
-          sh(configure_cmd(source, :prefix => true))
+          show_file("config.log") do
+            sh(configure_cmd(source, :prefix => true))
+          end
 
           gmake
           gmake "check" if ENV['make_check']

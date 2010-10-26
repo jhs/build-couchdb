@@ -23,7 +23,9 @@ namespace :icu do
           configure = "#{src}/configure --prefix='#{BUILD}'"
           configure = "#{flags} #{configure}" if flags
 
-          sh "#{configure}"
+          show_file('config.log') do
+            sh "#{configure}"
+          end
           gmake
           gmake "install"
 

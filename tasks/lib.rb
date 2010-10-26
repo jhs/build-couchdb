@@ -113,6 +113,15 @@ def ln_canonical path
   FileUtils.ln_sf path, canonical_path(path)
 end
 
+def show_file filename
+  begin
+    yield
+  ensure
+    puts "== Output of #{filename} =="
+    sh "cat #{filename}"
+    puts "== End of #{filename} =="
+  end
+end
 
 def with_autoconf ver
   files = %w[ autoconf autoheader autom4te ].map { |x| "#{BUILD}/bin/#{x}#{ver}" }

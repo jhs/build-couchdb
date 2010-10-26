@@ -36,7 +36,9 @@ namespace :tracemonkey do
             ].flatten
           end
 
-          sh(cmd.join(' '))
+          show_file('config.log') do
+            sh(cmd.join(' '))
+          end
           gmake
           gmake "install"
         end
