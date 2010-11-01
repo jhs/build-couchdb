@@ -14,6 +14,7 @@ administrator access to run it. You can run several couches (for example, 0.10,
 
 Build CouchDB is developed and tested on the following operating systems:
 
+ * Red Hat Enterprise Linux Server release 5.5 (Tikanga)
  * Debian GNU/Linux 5.0 (Lenny)
  * Ubuntu 10.04 LTS (Lucid Lynx)
  * Ubuntu 9.10 (Karmic Koala)
@@ -22,7 +23,6 @@ Build CouchDB is developed and tested on the following operating systems:
  * OpenSUSE 11.3
  * Scientific Linux 5.3
  * Solaris 10, OpenSolaris
- * Red Hat Enterprise Linux Server release 5.5 (Tikanga)
 
 The following systems are planned for support in the near future:
 
