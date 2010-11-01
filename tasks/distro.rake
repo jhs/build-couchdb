@@ -26,6 +26,10 @@ task :known_redhat do
     release = File.new('/etc/fedora-release').readline.match(/Fedora release (\d+)/)[1]
     DISTRO = [:fedora, release]
   end
+  if File.exist? '/etc/redhat-release'
+    release = File.new('/etc/redhat-release').readline.match(/Red Hat Enterprise Linux Server release (\d+)/)[1]
+    DISTRO = [:fedora, release]
+  end
 end
 
 task :known_slf do
