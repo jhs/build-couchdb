@@ -57,6 +57,11 @@ def package_dep opts
             if installed.none? { |pkg| pkg == package }
               sh "sudo pkg-get install #{package}"
             end
+          when :osx
+            installed = `brew list`.split("\n")
+            if installed.none? { |pkg| pkg == package }
+              sh "sudo brew install #{package}"
+            end
           else
             puts "Skipping package requirement '#{package}' on an unsupported platform"
         end
