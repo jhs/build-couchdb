@@ -9,6 +9,7 @@ Build CouchDB builds an isolated, independent server. You do not need
 administrator access to run it. You can run several couches (for example, 0.10,
 0.11, 1.0 releases) side-by-side.
 
+<a name="platforms"></a>
 ## Supported Platforms
 
 Build CouchDB is developed and tested on the following operating systems:
