@@ -1,23 +1,3 @@
-Build CouchDB Fork for Red Hat Enterprise Linux
-===============================================
-
-I created this fork to document and share the steps on how to setup build-couchdb on RHEL.
-
-I am running: 
-
- * Red Hat Enterprise Linux Server release 5.5 (Tikanga) 
- * Linux 2.6.18-194.3.1.el5 #1 SMP Sun May 2 04:22:18 EDT 2010 i686 athlon i386 GNU/Linux
-
-I followed the Fedora instructions, with the following exceptions:
-
- * I did not use yum to install rubygem-rake or libcurl-devel.
- * I used [Ruby Version Manager][rvm] to install the latest release of Ruby v 1.8.7.  This installed a version of rake, too.
- * I downloaded and installed the latest release of [cURL][curl] from source.
- * I had to modify one file in the git repo: tasks/distro.rake
-
-[rvm]: http://rvm.beginrescueend.com
-[curl]: http://curl.haxx.se/docs/install.html
-
 Build CouchDB
 =============
 
@@ -41,6 +21,7 @@ Build CouchDB is developed and tested on the following operating systems:
  * OpenSUSE 11.3
  * Scientific Linux 5.3
  * Solaris 10, OpenSolaris
+ * Red Hat Enterprise Linux Server release 5.5 (Tikanga)
 
 The following systems are planned for support in the near future:
 
@@ -55,6 +36,18 @@ On **Fedora**:
 
     sudo yum install gcc gcc-c++ libtool libcurl-devel \
                      zlib-devel openssl-devel rubygem-rake
+
+On **Red Hat Enterprise Linux**:
+
+  The procedure is the same as Fedora, with the following exceptions:
+
+    * Do not use yum to install rubygem-rake or libcurl-devel.
+    * Use [Ruby Version Manager][rvm] to install the latest release of Ruby v 1.8.7.  This installed a version of rake, too.
+    * Download and install the latest release of [cURL][curl] from source.
+
+[rvm]: http://rvm.beginrescueend.com
+[curl]: http://curl.haxx.se/docs/install.html
+
 
 On **Debian**, first install `sudo` and add yourself to `/etc/sudoers`.
 
