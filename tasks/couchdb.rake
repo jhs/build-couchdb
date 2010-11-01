@@ -74,8 +74,8 @@ namespace :couchdb do
           compress_beams "#{COUCH_BUILD}/lib/couchdb/erlang"
 
           if DISTRO[0] == :osx
-            icu = Dir.glob("#{BUILD}/lib/couchdb/erlang/lib/couch-*/priv/lib/couch_icu_driver.so").last
-            js  = "#{BUILD}/lib/couchdb/bin/couchjs"
+            icu = Dir.glob("#{COUCH_BUILD}/lib/couchdb/erlang/lib/couch-*/priv/lib/couch_icu_driver.so").last
+            js  = "#{COUCH_BUILD}/lib/couchdb/bin/couchjs"
 
             sh "install_name_tool -change libicuuc.44.dylib #{BUILD}/lib/libicuuc.44.dylib #{icu}"
             sh "install_name_tool -change libicui18n.44.dylib #{BUILD}/lib/libicui18n.44.dylib #{icu}"
