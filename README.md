@@ -73,18 +73,32 @@ On **Scientific Linux**
 
 On **Solaris**
 
+This build only supports the OpenCSW toolchain. If you do not use OpenCSW, I
+wish you the best. If you have success, let me know!
+
+The SunStudio tools are required:
+
     sudo pkg install ss-dev
-    sudo pkg-get install ruby rake
 
-You also must install a recent copy of Ruby and libcurl as the ones
-available in the provided yum repositories are too old to use.
+Also, OpenCSW packages are needed.
 
-It is sufficient to perform a standard three-finger salute to install
-ruby and libcurl
+    pkgadd -d http://mirror.opencsw.org/opencsw/pkg_get.pkg # Answer all questions affirmatively
 
-    ./configure
-    make
-    make install
+Add CSW to your path. **This must always be in the PATH.** Every time you log
+in, you must set the correct `$PATH` (or make it automatic in `.profile`).
+
+    PATH=/opt/csw/bin:$PATH
+
+Change the package archive (ibiblio URL is down) by running
+`vi /opt/csw/etc/pkg-get.conf` and setting
+`url=ftp://ftp.ibiblio.org/pub/mirrors/opencsw/current`. Save and exit, then
+run:
+
+    pkg-get updatecatalog
+
+Finally, install Rake from OpenCSW:
+
+    sudo pkg-get install ruby rake # Also perhaps "git"
 
 On **OSX**, install XCode.
 
