@@ -17,7 +17,16 @@ namespace :build do
   task :ruby_inabox => :couchdb
 
   desc 'Confirm (and install if possible) the OS dependencies'
-  task :os_dependencies => [:mac_dependencies, :ubuntu_dependencies, :debian_dependencies, :opensuse_dependencies, :solaris_dependencies]
+  task :os_dependencies => [:confirm_submodules, :mac_dependencies, :ubuntu_dependencies, :debian_dependencies, :opensuse_dependencies, :solaris_dependencies]
+
+  desc 'Confirm Git submodules are updated'
+  task :confirm_submodules do
+    if File.exist?("#{DEPS}/otp/otp_build") && File.exist?("#{DEPS}/couchdb/bootstrap")
+      puts "Confirmed Git Submodules"
+    else
+      raise "Looks like Git submodules are not loaded. Try: git submodule init && git submodule update"
+    end
+  end
 
   task :debian_dependencies => :known_distro do
     if DISTRO[0] == :debian
