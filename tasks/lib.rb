@@ -49,6 +49,7 @@ def package_dep opts
   Rake.application.in_explicit_namespace(':') do
     task "package:#{package}" => :known_distro do
       if only_distros.empty? || only_distros.include?(DISTRO[0])
+        puts "Package dependency for #{DISTRO[0]}: #{program_file} => #{package}"
         case DISTRO[0]
           when :ubuntu, :debian
             installed = `dpkg --list`.split("\n").map { |x| x.split[1] } # Hm, this is out of scope if defined outside.
