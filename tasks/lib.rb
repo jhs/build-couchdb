@@ -41,11 +41,14 @@ require File.dirname(__FILE__) + '/places'
 
 def package_dep opts
   only_distro = opts.delete :distro
+  only_distros = opts.delete :distros
+  only_distros ||= [only_distro]
+
   program_file, package = opts.to_a.first
 
   Rake.application.in_explicit_namespace(':') do
     task "package:#{package}" => :known_distro do
-      if only_distro.nil? || only_distro == DISTRO[0]
+      if only_distros.empty? || only_distros.include?(DISTRO[0])
         case DISTRO[0]
           when :ubuntu, :debian
             installed = `dpkg --list`.split("\n").map { |x| x.split[1] } # Hm, this is out of scope if defined outside.
