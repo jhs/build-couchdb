@@ -19,7 +19,7 @@ Build CouchDB is developed and tested on the following operating systems:
  * Ubuntu 10.04 LTS (Lucid Lynx)
  * Ubuntu 9.10 (Karmic Koala)
  * Fedora 13
- * Apple OSX
+ * Mac OS X
  * OpenSUSE 11.3
  * Scientific Linux 5.3
  * Solaris 10, OpenSolaris
@@ -100,7 +100,7 @@ Finally, install Rake from OpenCSW:
 
     sudo pkg-get install ruby rake # Also perhaps "git"
 
-On **OSX**, install XCode.
+On **Mac OS X**, install Xcode.
 
 
 ## Getting the Code
