@@ -9,30 +9,32 @@ $stderr_old = $stderr
 log_filename = "rake.log"
 File.unlink(log_filename) if File.exists?(log_filename)
 
-["$stdout", "$stderr"].each do |std|
-  rd, wr = IO.pipe
-  if fork
-    rd.close
-    wr.sync = true
-    eval "#{std}.reopen(wr)"
-    eval "#{std}.sync = true"
-    #Process.wait
-  else
-    # Child
-    wr.close
-    begin
-      # Input must be forked.
-      label = std[1..-1].upcase
-      File.open(log_filename, 'a') do |f|
-        f.sync = true
-        while(line = rd.gets)
-          eval "#{std}_old.puts(line)"
-          f.puts([label, line].join(' '))
-        end
-      end
-    ensure
+unless ARGV[0] == 'environment:shell'
+  ["$stdout", "$stderr"].each do |std|
+    rd, wr = IO.pipe
+    if fork
       rd.close
-      exit
+      wr.sync = true
+      eval "#{std}.reopen(wr)"
+      eval "#{std}.sync = true"
+      #Process.wait
+    else
+      # Child
+      wr.close
+      begin
+        # Input must be forked.
+        label = std[1..-1].upcase
+        File.open(log_filename, 'a') do |f|
+          f.sync = true
+          while(line = rd.gets)
+            eval "#{std}_old.puts(line)"
+            f.puts([label, line].join(' '))
+          end
+        end
+      ensure
+        rd.close
+        exit
+      end
     end
   end
 end
