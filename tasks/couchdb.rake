@@ -43,6 +43,7 @@ namespace :couchdb do
       end
 
       Dir.chdir checkout do
+        sh "git fetch origin"
         sh "git checkout #{commit}"
         sh "git reset --hard"
         sh "git clean -f -d"
