@@ -41,35 +41,43 @@ require File.dirname(__FILE__) + '/places'
 require File.dirname(__FILE__) + '/distros'
 
 def package_dep opts
+  # Unfortunately the dependency must be defined after the OS is detected,
+  # Even if this task is a no-op, if other tasks depend on it, they will re-run
+  # if this task runs. Therefore it must not be defined at all for un-requested
+  # distros. That means calling detect_distro() now and presumably later in :known_distro.
+  distro = detect_distro()
+
   only_distro = opts.delete :distro
+  if only_distro && only_distro != distro[0]
+    puts "#{distro[0]} does not need #{opts.inspect}"
+    return "/dev/null" # Return a file dependency that will presumably always work.
+  end
+
+  puts "Package dependency for #{distro[0]}: #{opts.inspect}"
   program_file, package = opts.to_a.first
 
   Rake.application.in_explicit_namespace(':') do
-    task "package:#{package}" => :known_distro do
-      if only_distro.nil? || only_distro == DISTRO[0]
-        case DISTRO[0]
-          when :ubuntu, :debian
-            installed = `dpkg --list`.split("\n").map { |x| x.split[1] } # Hm, this is out of scope if defined outside.
-            if installed.none? { |pkg| pkg == package }
-              sh "sudo apt-get -y install #{package}"
-            end
-          when :solaris
-            installed = `pkg-get -l`.split("\n")
-            if installed.none? { |pkg| pkg == package }
-              sh "sudo pkg-get install #{package}"
-            end
-          when :osx
-            installed = `brew list`.split("\n")
-            if installed.none? { |pkg| pkg == package }
-              sh "sudo brew install #{package}"
-            end
-          else
-            puts "Skipping package requirement '#{package}' on an unsupported platform"
-        end
+    file program_file => :known_distro do
+      case DISTRO[0]
+        when :ubuntu, :debian
+          installed = `dpkg --list`.split("\n").map { |x| x.split[1] } # Hm, this is out of scope if defined outside.
+          if installed.none? { |pkg| pkg == package }
+            sh "sudo apt-get -y install #{package}"
+          end
+        when :solaris
+          installed = `pkg-get -l`.split("\n")
+          if installed.none? { |pkg| pkg == package }
+            sh "sudo pkg-get install #{package}"
+          end
+        when :osx
+          installed = `brew list`.split("\n")
+          if installed.none? { |pkg| pkg == package }
+            sh "sudo brew install #{package}"
+          end
+        else
+          puts "Skipping package requirement '#{package}' on an unsupported platform"
       end
     end
-
-    file program_file => "package:#{package}"
   end
 
   program_file
