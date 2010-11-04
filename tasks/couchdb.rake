@@ -32,7 +32,7 @@ namespace :couchdb do
 
     if ENV['git']
       remote, commit = ENV['git'].split
-      checkout = "#{HERE}/git-build/#{URI.escape(remote, /[\/:]/)}"
+      checkout = "#{HERE}/git-build/#{git_checkout_name remote}"
 
       if File.directory?(checkout) || File.symlink?(checkout)
         puts "Using #{checkout} for build from Git"

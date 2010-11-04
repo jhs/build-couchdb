@@ -218,6 +218,10 @@ def configure_cmd(source, opts={})
   return "env #{env} #{source}/configure #{prefix} --with-erlang=#{BUILD}/lib/erlang/usr/include"
 end
 
+def git_checkout_name(url)
+  URI.escape(url, /[\/:]/)
+end
+
 module Rake
   module TaskManager
     def in_explicit_namespace(name)
