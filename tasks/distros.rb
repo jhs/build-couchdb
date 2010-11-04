@@ -29,10 +29,22 @@ def detect_distro
     return [:fedora, release]
   end
 
-  # Red Hat
+  # Red Hat # TODO: Do not piggyback the :fedora version.
   if File.exist? '/etc/redhat-release'
-    release = File.new('/etc/redhat-release').readline.match(/Red Hat Enterprise Linux Server release (\d+)/)[1]
-    return [:fedora, release]
+    match = File.new('/etc/redhat-release').readline.match(/Red Hat Enterprise Linux Server release (\S+)/)
+    if match
+      release = match[1]
+      return [:fedora, release]
+    end
+  end
+
+  # CentOS # TODO: Do not piggyback the :fedora version
+  if File.exist? '/etc/redhat-release'
+    match = File.new('/etc/redhat-release').readline.match(/CentOS release (\S+)/)
+    if match
+      release = match[1]
+      return [:fedora, release]
+    end
   end
 
   # Scientific Linux
