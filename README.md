@@ -108,7 +108,7 @@ On **Mac OS X**, install Xcode.
 You will need the Git tool. Check out the code and pull in the third-party
 submodules.
 
-    git clone git://github.com/jhs/build-couchdb
+    git clone git://github.com/couchone/build-couchdb
     cd build-couchdb
     git submodule init
     git submodule update
