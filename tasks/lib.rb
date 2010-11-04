@@ -49,8 +49,8 @@ def package_dep opts
   # distros. That means calling detect_distro() now and presumably later in :known_distro.
   distro = detect_distro()
 
-  only_distro = opts.delete :distro
-  if only_distro && only_distro != distro[0]
+  distros = opts.delete :distros
+  if distros && distros.none?{|x| x == distro[0]}
     puts "#{distro[0]} does not need #{opts.inspect}"
     return "/" # Return a file dependency that will presumably always work.
   end
