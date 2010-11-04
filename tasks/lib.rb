@@ -231,6 +231,32 @@ def git_checkout_name(url)
   URI.escape(url, /[\/:]/)
 end
 
+def git_checkout(url_and_commit)
+  remote, commit = url_and_commit.split
+  checkout = "#{HERE}/git-build/#{git_checkout_name remote}"
+
+  fetch = false
+  if File.directory?(checkout) || File.symlink?(checkout)
+    puts "Using #{checkout} for build from Git"
+    fetch = true
+  elsif File.exists? checkout
+    raise "Don't know what to do with #{checkout}"
+  else
+    sh "git clone '#{remote}' '#{checkout}'"
+  end
+
+  Dir.chdir checkout do
+    sh "git fetch origin" if fetch
+    sh "git checkout #{commit}"
+    sh "git reset --hard"
+    sh "git clean -f -d"
+    rm = (DISTRO[0] == :solaris) ? 'rm' : 'rm -v'
+    sh "git ls-files --others -i --exclude-standard | xargs #{rm} || true"
+  end
+
+  return checkout
+end
+
 module Rake
   module TaskManager
     def in_explicit_namespace(name)

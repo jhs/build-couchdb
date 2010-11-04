@@ -28,31 +28,7 @@ namespace :couchdb do
   directory "#{BUILD}/var/run/couchdb"
 
   file COUCH_BIN => [AUTOCONF_259, "#{BUILD}/var/run/couchdb"] do
-    source = "#{DEPS}/couchdb"
-
-    if ENV['git']
-      remote, commit = ENV['git'].split
-      checkout = "#{HERE}/git-build/#{git_checkout_name remote}"
-
-      if File.directory?(checkout) || File.symlink?(checkout)
-        puts "Using #{checkout} for build from Git"
-      elsif File.exists? checkout
-        raise "Don't know what to do with #{checkout}"
-      else
-        sh "git clone '#{remote}' '#{checkout}'"
-      end
-
-      Dir.chdir checkout do
-        sh "git fetch origin"
-        sh "git checkout #{commit}"
-        sh "git reset --hard"
-        sh "git clean -f -d"
-        rm = (DISTRO[0] == :solaris) ? 'rm' : 'rm -v'
-        sh "git ls-files --others -i --exclude-standard | xargs #{rm} || true"
-      end
-
-      source = checkout
-    end
+    source = ENV['git'] ? git_checkout(ENV['git']) : "#{DEPS}/couchdb"
 
     begin
       Dir.chdir(source) do
