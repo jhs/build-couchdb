@@ -38,6 +38,7 @@ File.unlink(log_filename) if File.exists?(log_filename)
 end
 
 require File.dirname(__FILE__) + '/places'
+require File.dirname(__FILE__) + '/distros'
 
 def package_dep opts
   only_distro = opts.delete :distro
