@@ -12,7 +12,7 @@ namespace :couchdb do
   task :dependencies => :deps
 
   desc 'Build CouchDB'
-  task :build => couchdb_build_deps + [COUCH_BIN]
+  task :build => couchdb_build_deps + [:plugins, COUCH_BIN]
 
   desc 'Build CouchDB and then clean out unnecessary things like autotools'
   task :clean_install => :build do
@@ -25,33 +25,19 @@ namespace :couchdb do
     end
   end
 
+  file COUCH_SOURCE => :known_distro do
+    git_checkout(ENV['git']) if ENV['git']
+  end
+
+  task :plugins => COUCH_SOURCE do
+    # This task will be assigned dependencies dynamically, see the "plugins" stuff below.
+    puts "Plugins done"
+  end
+
   directory "#{BUILD}/var/run/couchdb"
 
-  file COUCH_BIN => [AUTOCONF_259, "#{BUILD}/var/run/couchdb"] do
-    source = "#{DEPS}/couchdb"
-
-    if ENV['git']
-      remote, commit = ENV['git'].split
-      checkout = "#{HERE}/git-build/#{URI.escape(remote, /[\/:]/)}"
-
-      if File.directory?(checkout) || File.symlink?(checkout)
-        puts "Using #{checkout} for build from Git"
-      elsif File.exists? checkout
-        raise "Don't know what to do with #{checkout}"
-      else
-        sh "git clone '#{remote}' '#{checkout}'"
-      end
-
-      Dir.chdir checkout do
-        sh "git checkout #{commit}"
-        sh "git reset --hard"
-        sh "git clean -f -d"
-        rm = (DISTRO[0] == :solaris) ? 'rm' : 'rm -v'
-        sh "git ls-files --others -i --exclude-standard | xargs #{rm} || true"
-      end
-
-      source = checkout
-    end
+  file COUCH_BIN => [COUCH_SOURCE, AUTOCONF_259, "#{BUILD}/var/run/couchdb"] do
+    source = COUCH_SOURCE
 
     begin
       Dir.chdir(source) do
@@ -89,6 +75,22 @@ namespace :couchdb do
       end
     ensure
       Dir.chdir(source) { sh "git ls-files --others --ignored --exclude-standard | xargs rm -vf" }
+    end
+  end
+
+  # Determine what plugins are desired and have them built.
+  plugins = (ENV['plugin'] || "") + "," + (ENV['plugins'] || "")
+  plugins.split(',').select{|x| ! x.strip.empty? }.each do |git_plugin|
+    remote, commit = git_plugin.split
+    plugin_mark = "#{COUCH_BUILD}/lib/build-couchdb/plugins/#{git_checkout_name remote}/#{commit}"
+
+    task :plugins => plugin_mark
+    file plugin_mark => 'environment:path' do
+      source = git_checkout(git_plugin)
+      Dir.chdir(source) do
+        ENV['COUCH_SRC'] = "#{COUCH_SOURCE}/src/couchdb"
+        gmake
+      end
     end
   end
 

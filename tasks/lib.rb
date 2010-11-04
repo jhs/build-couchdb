@@ -9,70 +9,77 @@ $stderr_old = $stderr
 log_filename = "rake.log"
 File.unlink(log_filename) if File.exists?(log_filename)
 
-["$stdout", "$stderr"].each do |std|
-  rd, wr = IO.pipe
-  if fork
-    rd.close
-    wr.sync = true
-    eval "#{std}.reopen(wr)"
-    eval "#{std}.sync = true"
-    #Process.wait
-  else
-    # Child
-    wr.close
-    begin
-      # Input must be forked.
-      label = std[1..-1].upcase
-      File.open(log_filename, 'a') do |f|
-        f.sync = true
-        while(line = rd.gets)
-          eval "#{std}_old.puts(line)"
-          f.puts([label, line].join(' '))
-        end
-      end
-    ensure
+unless ARGV[0] == 'environment:shell'
+  ["$stdout", "$stderr"].each do |std|
+    rd, wr = IO.pipe
+    if fork
       rd.close
-      exit
+      wr.sync = true
+      eval "#{std}.reopen(wr)"
+      eval "#{std}.sync = true"
+      #Process.wait
+    else
+      # Child
+      wr.close
+      begin
+        # Input must be forked.
+        label = std[1..-1].upcase
+        File.open(log_filename, 'a') do |f|
+          f.sync = true
+          while(line = rd.gets)
+            eval "#{std}_old.puts(line)"
+            f.puts([label, line].join(' '))
+          end
+        end
+      ensure
+        rd.close
+        exit
+      end
     end
   end
 end
 
 require File.dirname(__FILE__) + '/places'
+require File.dirname(__FILE__) + '/distros'
 
 def package_dep opts
-  only_distro = opts.delete :distro
-  only_distros = opts.delete :distros
-  only_distros ||= [only_distro]
+  # Unfortunately the dependency must be defined after the OS is detected,
+  # Even if this task is a no-op, if other tasks depend on it, they will re-run
+  # if this task runs. Therefore it must not be defined at all for un-requested
+  # distros. That means calling detect_distro() now and presumably later in :known_distro.
+  distro = detect_distro()
 
+  only_distro = opts.delete :distro
+  if only_distro && only_distro != distro[0]
+    puts "#{distro[0]} does not need #{opts.inspect}"
+    return "/" # Return a file dependency that will presumably always work.
+  end
+
+  puts "Package dependency for #{distro[0]}: #{opts.inspect}"
   program_file, package = opts.to_a.first
 
   Rake.application.in_explicit_namespace(':') do
-    task "package:#{package}" => :known_distro do
-      if only_distros.empty? || only_distros.include?(DISTRO[0])
-        puts "Package dependency for #{DISTRO[0]}: #{program_file} => #{package}"
-        case DISTRO[0]
-          when :ubuntu, :debian
-            installed = `dpkg --list`.split("\n").map { |x| x.split[1] } # Hm, this is out of scope if defined outside.
-            if installed.none? { |pkg| pkg == package }
-              sh "sudo apt-get -y install #{package}"
-            end
-          when :solaris
-            installed = `pkg-get -l`.split("\n")
-            if installed.none? { |pkg| pkg == package }
-              sh "sudo pkg-get install #{package}"
-            end
-          when :osx
-            installed = `brew list`.split("\n")
-            if installed.none? { |pkg| pkg == package }
-              sh "sudo brew install #{package}"
-            end
-          else
-            puts "Skipping package requirement '#{package}' on an unsupported platform"
-        end
+    file program_file => :known_distro do
+      case DISTRO[0]
+        when :ubuntu, :debian
+          installed = `dpkg --list`.split("\n").map { |x| x.split[1] } # Hm, this is out of scope if defined outside.
+          if installed.none? { |pkg| pkg == package }
+            sh "sudo apt-get -y install #{package}"
+          end
+        when :solaris
+          installed = `pkg-get -l`.split("\n")
+          if installed.none? { |pkg| pkg == package }
+            sh "sudo pkg-get install #{package}"
+          end
+        when :osx
+          installed = `brew list`.split("\n")
+          if installed.none? { |pkg| pkg == package }
+            sh "sudo brew install #{package}"
+          end
+        else
+          puts "Skipping package requirement '#{package}' on an unsupported platform"
       end
     end
-
-    file program_file => "package:#{package}"
   end
 
   program_file
@@ -220,6 +227,37 @@ def configure_cmd(source, opts={})
   env = "LDFLAGS='#{ldflags}' CFLAGS='-I#{BUILD}/include/js'"
   prefix = (opts[:prefix].nil? || opts[:prefix]) ? "--prefix=#{COUCH_BUILD}" : ""
   return "env #{env} #{source}/configure #{prefix} --with-erlang=#{BUILD}/lib/erlang/usr/include"
+end
+
+def git_checkout_name(url)
+  URI.escape(url, /[\/:]/)
+end
+
+def git_checkout(url_and_commit, opts={})
+  remote, commit = url_and_commit.split
+  checkout = "#{HERE}/git-build/#{git_checkout_name remote}"
+  return checkout if opts[:noop]
+
+  fetch = false
+  if File.directory?(checkout) || File.symlink?(checkout)
+    puts "Using #{checkout} for build from Git"
+    fetch = true
+  elsif File.exists? checkout
+    raise "Don't know what to do with #{checkout}"
+  else
+    sh "git clone '#{remote}' '#{checkout}'"
+  end
+
+  Dir.chdir checkout do
+    sh "git fetch origin" if fetch
+    sh "git checkout #{commit}"
+    sh "git reset --hard"
+    sh "git clean -f -d"
+    rm = (DISTRO[0] == :solaris) ? 'rm' : 'rm -v'
+    sh "git ls-files --others -i --exclude-standard | xargs #{rm} || true"
+  end
+
+  return checkout
 end
 
 module Rake
