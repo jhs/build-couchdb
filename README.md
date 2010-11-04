@@ -158,6 +158,20 @@ Want to build [GeoCouch][geocouch]? No problem.
 
     rake git="git://github.com/vmx/couchdb geocouch"
 
+### CouchDB Plugins
+
+Any CouchDB plugin can be loaded remotely from Git, built, and installed
+into the final CouchDB system.
+
+    rake plugin="git://github.com/vmx/couchdb origin/gc-separate"
+
+Multiple plugins can be processed together:
+
+    rake plugins="git://github.com/vmx/couchdb origin/gc-separate,git://github.com/somebody/whatever some_tag"
+
+(Both `plugin` and `plugins` supports comma-separated lists; use whichever
+you remember better.)
+
 ### Install CouchDB somewhere besides `build/`.
 
 Add a `couchdb_build` parameter to place the final couchdb binaries anywhere.

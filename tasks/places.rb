@@ -3,6 +3,7 @@ BUILD = ENV['prefix'] || "#{HERE}/build"
 JS_LIB = "#{BUILD}/bin/js-config"
 ERL_BIN = "#{BUILD}/bin/erl"
 ICU_BIN = "#{BUILD}/bin/icu-config"
+COUCH_SOURCE = ENV['git'] ? git_checkout(ENV['git'], :noop => true) : "#{DEPS}/couchdb"
 COUCH_BUILD = ENV['couchdb_build'] || BUILD
 COUCH_BIN = "#{COUCH_BUILD}/bin/couchdb"
 MANIFESTS = "#{BUILD}/manifests"
