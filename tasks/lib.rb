@@ -233,9 +233,10 @@ def git_checkout_name(url)
   URI.escape(url, /[\/:]/)
 end
 
-def git_checkout(url_and_commit)
+def git_checkout(url_and_commit, opts={})
   remote, commit = url_and_commit.split
   checkout = "#{HERE}/git-build/#{git_checkout_name remote}"
+  return checkout if opts[:noop]
 
   fetch = false
   if File.directory?(checkout) || File.symlink?(checkout)
