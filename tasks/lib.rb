@@ -50,7 +50,7 @@ def package_dep opts
   only_distro = opts.delete :distro
   if only_distro && only_distro != distro[0]
     puts "#{distro[0]} does not need #{opts.inspect}"
-    return "/dev/null" # Return a file dependency that will presumably always work.
+    return "/" # Return a file dependency that will presumably always work.
   end
 
   puts "Package dependency for #{distro[0]}: #{opts.inspect}"
