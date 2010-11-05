@@ -2,6 +2,7 @@
 
 require 'uri'
 require 'tmpdir'
+require 'fileutils'
 
 namespace :couchdb do
 
@@ -80,23 +81,35 @@ namespace :couchdb do
 
   # Determine what plugins are desired and have them built.
   plugins = (ENV['plugin'] || "") + "," + (ENV['plugins'] || "")
-  plugins = plugins.split(',').select{|x| ! x.strip.empty? }
+  plugins = plugins.split(',').map{|x| x.strip}.select{|x| ! x.empty? }
 
   unless plugins.empty?
     puts "Setting otp_keep=\"*\" for building plugins"
     ENV['otp_keep'] = '*'
   end
 
-  plugins.each do |git_plugin|
-    remote, commit = git_plugin.split
-    plugin_mark = "#{COUCH_BUILD}/lib/build-couchdb/plugins/#{git_checkout_name remote}/#{commit}"
+  plugins.each do |plugin_path|
+    git_url = /^git:\/\/.* /
+    if plugin_path.match(git_url)
+      remote, commit = plugin_path.split
+      plugin_mark = "#{COUCH_BUILD}/lib/build-couchdb/plugins/#{git_checkout_name remote}/#{commit}"
+    else
+      plugin_mark = "#{COUCH_BUILD}/lib/build-couchdb/plugins/#{File.basename plugin_path}"
+    end
 
-    task :plugins => plugin_mark
-    file plugin_mark => 'environment:path' do
-      source = git_checkout(git_plugin)
+    task :plugins => ['environment:path', plugin_mark]
+    file plugin_mark do
+      source = plugin_path.match(git_url) ? git_checkout(plugin_path) : plugin_path
       Dir.chdir(source) do
         ENV['COUCH_SRC'] = "#{COUCH_SOURCE}/src/couchdb"
         gmake
+
+        puts "== plugin_mark #{plugin_mark.inspect}"
+        #build_dir = File.dirname(plugin_mark)
+        target = plugin_mark + '_new'
+        FileUtils.mkdir_p(target)
+        sh "cp -v build/*.beam '#{target}'"
+        sh "mv #{target} #{plugin_mark}"
       end
     end
   end
