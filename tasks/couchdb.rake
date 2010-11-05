@@ -97,6 +97,7 @@ namespace :couchdb do
     else
       plugin_mark = "#{COUCH_BUILD}/lib/build-couchdb/plugins/#{File.basename plugin_path}"
     end
+    #puts "plugin_mark: #{plugin_mark.inspect}"
 
     task :plugins => ['environment:path', plugin_mark]
     file plugin_mark do
@@ -105,7 +106,7 @@ namespace :couchdb do
         ENV['COUCH_SRC'] = "#{COUCH_SOURCE}/src/couchdb"
         gmake
 
-        puts "== plugin_mark #{plugin_mark.inspect}"
+        #puts "== plugin_mark #{plugin_mark.inspect}"
         #build_dir = File.dirname(plugin_mark)
         target = plugin_mark + '_new'
         FileUtils.mkdir_p(target)
