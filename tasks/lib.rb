@@ -235,7 +235,7 @@ end
 
 def git_checkout(url_and_commit, opts={})
   remote, commit = url_and_commit.split
-  checkout = "#{HERE}/git-build/#{git_checkout_name remote}"
+  checkout = "#{HERE}/git-build/#{git_checkout_name(remote + ':' + commit)}"
   return checkout if opts[:noop]
 
   fetch = false
