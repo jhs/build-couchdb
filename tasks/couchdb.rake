@@ -80,7 +80,14 @@ namespace :couchdb do
 
   # Determine what plugins are desired and have them built.
   plugins = (ENV['plugin'] || "") + "," + (ENV['plugins'] || "")
-  plugins.split(',').select{|x| ! x.strip.empty? }.each do |git_plugin|
+  plugins = plugins.split(',').select{|x| ! x.strip.empty? }
+
+  unless plugins.empty?
+    puts "Setting otp_keep=\"*\" for building plugins"
+    ENV['otp_keep'] = '*'
+  end
+
+  plugins.each do |git_plugin|
     remote, commit = git_plugin.split
     plugin_mark = "#{COUCH_BUILD}/lib/build-couchdb/plugins/#{git_checkout_name remote}/#{commit}"
 
