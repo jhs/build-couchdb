@@ -253,7 +253,9 @@ def git_checkout(url_and_commit, opts={})
     sh "git checkout #{commit}"
     sh "git reset --hard"
     sh "git clean -f -d"
-    rm = (DISTRO[0] == :solaris) ? 'rm' : 'rm -v'
+    # Forego a nice rm command to get OS-independence.
+    #rm = (DISTRO[0] == :solaris) ? 'rm' : 'rm -v'
+    rm = 'rm'
     sh "git ls-files --others -i --exclude-standard | xargs #{rm} || true"
   end
 
