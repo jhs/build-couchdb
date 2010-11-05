@@ -25,7 +25,7 @@ namespace :couchdb do
     end
   end
 
-  file COUCH_SOURCE => :known_distro do
+  directory COUCH_SOURCE do
     git_checkout(ENV['git']) if ENV['git']
   end
 
