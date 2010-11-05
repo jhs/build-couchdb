@@ -16,16 +16,20 @@ namespace :build do
   desc 'Hook into the Ruby in a Box environment to get everything else built and installed'
   task :ruby_inabox => :couchdb
 
+  # Submodules
+  submodules = ["#{DEPS}/otp/otp_build", "#{DEPS}/couchdb/bootstrap"]
+  submodules.each do |submodule_file|
+    file submodule_file do
+      raise "No Git submodule: #{submodule_file}.\nTry: git submodule init && git submodule update"
+    end
+  end
+
   desc 'Confirm (and install if possible) the OS dependencies'
-  task :os_dependencies => [:confirm_submodules, :mac_dependencies, :ubuntu_dependencies, :debian_dependencies, :opensuse_dependencies, :solaris_dependencies]
+  task :os_dependencies => submodules + [:mac_dependencies, :ubuntu_dependencies, :debian_dependencies, :opensuse_dependencies, :solaris_dependencies]
 
   desc 'Confirm Git submodules are updated'
-  task :confirm_submodules do
-    if File.exist?("#{DEPS}/otp/otp_build") && File.exist?("#{DEPS}/couchdb/bootstrap")
-      puts "Confirmed Git Submodules"
-    else
-      raise "Looks like Git submodules are not loaded. Try: git submodule init && git submodule update"
-    end
+  task :confirm_submodules => submodules do
+    puts "Confirmed Git Submodules"
   end
 
   task :debian_dependencies => :known_distro do

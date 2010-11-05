@@ -27,10 +27,18 @@ namespace :couchdb do
   end
 
   directory COUCH_SOURCE do
-    git_checkout(ENV['git']) if ENV['git']
+    if ENV['git']
+      begin
+        git_checkout(ENV['git'])
+      rescue
+        checkout = git_checkout(ENV['git'], :noop => true)
+        puts "Cleaning checkout: #{checkout}"
+        sh "rm -rf '#{checkout}'"
+      end
+    end
   end
 
-  task :plugins => COUCH_SOURCE do
+  task :plugins => COUCH_BIN do
     # This task will be assigned dependencies dynamically, see the "plugins" stuff below.
     puts "Plugins done"
   end
@@ -104,7 +112,7 @@ namespace :couchdb do
       source = plugin_path.match(git_url) ? git_checkout(plugin_path) : plugin_path
       Dir.chdir(source) do
         ENV['COUCH_SRC'] = "#{COUCH_SOURCE}/src/couchdb"
-        gmake
+        gmake "COUCH_SRC='#{COUCH_SOURCE}/src/couchdb'"
 
         #puts "== plugin_mark #{plugin_mark.inspect}"
         #build_dir = File.dirname(plugin_mark)
