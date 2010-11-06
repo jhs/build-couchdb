@@ -124,12 +124,11 @@ namespace :couchdb do
     task :plugins => ['environment:path', plugin_mark]
     puts "file #{plugin_mark} => #{source}"
     file plugin_mark => source do
+      puts "Building plugin in: #{source}"
       Dir.chdir(source) do
-        ENV['COUCH_SRC'] = "#{COUCH_SOURCE}/src/couchdb"
+        gmake "COUCH_SRC='#{COUCH_SOURCE}/src/couchdb' clean"
         gmake "COUCH_SRC='#{COUCH_SOURCE}/src/couchdb'"
 
-        #puts "== plugin_mark #{plugin_mark.inspect}"
-        #build_dir = File.dirname(plugin_mark)
         target = plugin_mark + '_new'
         FileUtils.mkdir_p(target)
         sh "cp -v build/*.beam '#{target}'"
