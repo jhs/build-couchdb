@@ -103,10 +103,10 @@ namespace :couchdb do
     git_url = /^git[@:].* /
     if plugin_path.match(git_url)
       remote, commit = plugin_path.split
-      plugin_mark = "#{COUCH_BUILD}/lib/build-couchdb/plugins/#{git_checkout_name(remote + ':' + commit)}"
+      plugin_mark = "#{COUCH_BUILD}/lib/couchdb/plugins/#{git_checkout_name(remote + ':' + commit)}"
       source = git_checkout(plugin_path, :noop => true)
     else
-      plugin_mark = "#{COUCH_BUILD}/lib/build-couchdb/plugins/#{File.basename plugin_path}"
+      plugin_mark = "#{COUCH_BUILD}/lib/couchdb/plugins/#{File.basename plugin_path}"
       source = plugin_path
     end
     #puts "plugin_mark: #{plugin_mark.inspect}"
