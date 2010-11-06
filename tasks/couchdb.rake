@@ -26,7 +26,7 @@ namespace :couchdb do
     end
   end
 
-  directory COUCH_SOURCE do
+  file (COUCH_SOURCE + '/.git') do
     if ENV['git']
       begin
         git_checkout(ENV['git'])
@@ -41,11 +41,13 @@ namespace :couchdb do
   task :plugins => COUCH_BIN do
     # This task will be assigned dependencies dynamically, see the "plugins" stuff below.
     puts "Plugins done"
+    puts "COUCH_SOURCE #{COUCH_SOURCE}"
+    puts "COUCH_BIN #{COUCH_BIN}"
   end
 
   directory "#{BUILD}/var/run/couchdb"
 
-  file COUCH_BIN => [COUCH_SOURCE, AUTOCONF_259, "#{BUILD}/var/run/couchdb"] do
+  file COUCH_BIN => [COUCH_SOURCE + '/.git', AUTOCONF_259, "#{BUILD}/var/run/couchdb"] do
     source = COUCH_SOURCE
 
     begin
@@ -102,14 +104,26 @@ namespace :couchdb do
     if plugin_path.match(git_url)
       remote, commit = plugin_path.split
       plugin_mark = "#{COUCH_BUILD}/lib/build-couchdb/plugins/#{git_checkout_name remote}/#{commit}"
+      source = git_checkout(plugin_path, :noop => true)
     else
       plugin_mark = "#{COUCH_BUILD}/lib/build-couchdb/plugins/#{File.basename plugin_path}"
+      source = plugin_path
     end
     #puts "plugin_mark: #{plugin_mark.inspect}"
 
+    # The plugin build will depend on the source code being there and tidy.
+    puts "Making file task: #{source}"
+    file source do
+      begin
+        git_checkout(plugin_path) if plugin_path.match(git_url)
+      ensure
+        raise "Could not find plugin: #{plugin_path}" unless File.directory?("#{source}/src")
+      end
+    end
+
     task :plugins => ['environment:path', plugin_mark]
-    file plugin_mark do
-      source = plugin_path.match(git_url) ? git_checkout(plugin_path) : plugin_path
+    puts "file #{plugin_mark} => #{source}"
+    file plugin_mark => source do
       Dir.chdir(source) do
         ENV['COUCH_SRC'] = "#{COUCH_SOURCE}/src/couchdb"
         gmake "COUCH_SRC='#{COUCH_SOURCE}/src/couchdb'"
