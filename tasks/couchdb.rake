@@ -38,11 +38,9 @@ namespace :couchdb do
     end
   end
 
-  task :plugins => COUCH_BIN do
+  task :plugins do
     # This task will be assigned dependencies dynamically, see the "plugins" stuff below.
     puts "Plugins done"
-    puts "COUCH_SOURCE #{COUCH_SOURCE}"
-    puts "COUCH_BIN #{COUCH_BIN}"
   end
 
   directory "#{BUILD}/var/run/couchdb"
@@ -123,7 +121,7 @@ namespace :couchdb do
 
     task :plugins => ['environment:path', plugin_mark]
     puts "file #{plugin_mark} => #{source}"
-    file plugin_mark => source do
+    file plugin_mark => ['environment:path', source, COUCH_BIN] do
       puts "Building plugin in: #{source}"
       Dir.chdir(source) do
         gmake "COUCH_SRC='#{COUCH_SOURCE}/src/couchdb' clean"
@@ -131,6 +129,7 @@ namespace :couchdb do
 
         target = plugin_mark + '_new'
         FileUtils.mkdir_p(target)
+        sh "cp -v share/www/script/test/* '#{COUCH_BUILD}/share/couchdb/www/script/test'"
         sh "cp -v build/*.beam '#{target}'"
         sh "mv #{target} #{plugin_mark}"
       end
