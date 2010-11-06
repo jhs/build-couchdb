@@ -10,7 +10,7 @@ $stderr_old = $stderr
 log_filename = "rake.log"
 File.unlink(log_filename) if File.exists?(log_filename)
 
-unless ARGV[0] == 'environment:shell'
+unless ARGV[0] == 'environment:shell' || ENV['raw']
   ["$stdout", "$stderr"].each do |std|
     rd, wr = IO.pipe
     if fork
