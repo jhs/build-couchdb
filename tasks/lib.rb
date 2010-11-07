@@ -65,8 +65,8 @@ def package_dep opts
   program_file, package = opts.to_a.first
 
   Rake.application.in_explicit_namespace(':') do
-    file program_file => :known_distro do
-      case DISTRO[0]
+    file program_file do
+      case distro[0]
         when :ubuntu, :debian
           installed = `dpkg --list`.split("\n").map { |x| x.split[1] } # Hm, this is out of scope if defined outside.
           if installed.none? { |pkg| pkg == package }
