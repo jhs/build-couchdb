@@ -55,6 +55,12 @@ def package_dep opts
     return "/" # Return a file dependency that will presumably always work.
   end
 
+  #not_distros = opts.delete :except
+  #if not_distros && not_distros.any?{|x| x == distro[0]}
+  #  puts "#{distro[0]} does not need #{opts.inspect}"
+  #  return "/" # Return a file dependency that will presumably always work.
+  #end
+
   puts "Package dependency for #{distro[0]}: #{opts.inspect}"
   program_file, package = opts.to_a.first
 
