@@ -50,7 +50,7 @@ def package_dep opts
   distro = detect_distro()
 
   distros = opts.delete :distros
-  if distros && distros.none?{|x| x == distro[0]}
+  if distros && !distros.member?(distro[0])
     puts "#{distro[0]} does not need #{opts.inspect}"
     return "/" # Return a file dependency that will presumably always work.
   end
@@ -69,17 +69,17 @@ def package_dep opts
       case distro[0]
         when :ubuntu, :debian
           installed = `dpkg --list`.split("\n").map { |x| x.split[1] } # Hm, this is out of scope if defined outside.
-          if installed.none? { |pkg| pkg == package }
+          if !installed.member?(package)
             sh "sudo apt-get -y install #{package}"
           end
         when :solaris
           installed = `pkg-get -l`.split("\n")
-          if installed.none? { |pkg| pkg == package }
+          if !installed.member?(package)
             sh "sudo pkg-get install #{package}"
           end
         when :osx
           installed = `brew list`.split("\n")
-          if installed.none? { |pkg| pkg == package }
+          if !installed.member?(package)
             sh "sudo brew install #{package}"
           end
         else
