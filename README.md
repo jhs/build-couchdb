@@ -40,7 +40,15 @@ On **Fedora**:
 
 On **Red Hat Enterprise Linux**:
 
-  The procedure is the same as Fedora, with the following exceptions:
+The procedure is the same as Fedora, with the following exceptions:
+
+* Also install the `ruby-rdoc` package.
+* Instead of `libcurl-devel` install `curl-devel`.
+* Install backported packages `rubygems` and `rubygem-rake` and from
+  the [Fedora EPEL 5 repository][epel]. Check the "EPEL 5" section, either
+  i386 or x86_64; then "Jump to letter" `R`.
+
+ [epel]: http://fedoraproject.org/wiki/EPEL
 
     * Do not use yum to install rubygem-rake or libcurl-devel.
     * Use [Ruby Version Manager][rvm] to install the latest release of Ruby v 1.8.7.  This installed a version of rake, too.
