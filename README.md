@@ -160,7 +160,7 @@ command.
 ### Build any Git fork or tag of CouchDB
 
 Add a `git` parameter with the repository URL, then a space, then the branch,
-tag, or commit hash. (Remember to quote all of thos so Rake sees the space.)
+tag, or commit hash. (Remember to quote all of those so Rake sees the space.)
 
 Want to build [GeoCouch][geocouch]? No problem.
 
@@ -194,6 +194,12 @@ side-by-side.
     for tag in 1.0.1 11.0 11.1; do
         rake git="git://git.apache.org/couchdb.git tags/$tag" couchdb_build=$tag
     done
+
+Note that `couchdb_build` needs to be an absolute path. Use:
+
+    `pwd`/geocouch
+
+e.g. creates the directory `geocouch` in your current directory.
 
 ### Get a manifest of all the components
 
