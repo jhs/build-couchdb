@@ -63,7 +63,7 @@ namespace :erlang do
         end
 
         show_file('config.log') do
-          sh configure.join(' ')
+          sh configure.join(' ') + ENV['ERLANG_CONFOPTS']
         end
         gmake
         gmake "install"
