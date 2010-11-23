@@ -26,7 +26,7 @@ namespace :icu do
           show_file('config.log') do
             sh "#{configure}"
           end
-          gmake(ENV['ICU_MAKEOPTS'] || "")
+          gmake(ENV['icu_makeopts'] || "")
           gmake "install"
 
           if DISTRO[0] == :osx
