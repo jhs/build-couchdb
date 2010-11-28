@@ -49,12 +49,12 @@ def detect_distro
 
   # Scientific Linux
   if File.exist? '/etc/redhat-release'
-    release = File.new('/etc/redhat-release').readline.match(/Scientific Linux SLF release (\d+)/)[1]
-    return [:slf, release]
-
     if RUBY_VERSION <= '1.8.7'
       raise 'Version of ruby is too old. Consider installing a more recent version'
     end
+
+    release = File.new('/etc/redhat-release').readline.match(/Scientific Linux SLF release (\d+)/)[1]
+    return [:slf, release]
   end
 
   # OpenSUSE
