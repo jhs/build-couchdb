@@ -11,8 +11,7 @@ namespace :toolchain do
     label = "AUTOCONF_#{version.gsub(/\W/, '')}"
     raise "Woah, why am I bothering to build autoconf #{version}? There is no #{label} constant" unless Object.const_defined? label
 
-    packages = [ package_dep('/opt/csw/bin/gm4'  => 'gm4' , :distros => [:solaris])
-               , package_dep('/opt/csw/bin/gsed' => 'gsed', :distros => [:solaris]) ]
+    packages = [ package_dep('/opt/csw/bin/gm4'  => 'gm4' , :distros => [:solaris]), package_dep('/opt/csw/bin/gsed' => 'gsed', :distros => [:solaris]) ]
 
     file Object.const_get(label) => packages do |task|
       Rake::Task['environment:path'].invoke
