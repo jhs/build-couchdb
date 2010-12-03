@@ -1,4 +1,3 @@
 # This is not the latest Build CouchDB.
 
-The official Build CouchDB repository is
-http://github.com/couchone/build-couchdb
+Please see CouchOne's [official Build CouchDB](http://github.com/couchone/build-couchdb) repository.
