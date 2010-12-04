@@ -9,3 +9,6 @@ task :sh => 'environment:shell'
 
 desc Rake::Task['environment:code'].comment
 task :env => 'environment:code'
+
+desc Rake::Task['erlang:build'].comment
+task :erlang => 'erlang:build'
