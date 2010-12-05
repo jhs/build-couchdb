@@ -29,6 +29,8 @@ namespace :environment do
   desc 'Install a helper script for a shell to source to use the installed software'
   task :install => :path do
     script = 'env.sh'
+    pre_path_dirs = ["#{BUILD}/bin"]
+    post_path_dirs = []
     template = ERB.new(File.open("#{HERE}/templates/#{script}.erb").read())
     File.open("#{BUILD}/#{script}", 'w') do |outfile|
       outfile.write(template.result(binding))
