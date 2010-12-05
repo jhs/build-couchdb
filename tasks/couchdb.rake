@@ -13,7 +13,7 @@ namespace :couchdb do
   task :dependencies => :deps
 
   desc 'Build CouchDB'
-  task :build => couchdb_build_deps + [:plugins, COUCH_BIN]
+  task :build => couchdb_build_deps + [:plugins, COUCH_BIN, 'environment:install']
 
   desc 'Build CouchDB and then clean out unnecessary things like autotools'
   task :clean_install => :build do
