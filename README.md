@@ -200,20 +200,17 @@ you remember better.)
 
 ### Install CouchDB somewhere besides `build/`.
 
-Add a `couchdb_build` parameter to place the final couchdb binaries anywhere.
-Note, you still need the main `build/` subdirectory because couchdb dependencies
-such as Erlang and ICU reside there.
+Add an `install` parameter to place the final couchdb binaries anywhere.
 
-However, `couchdb_build` makes it trivial to install several couchdb versions
-side-by-side.
+Build CouchDB makes it simple to install several couchdb versions side-by-side.
 
-    rake git="git://github.com/vmx/couchdb geocouch" couchdb_build=geocouch
-    rake git="git://git.apache.org/couchdb.git trunk" couchdb_build=trunk
+    rake git="git://github.com/vmx/couchdb geocouch" install=geocouch
+    rake git="git://git.apache.org/couchdb.git trunk" install=trunk
     for tag in 1.0.1 11.0 11.1; do
-        rake git="git://git.apache.org/couchdb.git tags/$tag" couchdb_build=$tag
+        rake git="git://git.apache.org/couchdb.git tags/$tag" install=$tag
     done
 
-Note that `couchdb_build` needs to be an absolute path. Use:
+Note that `install` needs to be an absolute path. Use:
 
     `pwd`/geocouch
 
@@ -230,7 +227,7 @@ package (icu, erlang, spidermonkey, etc) owns which files within `build`. A
 trick I do a lot is `cat build/manifest/couchdb | xargs rm` to "uninstall" only
 couchdb so I can try a rebuild.
 
-I have no idea how `manifest` interacts with `couchdb_build` as I have never
+I have no idea how `manifest` interacts with `install` as I have never
 used them together.
 
  [geocouch]: http://vmx.cx/cgi-bin/blog/index.cgi/geocouch-the-future-is-now:2010-05-03:en,CouchDB,Python,Erlang,geo
