@@ -30,6 +30,9 @@ namespace :environment do
                          'append' => [] },
            }
 
+    # XXX: Code duplication from :configure.
+    dirs['DYLD_LIBRARY_PATH'] = {'insert' => "#{BUILD}/lib"} if DISTRO[0] == :osx
+
     template = ERB.new(File.open("#{HERE}/templates/#{script}.erb").read())
     File.open("#{BUILD}/#{script}", 'w') do |outfile|
       outfile.write(template.result(binding))
