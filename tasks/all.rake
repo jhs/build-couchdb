@@ -20,7 +20,8 @@ namespace :build do
   submodules = ["#{DEPS}/otp/otp_build", "#{DEPS}/couchdb/bootstrap"]
   submodules.each do |submodule_file|
     file submodule_file do
-      raise "No Git submodule: #{submodule_file}.\nTry: git submodule init && git submodule update"
+      human_friendly = File.dirname(submodule_file)
+      raise "No Git submodule: #{human_friendly}.\nTry: git submodule init && git submodule update"
     end
   end
 
