@@ -1,4 +1,5 @@
 # Operating within the OS
+require 'erb'
 
 namespace :environment do
 
@@ -23,6 +24,16 @@ namespace :environment do
   desc 'Run a subshell with this environment loaded'
   task :shell => :path do
     sh "bash"
+  end
+
+  desc 'Install a helper script for a shell to source to use the installed software'
+  task :install => :path do
+    script = 'env.sh'
+    template = ERB.new(File.open("#{HERE}/templates/#{script}.erb").read())
+    File.open("#{BUILD}/#{script}", 'w') do |outfile|
+      outfile.write(template.result(binding))
+      outfile.close
+    end
   end
 
   desc 'Output the ./configure command to build couchdb'
