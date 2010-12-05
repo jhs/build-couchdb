@@ -25,19 +25,10 @@ namespace :environment do
 
   desc 'Install a helper script for a shell to source to use the installed software'
   task :install => :known_distro do
-    script = 'env.sh'
-    dirs = { 'PATH' => { 'insert' => path_dirs_for_distro(),
-                         'append' => [] },
-           }
-
-    # XXX: Code duplication from :configure.
-    dirs['DYLD_LIBRARY_PATH'] = {'insert' => "#{BUILD}/lib"} if DISTRO[0] == :osx
-
-    template = ERB.new(File.open("#{HERE}/templates/#{script}.erb").read())
-    File.open("#{BUILD}/#{script}", 'w') do |outfile|
-      outfile.write(template.result(binding))
-      outfile.close
-    end
+    # If an install (unfortunately called "build") location was specified, put this script
+    # there, prioritizing the couch install location over the Erlang one if they differ.
+    install_dir = (COUCH_BUILD != BUILD) ? COUCH_BUILD : BUILD
+    install_env_script(:to => install_dir)
   end
 
   desc 'Output the ./configure command to build couchdb'
