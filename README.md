@@ -146,11 +146,29 @@ checked out the code in your home directory, you would run:
 
 ## Conveniently Add CouchDB to the PATH
 
-The `env` task will output a script which will add this CouchDB build to your
-path. Then you can simply type `couchdb`. To load these settings into your
-current shell, run:
+The build process creates a small shell script, `build/env.sh`. The script
+will add the buid to your shell's `$PATH`. This will *only* affect that shell
+session, other terminals or shell sessions will not change. (This is on
+purpose, to isolate CouchDB, so that it is easy to remove, or so multiple
+versions can be installed side-by-side.)
 
-    eval `rake env --silent`
+Simply source the script when you want to use CouchDB.
+
+    . build/env.sh
+
+Your working directory needn't be anywhere special when sourcing the file.
+It can be processed from anywhere. The idea is, when you are working, you
+realize you need couchdb, just type
+`. ~/my/stuff/code/build-couchdb/build/env.sh` or whatever and it will work.
+
+You can source the file as often as you like. Subsequent exection will not
+do anything.
+
+    . build/env.sh
+    . build/env.sh # Sourcing with wild abandon!
+
+If the file is read from a script or in a pipeline, it will execute silently
+(by detecting whether it is connected to a TTY terminal).
 
 ## Cheat Codes
 
