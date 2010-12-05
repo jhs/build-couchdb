@@ -289,7 +289,7 @@ end
 #
 
 DEPS = "#{HERE}/dependencies"
-BUILD = ENV['prefix'] || "#{HERE}/build"
+BUILD = ENV['prefix'] || ENV['install'] || "#{HERE}/build"
 JS_LIB = "#{BUILD}/bin/js-config"
 ERL_BIN = "#{BUILD}/bin/erl"
 ICU_BIN = "#{BUILD}/bin/icu-config"
