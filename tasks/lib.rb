@@ -85,6 +85,13 @@ def package_dep opts
   program_file
 end
 
+# Return the directories needed in $PATH for this distro (:known_distro task must run already)
+def path_dirs_for_distro
+  dirs = [ "#{BUILD}/bin" ]
+  dirs = %w[ /opt/csw/gcc4/bin /opt/csw/bin /usr/ccs/bin ] + dirs if DISTRO[0] == :solaris
+  return dirs
+end
+
 # Run GNU Make
 def gmake(cmd="")
   gmake = DISTRO[0] == :solaris ? 'gmake' : 'make'
