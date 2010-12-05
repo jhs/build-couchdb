@@ -24,9 +24,9 @@ namespace :environment do
   end
 
   desc 'Install a helper script for a shell to source to use the installed software'
-  task :install => :path do
+  task :install => :known_distro do
     script = 'env.sh'
-    dirs = { 'PATH' => { 'insert' => ["#{BUILD}/bin"],
+    dirs = { 'PATH' => { 'insert' => path_dirs_for_distro(),
                          'append' => [] },
            }
 
