@@ -6,7 +6,7 @@ require 'fileutils'
 
 namespace :couchdb do
 
-  couchdb_build_deps = ['erlang:build', 'build:os_dependencies', 'tracemonkey:build', 'icu:build', :known_distro, 'environment:path']
+  couchdb_build_deps = ['erlang:build', 'build:couch_git_submodules', 'build:os_dependencies', 'tracemonkey:build', 'icu:build', :known_distro, 'environment:path']
 
   desc 'Build the requirements for CouchDB'
   task :deps => couchdb_build_deps

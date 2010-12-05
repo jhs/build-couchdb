@@ -25,8 +25,11 @@ namespace :build do
     end
   end
 
+  task :couch_git_submodules => ["#{DEPS}/couchdb/bootstrap"]
+  task :otp_git_submodules => ["#{DEPS}/otp/otp_build"]
+
   desc 'Confirm (and install if possible) the OS dependencies'
-  task :os_dependencies => submodules + [:mac_dependencies, :ubuntu_dependencies, :debian_dependencies, :opensuse_dependencies, :solaris_dependencies]
+  task :os_dependencies => [:mac_dependencies, :ubuntu_dependencies, :debian_dependencies, :opensuse_dependencies, :solaris_dependencies]
 
   desc 'Confirm Git submodules are updated'
   task :confirm_submodules => submodules do
