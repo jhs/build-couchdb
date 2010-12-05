@@ -216,6 +216,12 @@ Note that `install` needs to be an absolute path. Use:
 
 e.g. creates the directory `geocouch` in your current directory.
 
+For **side-by-side installs** there is a small shortcut to avoid rebuilding Erlang:
+use the `couchdb_build` variable instead, which will install CouchDB separately
+from its dependencies. Just remember never to move or delete the dependencies!
+
+    rake install=/dependencies/go/here couchdb_build=/but/couch/goes/here
+
 ### Get a manifest of all the components
 
 To get a better idea of exactly what is going on, add a `manifest` parameter.
