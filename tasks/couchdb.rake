@@ -126,14 +126,27 @@ namespace :couchdb do
     file plugin_mark => ['environment:path', source, :couchdb] do
       puts "Building plugin in: #{source}"
       Dir.chdir(source) do
-        gmake "COUCH_SRC='#{COUCH_SOURCE}/src/couchdb' clean"
-        gmake "COUCH_SRC='#{COUCH_SOURCE}/src/couchdb'"
+        if File.exists? 'Makefile'
+          gmake "COUCH_SRC='#{COUCH_SOURCE}/src/couchdb' clean"
+          gmake "COUCH_SRC='#{COUCH_SOURCE}/src/couchdb'"
+        elsif File.exists? 'rebar'
+          sh "./rebar clean"
+          sh "./rebar compile"
+        else
+          raise "I do not know how to build this plugin: #{source}"
+        end
 
         target = plugin_mark + '_new'
         FileUtils.mkdir_p(target)
-        sh "cp -v share/www/script/test/* '#{COUCH_BUILD}/share/couchdb/www/script/test'"
-        sh "cp -v build/*.beam '#{target}'"
+
+        %w[ build ebin ].each do |ebin|
+          sh "cp -v #{ebin}/*.beam '#{target}'" if File.directory?(ebin)
+        end
+
         sh "mv #{target} #{plugin_mark}"
+
+        # Futon stuff can only run from the actual couch location, unfortunately.
+        sh "cp -v share/www/script/test/* '#{COUCH_BUILD}/share/couchdb/www/script/test'" if File.directory? "share/www"
       end
     end
   end
