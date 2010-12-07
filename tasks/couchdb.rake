@@ -13,7 +13,9 @@ namespace :couchdb do
   task :dependencies => :deps
 
   desc 'Build CouchDB'
-  task :build => couchdb_build_deps + [:plugins, COUCH_BIN, 'environment:install']
+  task :build => [:couchdb, :plugins, 'environment:install']
+
+  task :couchdb => couchdb_build_deps + [COUCH_BIN]
 
   desc 'Build CouchDB and then clean out unnecessary things like autotools'
   task :clean_install => :build do
@@ -121,7 +123,7 @@ namespace :couchdb do
 
     task :plugins => ['environment:path', plugin_mark]
     puts "file #{plugin_mark} => #{source}"
-    file plugin_mark => ['environment:path', source, COUCH_BIN] do
+    file plugin_mark => ['environment:path', source, :couchdb] do
       puts "Building plugin in: #{source}"
       Dir.chdir(source) do
         gmake "COUCH_SRC='#{COUCH_SOURCE}/src/couchdb' clean"
