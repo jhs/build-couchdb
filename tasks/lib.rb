@@ -179,7 +179,7 @@ end
 
 def copy_parts opts
   Dir.chdir opts[:source] do
-    sh "tar cf - #{opts[:dirs].join ' '} | tar xvf - --directory #{opts[:target]}"
+    sh "tar cf - #{opts[:dirs].select{|dir| File.exist?(dir) }.join ' '} | tar xvf - --directory #{opts[:target]}"
   end
 end
 
