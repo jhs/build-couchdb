@@ -130,8 +130,13 @@ namespace :couchdb do
           gmake "COUCH_SRC='#{COUCH_SOURCE}/src/couchdb' clean"
           gmake "COUCH_SRC='#{COUCH_SOURCE}/src/couchdb'"
         elsif File.exists? 'rebar'
-          sh "./rebar clean"
-          sh "./rebar compile"
+          begin
+            ENV['ERL_COMPILER_OPTIONS'] = "[{i, \"#{COUCH_SOURCE}/src/couchdb\"}]"
+            sh "./rebar clean"
+            sh "./rebar compile"
+          ensure
+            ENV.delete('ERL_COMPILER_OPTIONS')
+          end
         else
           raise "I do not know how to build this plugin: #{source}"
         end
