@@ -144,10 +144,11 @@ namespace :couchdb do
         target = plugin_mark + '_new'
         FileUtils.mkdir_p(target)
 
+        copy_parts :source => ".", :target => target, :dirs => %w[ ebin priv ]
+
+        # Manually copy "build/" to support GeoCouch.
         cp = (DISTRO[0] == :solaris) ? 'cp' : 'cp -v'
-        %w[ build ebin ].each do |ebin|
-          sh "#{cp} -r #{ebin}/* '#{target}'" if File.directory?(ebin)
-        end
+        sh "#{cp} -r build/* '#{target}'" if File.directory?('build')
 
         sh "mv #{target} #{plugin_mark}"
 
