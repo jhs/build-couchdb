@@ -3,6 +3,7 @@
 require 'uri'
 require 'find'
 require 'tmpdir'
+require 'fileutils'
 
 $stdout_old = $stdout
 $stderr_old = $stderr
@@ -106,6 +107,7 @@ def install_env_script(opts={})
   dirs['DYLD_LIBRARY_PATH'] = {'insert' => "#{target}/lib"} if DISTRO[0] == :osx
 
   template = ERB.new(File.open("#{HERE}/templates/#{script}.erb").read())
+  FileUtils.mkdir_p(target)
   File.open("#{target}/#{script}", 'w') do |outfile|
     outfile.write(template.result(binding))
     outfile.close
