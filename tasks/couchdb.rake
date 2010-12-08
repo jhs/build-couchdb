@@ -155,7 +155,7 @@ namespace :couchdb do
 
         sh "mv #{target} #{plugin_mark}"
 
-        copy_parts :source => ".", :target => BUILD, :dirs => %w[ etc bin lib var ]
+        copy_parts :source => ".", :target => COUCH_BUILD, :dirs => %w[ etc bin lib var ]
 
         # Futon stuff can only run from the actual couch location, unfortunately.
         sh "cp -v share/www/script/test/* '#{COUCH_BUILD}/share/couchdb/www/script/test'" if File.directory? "share/www"
