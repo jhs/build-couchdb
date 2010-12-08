@@ -146,7 +146,7 @@ namespace :couchdb do
 
         cp = (DISTRO[0] == :solaris) ? 'cp' : 'cp -v'
         %w[ build ebin ].each do |ebin|
-          sh "#{cp} -r #{ebin}/*.beam '#{target}'" if File.directory?(ebin)
+          sh "#{cp} -r #{ebin}/* '#{target}'" if File.directory?(ebin)
         end
 
         sh "mv #{target} #{plugin_mark}"
