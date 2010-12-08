@@ -123,7 +123,7 @@ namespace :couchdb do
 
     task :plugins => ['environment:path', plugin_mark]
     puts "file #{plugin_mark} => #{source}"
-    file plugin_mark => ['environment:path', source, :couchdb] do
+    file plugin_mark => ['environment:path', source, :known_distro, :couchdb] do
       puts "Building plugin in: #{source}"
       Dir.chdir(source) do
         if File.exists? 'Makefile'
@@ -144,8 +144,9 @@ namespace :couchdb do
         target = plugin_mark + '_new'
         FileUtils.mkdir_p(target)
 
+        cp = (DISTRO[0] == :solaris) ? 'cp' : 'cp -v'
         %w[ build ebin ].each do |ebin|
-          sh "cp -v #{ebin}/*.beam '#{target}'" if File.directory?(ebin)
+          sh "#{cp} -r #{ebin}/*.beam '#{target}'" if File.directory?(ebin)
         end
 
         sh "mv #{target} #{plugin_mark}"
