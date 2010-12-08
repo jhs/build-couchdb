@@ -147,8 +147,11 @@ namespace :couchdb do
         copy_parts :source => ".", :target => target, :dirs => %w[ ebin priv ]
 
         # Manually copy "build/" to support GeoCouch.
-        cp = (DISTRO[0] == :solaris) ? 'cp' : 'cp -v'
-        sh "#{cp} -r build/* '#{target}'" if File.directory?('build')
+        if File.directory?('build')
+          FileUtils.mkdir_p("#{target}/ebin")
+          cp = (DISTRO[0] == :solaris) ? 'cp' : 'cp -v'
+          sh "#{cp} -r build/* '#{target}/ebin'" if File.directory?('build')
+        end
 
         sh "mv #{target} #{plugin_mark}"
 
