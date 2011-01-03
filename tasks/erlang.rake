@@ -8,7 +8,7 @@ namespace :erlang do
   task :build => [:known_distro, 'build:otp_git_submodules', 'build:os_dependencies', 'environment:path', ERL_BIN, 'environment:install']
 
   # Some libraries needn't be compiled. Others can be deleted later.
-  OTP_REMOVE = %w[ compiler syntax_tools public_key parsetools ic erts erl_interface eunit ]
+  OTP_REMOVE = %w[ compiler syntax_tools parsetools ic erts erl_interface eunit ]
   OTP_SKIP_COMPILE = %w[
     appmon asn1 common_test cosEvent cosEventDomain cosFileTransfer cosNotification cosProperty cosTime cosTransactions
     wx debugger ssh test_server toolbar odbc orber otp_mibs os_mon reltool snmp observer dialyzer docbuilder edoc et
