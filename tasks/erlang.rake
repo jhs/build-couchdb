@@ -18,6 +18,7 @@ namespace :erlang do
   file ERL_BIN => AUTOCONF_259 do
     source = "#{DEPS}/otp"
     Dir.chdir source
+    sh('git', 'checkout', ENV['erl_checkout']) if ENV['erl_checkout']
     with_autoconf '2.59' do
       begin
         sh './otp_build autoconf'

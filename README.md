@@ -175,7 +175,15 @@ If the file is read from a script or in a pipeline, it will execute silently
 Build CouchDB supports some fancy tricks by entering cheat codes to the Rake
 command.
 
-### Build any Git fork or tag of CouchDB
+### Build any Git branch or tag of Erlang/OTP
+
+Add a `erl_checkout` parameter with the commit id, branch name, or tag name.
+
+For example, to build with Erlang R13B04 release:
+
+    rake erl_checkout="OTP_R13B04"
+
+### Build any Git branch or tag of CouchDB
 
 Add a `git` parameter with the repository URL, then a space, then the branch,
 tag, or commit hash. (Remember to quote all of those so Rake sees the space.)
