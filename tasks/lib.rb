@@ -198,10 +198,12 @@ def in_build_dir label
 end
 
 def compress_beams source
-  Find.find(source) do |path|
-    if File.file?(path) && path.match(/\.beam$/) && ENV['skip_compress_beam'].nil?
-      sh "gzip -9 '#{path}'"
-      sh "mv '#{path}'.gz '#{path}'"
+  if ENV['compress_beams'] != 'false'
+    Find.find(source) do |path|
+      if File.file?(path) && path.match(/\.beam$/) && ENV['skip_compress_beam'].nil?
+        sh "gzip -9 '#{path}'"
+        sh "mv '#{path}'.gz '#{path}'"
+      end
     end
   end
 end
