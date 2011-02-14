@@ -19,6 +19,11 @@ namespace :couchdb do
 
   desc 'Build CouchDB and then clean out unnecessary things like autotools'
   task :clean_install => :build do
+    if ENV['wipe_otp_keep']
+      puts "Clearing otp_keep for :clean_install"
+      ENV.delete("otp_keep")
+    end
+
     %w[ erlang toolchain ].each do |section|
       run_task "#{section}:clean"
     end
