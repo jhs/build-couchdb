@@ -43,6 +43,48 @@ end
 
 require File.dirname(__FILE__) + '/distros'
 
+# This is the Ruby v1.9.1 Dir.mktmpdir.
+if ! Dir.respond_to? :mktmpdir
+  def Dir.mktmpdir(prefix_suffix=nil, tmpdir=nil)
+    case prefix_suffix
+    when nil
+      prefix = "d"
+      suffix = ""
+    when String
+      prefix = prefix_suffix
+      suffix = ""
+    when Array
+      prefix = prefix_suffix[0]
+      suffix = prefix_suffix[1]
+    else
+      raise ArgumentError, "unexpected prefix_suffix: #{prefix_suffix.inspect}"
+    end
+    tmpdir ||= Dir.tmpdir
+    t = Time.now.strftime("%Y%m%d")
+    n = nil
+    begin
+      path = "#{tmpdir}/#{prefix}#{t}-#{$$}-#{rand(0x100000000).to_s(36)}"
+      path << "-#{n}" if n
+      path << suffix
+      Dir.mkdir(path, 0700)
+    rescue Errno::EEXIST
+      n ||= 0
+      n += 1
+      retry
+    end
+
+    if block_given?
+      begin
+        yield path
+      ensure
+        FileUtils.remove_entry_secure path
+      end
+    else
+      path
+    end
+  end
+end
+
 def package_dep opts
   # Unfortunately the dependency must be defined after the OS is detected,
   # Even if this task is a no-op, if other tasks depend on it, they will re-run
