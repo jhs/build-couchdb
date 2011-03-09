@@ -29,7 +29,7 @@ namespace :curl do
 
       record_manifest 'curl'
     ensure
-      Dir.chdir(source) { sh "git ls-files --others --ignored --exclude-standard | xargs rm -vf" }
+      Dir.chdir(source) { sh "git ls-files --others --ignored --exclude-standard | xargs rm || true" }
     end
   end
 
