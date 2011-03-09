@@ -43,7 +43,7 @@ namespace :build do
         %w[ flex dctrl-tools libsctp-dev ],
 
         # All Ubuntu gets these.
-        %w[ libxslt1-dev automake libcurl4-openssl-dev make ruby libtool g++ ],
+        %w[ libxslt1-dev automake make ruby libtool g++ ],
         %w[ zip libcap2-bin ],
 
         # Needed for Varnish
@@ -58,7 +58,7 @@ namespace :build do
       install_packages %w[ flex dctrl-tools libsctp-dev ]
 
       # All Ubuntu gets these.
-      install_packages %w[ libxslt1-dev automake libcurl4-openssl-dev make ruby libtool g++ ]
+      install_packages %w[ libxslt1-dev automake make ruby libtool g++ ]
       install_packages %w[ zip libcap2-bin ]
 
       # Needed for Varnish
@@ -78,7 +78,7 @@ namespace :build do
       install_packages %w[ flex lksctp-tools-devel zip]
 
       # All OpenSUSE gets these.
-      install_packages %w[rubygem-rake gcc-c++ make m4 zlib-devel libopenssl-devel libtool automake libcurl-devel]
+      install_packages %w[ rubygem-rake gcc-c++ make m4 zlib-devel libopenssl-devel libtool automake ]
 
     end
   end
