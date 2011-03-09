@@ -4,3 +4,6 @@
 [submodule "dependencies/otp"]
 	path = dependencies/otp
 	url = git://github.com/erlang/otp.git
+[submodule "dependencies/curl"]
+	path = dependencies/curl
+	url = git://github.com/bagder/curl.git
