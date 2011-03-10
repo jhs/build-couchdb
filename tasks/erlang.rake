@@ -58,6 +58,12 @@ namespace :erlang do
             configure.insert(0, 'LD=gld')
         end
 
+        if ENV['ethread_p4']
+          # Described in http://erlang.2086793.n4.nabble.com/R14B-Illegal-instruction-tt2544273.html#a2544362
+          configure.push '--enable-ethread-pre-pentium4-compatibility'
+          configure.push '--enable-ethread-pre-pentium4-compatibility=yes'
+        end
+
         otp_keep = ENV['otp_keep'] || ''
         OTP_SKIP_COMPILE.each do |lib|
           FileUtils.touch "#{DEPS}/otp/lib/#{lib}/SKIP" unless otp_keep == '*' || otp_keep.split.include?(lib)
