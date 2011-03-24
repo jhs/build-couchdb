@@ -142,7 +142,7 @@ def install_env_script(opts={})
   target = opts[:to] || raise("Need :to parameter")
 
   script = 'env.sh'
-  dirs = { 'PATH' => { 'insert' => path_dirs_for_distro(),
+  dirs = { 'PATH' => { 'insert' => path_dirs_for_distro(:couch_too => true),
                        'append' => [] },
          }
 
