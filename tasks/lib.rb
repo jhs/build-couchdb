@@ -305,8 +305,8 @@ def configure_cmd(source, opts={})
 
   # Determine whether to use a --prefix parameter. Default is to use it.
   prefix = ""
-  prefix = "--prefix='#{COUCH_BUILD}'" if prefix == :couch
-  prefix = "--prefix='#{BUILD}'"       if prefix == :deps
+  prefix = "--prefix='#{COUCH_BUILD}'" if opts[:prefix] == :couch
+  prefix = "--prefix='#{BUILD}'"       if opts[:prefix] == :deps
 
   return "env #{env} #{source}/configure #{prefix} --with-erlang=#{BUILD}/lib/erlang/usr/include"
 end
