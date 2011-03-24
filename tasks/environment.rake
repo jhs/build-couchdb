@@ -40,7 +40,7 @@ namespace :environment do
       puts "export PATH=\"#{BUILD}/bin:$PATH\""
     end
     puts "export DYLD_LIBRARY_PATH=\"#{BUILD}/lib:$DYLD_LIBRARY_PATH\"" if DISTRO[0] == :osx
-    puts(configure_cmd(".", :prefix => false))
+    puts(configure_cmd(".", :prefix => nil))
   end
 
 end

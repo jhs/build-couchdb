@@ -66,7 +66,7 @@ namespace :couchdb do
       Dir.mktmpdir 'couchdb-build' do |dir|
         Dir.chdir dir do
           show_file("config.log") do
-            sh(configure_cmd(source, :prefix => true))
+            sh(configure_cmd(source, :prefix => :couch))
           end
 
           gmake

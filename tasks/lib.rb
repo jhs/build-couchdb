@@ -302,7 +302,12 @@ def configure_cmd(source, opts={})
   ldflags += ' -llber' if DISTRO[0] == :solaris
 
   env = "LDFLAGS='#{ldflags}' CFLAGS='-I#{BUILD}/include/js'"
-  prefix = (opts[:prefix].nil? || opts[:prefix]) ? "--prefix=#{COUCH_BUILD}" : ""
+
+  # Determine whether to use a --prefix parameter. Default is to use it.
+  prefix = ""
+  prefix = "--prefix='#{COUCH_BUILD}'" if prefix == :couch
+  prefix = "--prefix='#{BUILD}'"       if prefix == :deps
+
   return "env #{env} #{source}/configure #{prefix} --with-erlang=#{BUILD}/lib/erlang/usr/include"
 end
 
