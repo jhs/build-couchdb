@@ -129,8 +129,9 @@ def package_dep opts
 end
 
 # Return the directories needed in $PATH for this distro (:known_distro task must run already)
-def path_dirs_for_distro
+def path_dirs_for_distro(opts={})
   dirs = [ "#{BUILD}/bin" ]
+  dirs << "#{COUCH_BUILD}/bin" if opts[:couch_too} && COUCH_BUILD != BUILD
   dirs = %w[ /opt/csw/gcc4/bin /opt/csw/bin /usr/ccs/bin ] + dirs if DISTRO[0] == :solaris
   return dirs
 end
