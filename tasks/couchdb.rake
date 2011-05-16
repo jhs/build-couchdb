@@ -170,4 +170,24 @@ namespace :couchdb do
     end
   end
 
+  desc 'Run ./configure in a CouchDB checkout'
+  task :configure => [:known_distro, 'environment:path', 'couchdb:dependencies'] do
+    nocouch = "This task must run in a normal CouchDB checkout or tarball"
+    raise nocouch unless File.directory?('src/couchdb')
+
+    unless File.file? 'configure'
+      puts './bootstrap'
+      sh   './bootstrap'
+    end
+
+    if DISTRO[0] == :osx
+      ENV['DYLD_LIBRARY_PATH'] = "#{BUILD}/lib" + (ENV['DYLD_LIBRARY_PATH'] ? ":#{ENV['DYLD_LIBRARY_PATH']}" : "")
+      puts "DYLD_LIBRARY_PATH=#{ENV['DYLD_LIBRARY_PATH']}"
+    end
+
+    cmd = configure_cmd '.', :prefix => nil
+    puts cmd
+    sh cmd
+  end
+
 end
