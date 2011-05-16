@@ -176,7 +176,6 @@ namespace :couchdb do
     raise nocouch unless File.directory?('src/couchdb')
 
     unless File.file? 'configure'
-      puts './bootstrap'
       sh   './bootstrap'
     end
 
@@ -186,7 +185,6 @@ namespace :couchdb do
     end
 
     cmd = configure_cmd '.', :prefix => nil
-    puts cmd
     sh cmd
   end
 
