@@ -15,6 +15,7 @@ administrator access to run it. You can run several couches (for example, 0.10,
 Build CouchDB is developed and tested on the following operating systems:
 
  * Red Hat Enterprise Linux Server release 5.5 (Tikanga)
+ * CentOS 5.5
  * Debian GNU/Linux 5.0 (Lenny)
  * Ubuntu 10.04 LTS (Lucid Lynx)
  * Ubuntu 9.10 (Karmic Koala)
@@ -40,23 +41,7 @@ On **Fedora**:
 
 On **Red Hat Enterprise Linux**:
 
-The procedure is the same as Fedora, with the following exceptions:
-
-* Also install the `ruby-rdoc` package.
-* Instead of `libcurl-devel` install `curl-devel`.
-* Install backported packages `rubygems` and `rubygem-rake` and from
-  the [Fedora EPEL 5 repository][epel]. Check the "EPEL 5" section, either
-  i386 or x86_64; then "Jump to letter" `R`.
-
- [epel]: http://fedoraproject.org/wiki/EPEL
-
-    * Do not use yum to install rubygem-rake or libcurl-devel.
-    * Use [Ruby Version Manager][rvm] to install the latest release of Ruby v 1.8.7.  This installed a version of rake, too.
-    * Download and install the latest release of [cURL][curl] from source.
-
-[rvm]: http://rvm.beginrescueend.com
-[curl]: http://curl.haxx.se/docs/install.html
-
+The procedure is the same as Fedora, but also install the `ruby-rdoc` package.
 
 On **Debian**, first install `sudo` and add yourself to `/etc/sudoers`.
 
