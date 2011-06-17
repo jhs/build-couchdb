@@ -36,7 +36,7 @@ the commands below.
 
 On **Fedora**:
 
-    sudo yum install gcc gcc-c++ libtool libcurl-devel \
+    sudo yum install gcc gcc-c++ libtool \
                      zlib-devel openssl-devel rubygem-rake
 
 On **Red Hat Enterprise Linux**:
@@ -57,7 +57,7 @@ On **OpenSUSE**:
 
     sudo zypper install flex lksctp-tools-devel zip \
 				rubygem-rake gcc-c++ make m4 zlib-devel \
-				libopenssl-devel libtool automake libcurl-devel
+				libopenssl-devel libtool automake
 
 On **Scientific Linux**
 
