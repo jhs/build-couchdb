@@ -1,16 +1,13 @@
 Planned Features
 ================
 
- * Plugin support:
-   * http://github.com/jasondavies/couchdb/tree/mdns
-
 Bugs
 ====
 
  * all.rake is legacy code which should be refactored into meaningful .rake
    components
- * Cannot use Git as a shortcut to clean up the source trees after building
- * There should be no os_dependencies task. Dependencies should be satisfied
-   as needed as specified by task definitions
+ * Should not use Git as a shortcut to clean up the source trees after building
+ * There should be no os_dependencies task. Dependencies should be detected by
+   the specific task that needs them and only warn the admin about what to do.
 
 vim: tw=80
