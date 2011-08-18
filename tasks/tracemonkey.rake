@@ -8,7 +8,7 @@ namespace :tracemonkey do
   task :build => [:known_distro, 'environment:path', JS_LIB]
 
   file JS_LIB => [package_dep('/usr/bin/python' => 'python'), AUTOCONF_213] do
-    src = "#{DEPS}/js_src"
+    src = "#{DEPS}/spidermonkey/js/src"
     begin
       Dir.chdir src
 
@@ -26,7 +26,7 @@ namespace :tracemonkey do
 
       Dir.mktmpdir 'tracemonkey_build' do |dir|
         Dir.chdir dir do
-          cmd = ["#{src}/configure", "--prefix=#{BUILD}", "--without-x"]
+          cmd = ["#{src}/configure", "--prefix=#{BUILD}", "--without-x", "--disable-tests"]
           if DISTRO[0] == :solaris
             cmd = [
               "LDFLAGS='-L/opt/csw/gcc4/lib'",
