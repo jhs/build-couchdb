@@ -1,4 +1,4 @@
 .*.swp
-build
+/build
 git-build/*
 rake.log
