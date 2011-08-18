@@ -301,7 +301,7 @@ def configure_cmd(source, opts={})
   ldflags = libs.map{|lib| "-R#{lib} -L#{lib}"}.join(' ')
   ldflags += ' -llber' if DISTRO[0] == :solaris
 
-  env = "LDFLAGS='#{ldflags}' CPPFLAGS='-I#{BUILD}/include/js'"
+  env = "LDFLAGS='#{ldflags}' CPPFLAGS='-I#{BUILD}/include -I#{BUILD}/include/js'"
 
   # Determine whether to use a --prefix parameter. Default is to use it.
   prefix = ""
