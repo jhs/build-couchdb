@@ -41,6 +41,14 @@ namespace :tracemonkey do
           end
           gmake
           gmake "install"
+
+          # Manually install the Mozilla header files.
+          mozilla_include = "#{BUILD}/include/js/mozilla"
+          Dir.mkdir mozilla_include unless File.directory?(mozilla_include)
+
+          Dir.glob("#{DEPS}/spidermonkey/mfbt/*").each do |header|
+            sh "cp", header, mozilla_include
+          end
         end
       end
 
