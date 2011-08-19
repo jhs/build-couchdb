@@ -23,7 +23,14 @@ namespace :erlang do
       begin
         sh './otp_build autoconf'
 
-        cflags = '-g -O2 -fno-strict-aliasing'
+        optimization_level = 2
+        if DISTRO[0] == :osx
+          # Lion uses LLVM and will requires -O0. Sorry, Lion.
+          os_release = `sysctl -n kern.osrelease`.chomp
+          optimization_level = 0 if /^11\.0\./.match(os_release) # 11.0.*
+        end
+
+        cflags = "-g -O#{optimization_level} -fno-strict-aliasing"
         ldflags = ''
         if DISTRO[0] == :solaris
           cflags += ' -I/opt/csw/include -L/opt/csw/lib'
