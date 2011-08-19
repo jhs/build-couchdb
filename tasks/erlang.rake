@@ -52,7 +52,8 @@ namespace :erlang do
             configure.push '--enable-clock-gettime'
             configure.push '--host=x86_64-linux-gnu', '--build=x86_64-linux-gnu' if DISTRO[1] == '9.10'
           when :osx
-            configure.push '--enable-darwin-64bit' if DISTRO[0] == :osx
+            osx_machine = `sysctl -n hw.machine`.chomp
+            configure.push '--enable-darwin-64bit' if osx_machine == "x86_64"
           when :solaris
             configure.insert(0, 'CC=gcc')
             configure.insert(0, 'LD=gld')
