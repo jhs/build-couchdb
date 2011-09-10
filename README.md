@@ -1,3 +1,5 @@
 # This is not the latest Build CouchDB.
 
-Please see CouchOne's [official Build CouchDB](http://github.com/couchone/build-couchdb) repository.
+Please see the Iris Couch [official Build CouchDB][build] repository. Thank you.
+
+[build]: https://github.com/iriscouch/build-couchdb
