@@ -40,7 +40,7 @@ namespace :build do
     if DISTRO[0] == :debian
       install_packages [
         # For building OTP
-        %w[ flex dctrl-tools libsctp-dev ],
+        %w[ flex dctrl-tools libsctp-dev ed ],
 
         # All Ubuntu gets these.
         %w[ libxslt1-dev automake make ruby libtool g++ ],
