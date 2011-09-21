@@ -11,9 +11,21 @@ namespace :erlang do
   OTP_REMOVE = %w[ compiler syntax_tools parsetools ic erts erl_interface eunit ]
   OTP_SKIP_COMPILE = %w[
     appmon asn1 common_test cosEvent cosEventDomain cosFileTransfer cosNotification cosProperty cosTime cosTransactions
-    wx debugger ssh test_server toolbar odbc orber otp_mibs os_mon reltool snmp observer dialyzer docbuilder edoc et
+    wx debugger ssh test_server toolbar odbc orber reltool observer dialyzer docbuilder edoc et
     gs hipe runtime_tools percept pman tools inviso tv typer webtool jinterface megaco mnesia
   ]
+
+  # TODO: When Couch version detection exists, only build os_mon for 1.2 and later.
+  if true
+    # CouchDB 1.2 requires os_mon but not snmp.
+    OTP_REMOVE << "snmp"
+    OTP_REMOVE << "otp_mibs"
+  else
+    # Before CouchDB 1.2, these can be skipped altogether.
+    OTP_SKIP_COMPILE << "snmp"
+    OTP_SKIP_COMPILE << "os_mon"
+    OTP_SKIP_COMPILE << "otp_mibs"
+  end
 
   file ERL_BIN => AUTOCONF_259 do
     source = "#{DEPS}/otp"
