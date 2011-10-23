@@ -120,9 +120,14 @@ namespace :erlang do
 
       ensure
         Dir.chdir source
-        sh 'git reset --hard && git clean -fd'
-        rm = (DISTRO[0] == :solaris) ? 'rm' : 'rm -v'
-        sh "git ls-files --others -i --exclude-standard | xargs #{rm} -f || true"
+
+        if ENV['skip_otp_reset']
+          puts "*** Skipping reset: #{source}"
+        else
+          sh 'git reset --hard && git clean -fd'
+          rm = (DISTRO[0] == :solaris) ? 'rm' : 'rm -v'
+          sh "git ls-files --others -i --exclude-standard | xargs #{rm} -f || true"
+        end
       end
     end
 
