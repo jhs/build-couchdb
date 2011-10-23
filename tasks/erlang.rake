@@ -73,9 +73,14 @@ namespace :erlang do
           when :ubuntu, :debian
             configure.push '--enable-clock-gettime'
             configure.push '--host=x86_64-linux-gnu', '--build=x86_64-linux-gnu' if DISTRO[1] == '9.10'
+            machine_hw = %x[ /bin/uname -m ].chomp
+            configure << '--enable-m64-build' if $?.success? && machine_hw == 'x86_64'
           when :osx
             is_darwin_64bit = %x[ /usr/sbin/sysctl -n hw.optional.x86_64 2>/dev/null ].chomp
-            configure.push '--enable-darwin-64bit' if $?.success? && is_darwin_64bit == "1"
+            if $?.success? && is_darwin_64bit == "1"
+              configure << '--enable-darwin-64bit'
+              configure << '--enable-m64-build'
+            end
           when :solaris
             configure.insert(0, 'CC=gcc')
             configure.insert(0, 'LD=gld')
