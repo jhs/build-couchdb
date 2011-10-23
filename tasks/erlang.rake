@@ -86,9 +86,8 @@ namespace :erlang do
           configure.push '--enable-ethread-pre-pentium4-compatibility=yes'
         end
 
-        otp_keep = ENV['otp_keep'] || ''
         OTP_SKIP_COMPILE.each do |lib|
-          FileUtils.touch "#{DEPS}/otp/lib/#{lib}/SKIP" unless otp_keep == '*' || otp_keep.split.include?(lib)
+          skip_otp_app(lib) unless otp_app_useful?(lib)
         end
 
         show_file('config.log') do
@@ -122,15 +121,14 @@ namespace :erlang do
     erlang = "'#{BUILD}'/lib/erlang"
     lib = "#{erlang}/lib"
 
-    otp_keep = ENV['otp_keep'] || ''
     (OTP_REMOVE + OTP_SKIP_COMPILE).each do |component|
-      sh "rm -rf #{lib}/#{component}-*" unless otp_keep == '*' || otp_keep.split.include?(component)
+      sh "rm -rf #{lib}/#{component}-*" unless otp_app_useful?(component)
     end
 
     # Remove unnecessary directories for running.
     %w[ src examples include doc man obj erl_docgen-* misc ].each do |dir|
       Find.find(erlang) do |path|
-        sh "rm -rf '#{dir}'" if File.directory?(path) && File.basename(path) == dir
+        sh "rm", "-rf", dir if File.directory?(path) && File.basename(path) == dir
       end
     end
 
