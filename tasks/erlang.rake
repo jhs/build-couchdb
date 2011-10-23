@@ -7,12 +7,14 @@ namespace :erlang do
   desc 'Build Erlang/OTP'
   task :build => [:known_distro, 'build:otp_git_submodules', 'build:os_dependencies', 'environment:path', ERL_BIN, 'environment:install']
 
-  # Some libraries needn't be compiled. Others can be deleted later.
+  # Some libraries needn't be compiled. Others can be deleted later. Note the others for completeness.
+  OTP_GOOD   = %w[ crypto inets kernel os_mon public_key sasl ssl stdlib ]
   OTP_REMOVE = %w[ compiler syntax_tools parsetools ic erts erl_interface eunit ]
   OTP_SKIP_COMPILE = %w[
     appmon asn1 common_test cosEvent cosEventDomain cosFileTransfer cosNotification cosProperty cosTime cosTransactions
     wx debugger ssh test_server toolbar odbc orber reltool observer dialyzer docbuilder edoc et
     gs hipe runtime_tools percept pman tools inviso tv typer webtool jinterface megaco mnesia
+    diameter erl_docgen xmerl
   ]
 
   # TODO: When Couch version detection exists, only build os_mon for 1.2 and later.
