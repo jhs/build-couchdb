@@ -64,10 +64,11 @@ namespace :erlang do
           '--enable-threads',
           '--disable-hipe',
           '--enable-kernel-poll',
-          DISTRO[0] != :solaris ? '--enable-sctp' : '',
+          '--disable-sctp',
           "--with-ssl",
           '--enable-dynamic-ssl-lib',
         ]
+
         case DISTRO[0]
           when :ubuntu, :debian
             configure.push '--enable-clock-gettime'
