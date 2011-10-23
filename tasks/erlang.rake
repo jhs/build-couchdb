@@ -90,9 +90,14 @@ namespace :erlang do
           skip_otp_app(lib) unless otp_app_useful?(lib)
         end
 
+        erlang_confopts = ENV['erlang_confopts'] || ""
+        raise "Sorry, OS X cannot use --enable-halfword-emulator" \
+          if DISTRO[0] == :osx && erlang_confopts.split.include?('--enable-halfword-emulator')
+
         show_file('config.log') do
-          sh configure.join(' ') + ' ' + (ENV['erlang_confopts'] || "")
+          sh configure.join(' ') + ' ' + erlang_confopts
         end
+
         gmake
         gmake "install"
 
