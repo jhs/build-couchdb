@@ -57,7 +57,6 @@ namespace :erlang do
           './configure',
           "--prefix=#{BUILD}",
           "--without-javac",
-          "--without-termcap",
           "--enable-shared-zlib",
           '--enable-smp-support',
           '--enable-hybrid-heap',
@@ -68,6 +67,8 @@ namespace :erlang do
           "--with-ssl",
           '--enable-dynamic-ssl-lib',
         ]
+
+        configure << (ENV['erl_termcap'] ? '--with-termcap' : '--without-termcap')
 
         case DISTRO[0]
           when :ubuntu, :debian
