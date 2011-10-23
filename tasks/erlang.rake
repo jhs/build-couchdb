@@ -122,7 +122,7 @@ namespace :erlang do
         Dir.chdir source
         sh 'git reset --hard && git clean -fd'
         rm = (DISTRO[0] == :solaris) ? 'rm' : 'rm -v'
-        sh "git ls-files --others -i --exclude-standard | xargs #{rm} || true"
+        sh "git ls-files --others -i --exclude-standard | xargs #{rm} -f || true"
       end
     end
 
