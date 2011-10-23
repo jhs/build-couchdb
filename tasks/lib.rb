@@ -344,6 +344,21 @@ def git_checkout(url_and_commit, opts={})
   return checkout
 end
 
+def otp_app_useful?(app)
+  return false if app == 'hipe'
+
+  otp_keep = ENV['otp_keep'] || ''
+  return true if otp_keep == '*'
+
+  return otp_keep.split.include?(app)
+end
+
+def skip_otp_app(app)
+  skip = File.new("#{DEPS}/otp/lib/#{app}/SKIP", "w")
+  skip.write("Not needed by CouchDB\n")
+  skip.close
+end
+
 module Rake
   module TaskManager
     def in_explicit_namespace(name)
