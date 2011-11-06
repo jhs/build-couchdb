@@ -308,7 +308,9 @@ def configure_cmd(source, opts={})
   prefix = "--prefix='#{COUCH_BUILD}'" if opts[:prefix] == :couch
   prefix = "--prefix='#{BUILD}'"       if opts[:prefix] == :deps
 
-  return "env #{env} #{source}/configure #{prefix} --with-erlang=#{BUILD}/lib/erlang/usr/include"
+  js = "--with-js-include='#{BUILD}/include/js' --with-js-lib='#{BUILD}/lib'"
+
+  return "env #{env} #{source}/configure #{prefix} #{js} --with-erlang=#{BUILD}/lib/erlang/usr/include"
 end
 
 def git_checkout_name(url)
