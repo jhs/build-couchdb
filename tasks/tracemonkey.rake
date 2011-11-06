@@ -41,6 +41,17 @@ namespace :tracemonkey do
           end
           gmake
           gmake "install"
+
+          # The CouchDB 1.1.1 configure script first tries to link against "libmozjs185" before trying "libmozjs".
+          # Unfortunately, Ubuntu 11.04 installs /usr/lib/libmozjs185.so, so despite all those -Ls and -Rs, the first
+          # test succeeds, causing Couch to use the system libmozjs, which is bad. I investigated several ideas:
+          #
+          # 1. ./configure --program-suffix=185, to build a libmozjs185.so, but that, firstly, didn't even work,
+          #    and secondly, would probably cause trouble with CouchDB 1.1.0 which still wants libmozjs.so.
+          # 2. Various -nostdlib and -nostartfiles options in LDFLAGS, to prevent it from searching /usr/lib. That
+          #    broke linking against libc, libgcc, libm, etc. and even if it could be done right, it seems brittle.
+          # 3. Just symlink it so ld finds what it wants. And that worked.
+          sh "ln", "-sf", "libmozjs.so", "#{BUILD}/lib/libmozjs185.so"
         end
       end
 
