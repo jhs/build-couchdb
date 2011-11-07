@@ -51,7 +51,7 @@ On **Debian**, first install `sudo` and add yourself to `/etc/sudoers`.
 
 On **Ubuntu and Debian**:
 
-    sudo apt-get install make gcc zlib1g-dev libssl-dev libreadline5-dev rake
+    sudo apt-get install make gcc zlib1g-dev libssl-dev rake
 
 On **OpenSUSE**:
 
