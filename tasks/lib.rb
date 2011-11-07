@@ -298,7 +298,7 @@ def configure_cmd(source, opts={})
     libs += %w[ /opt/csw/lib /opt/csw/gcc4/lib /opt/csw/lib/i386 ]
   end
 
-  ldflags = libs.map{|lib| "-R#{lib} -L#{lib}"}.join(' ')
+  ldflags = libs.map{|lib| "-Xlinker -rpath=#{lib} -L#{lib}"}.join(' ')
   ldflags += ' -llber' if DISTRO[0] == :solaris
 
   env = "LDFLAGS='#{ldflags}' CPPFLAGS='-I#{BUILD}/include -I#{BUILD}/include/js'"
