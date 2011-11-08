@@ -26,6 +26,7 @@ namespace :icu do
           show_file('config.log') do
             sh "#{configure}"
           end
+
           gmake(ENV['icu_makeopts'] || "")
           gmake "install"
 

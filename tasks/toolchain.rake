@@ -28,6 +28,7 @@ namespace :toolchain do
             show_file('config.log') do
               sh "#{DEPS}/autoconf-#{version}/configure --prefix=#{BUILD} --program-suffix=#{version}"
             end
+
             gmake
             gmake "install"
             record_manifest task.name

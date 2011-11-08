@@ -27,6 +27,7 @@ namespace :tracemonkey do
       Dir.mktmpdir 'tracemonkey_build' do |dir|
         Dir.chdir dir do
           cmd = ["#{src}/configure", "--prefix=#{BUILD}", "--without-x"]
+
           if DISTRO[0] == :solaris
             cmd = [
               "LDFLAGS='-L/opt/csw/gcc4/lib'",
@@ -39,6 +40,7 @@ namespace :tracemonkey do
           show_file('config.log') do
             sh(cmd.join(' '))
           end
+
           gmake
           gmake "install"
 
