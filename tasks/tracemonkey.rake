@@ -37,8 +37,10 @@ namespace :tracemonkey do
             ].flatten
           end
 
+          cmd = ["CC=gcc", "CXX=g++", cmd].flatten if DISTRO[0] == :osx
+
           show_file('config.log') do
-            sh(cmd.join(' '))
+            sh(["env", cmd].flatten.join(' '))
           end
 
           gmake
