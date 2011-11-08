@@ -3,7 +3,8 @@
 def detect_distro
   # OSX
   if `uname`.chomp == 'Darwin'
-    return [:osx, 10.0]
+    os_release = %x[ sysctl -n kern.osrelease ].chomp
+    return [:osx, os_release]
   end
 
   # Solaris
