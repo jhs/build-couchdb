@@ -51,7 +51,7 @@ namespace :tracemonkey do
           # 2. Various -nostdlib and -nostartfiles options in LDFLAGS, to prevent it from searching /usr/lib. That
           #    broke linking against libc, libgcc, libm, etc. and even if it could be done right, it seems brittle.
           # 3. Just symlink it so ld finds what it wants. And that worked.
-          sh "ln", "-sf", "libmozjs.so", "#{BUILD}/lib/libmozjs185.so"
+          sh "ln", "-sf", "libmozjs.so", "#{BUILD}/lib/libmozjs185.so" unless DISTRO[0] == :osx
         end
       end
 
