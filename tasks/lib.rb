@@ -298,7 +298,15 @@ def configure_cmd(source, opts={})
     libs += %w[ /opt/csw/lib /opt/csw/gcc4/lib /opt/csw/lib/i386 ]
   end
 
-  ldflags = libs.map{|lib| "-Xlinker -rpath=#{lib} -L#{lib}"}.join(' ')
+  ldflags = libs.map do |lib|
+    if DISTRO[0] == :osx && /^11\.\d+\./.match(DISTRO[1]) # 11.*
+      "-L#{lib}"                        # llvm in OS X Lion
+    else
+      "-Xlinker -rpath=#{lib} -L#{lib}" # GCC
+    end
+  end
+
+  ldflags = ldflags.join(' ')
   ldflags += ' -llber' if DISTRO[0] == :solaris
 
   env = "LDFLAGS='#{ldflags}' CPPFLAGS='-I#{BUILD}/include -I#{BUILD}/include/js'"
