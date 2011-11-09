@@ -61,6 +61,11 @@ namespace :couchdb do
         cmd = "./bootstrap"
         cmd = "SED=`which sed` #{cmd}" if DISTRO[0] == :solaris
         sh cmd
+
+        # GCC 4.1.2 from RHEL and CentOS 5 rejects utf8.h due to a missing final newline.
+        utf8_h = File.new("src/couchdb/priv/couch_js/utf8.h", "a")
+        utf8_h.write("\n")
+        utf8_h.close
       end
 
       Dir.mktmpdir 'couchdb-build' do |dir|
@@ -90,7 +95,10 @@ namespace :couchdb do
         record_manifest 'couchdb'
       end
     ensure
-      Dir.chdir(source) { sh "git ls-files --others --ignored --exclude-standard | xargs rm -vf" }
+      Dir.chdir(source) do
+        sh "git", "checkout", "HEAD", "src/couchdb/priv/couch_js/utf8.h"
+        sh "git ls-files --others --ignored --exclude-standard | xargs rm -vf"
+      end
     end
   end
 
