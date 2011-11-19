@@ -219,6 +219,22 @@ from its dependencies. Just remember never to move or delete the dependencies!
 
     rake install=/dependencies/go/here couchdb_build=/but/couch/goes/here
 
+### Support "unclean" builds.
+
+Build CouchDB confirms that the Git checkout looks good before attempting a
+build. If you see this error message, then Build CouchDB is suspicious of your
+checkout:
+
+    This checkout is not clean:
+    <list of changed files>
+
+Heed this warning. Why is your checkout unclean? Shouldn't you build from a
+nice, clean checkout, with no funny business?
+
+Nevertheless, if you wish to proceed, add an `unclean` parameter to Rake:
+
+    rake unclean=1
+
 ### Get a manifest of all the components
 
 To get a better idea of exactly what is going on, add a `manifest` parameter.
