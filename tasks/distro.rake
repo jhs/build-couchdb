@@ -20,6 +20,6 @@ task :known_checkout do
     commit = %x[ git rev-parse --verify HEAD ]
     raise "Failed to identify this Git commit ID" unless $?.success?
 
-    puts "Git commit: #{commit.chomp}"
+    puts "Build CouchDB commit: #{commit.chomp}"
   end
 end
