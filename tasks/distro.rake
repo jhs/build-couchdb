@@ -9,9 +9,9 @@ task :known_checkout do
     if ! system("git", "diff-index", "--quiet", "HEAD")
       diffs = %x[ git diff-index HEAD ]
       msg = "This checkout is not clean:\n#{diffs}"
-      raise msg unless ENV['unclean']
 
-      puts "WARNING: #{msg}\n"
+      #raise msg unless ENV['unclean']
+      puts "WARNING: #{msg}\n" unless ENV['unclean']
     end
 
     # TODO: Maybe check for unknown files
