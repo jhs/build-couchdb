@@ -1,4 +1,5 @@
 # Miscellaneous utilities
+#
 
 require 'uri'
 require 'find'
@@ -41,7 +42,17 @@ unless ARGV[0] == 'environment:shell' || ENV['raw']
   end
 end
 
-require File.dirname(__FILE__) + '/distros'
+#
+# Backward-compatibility stuff
+#
+
+unless Kernel.respond_to?(:require_relative)
+  module Kernel
+    def require_relative(path)
+      require File.join(File.dirname(caller[0]), path.to_str)
+    end
+  end
+end
 
 # This is the Ruby v1.9.1 Dir.mktmpdir.
 if ! Dir.respond_to? :mktmpdir
@@ -85,48 +96,16 @@ if ! Dir.respond_to? :mktmpdir
   end
 end
 
-def package_dep opts
-  # Unfortunately the dependency must be defined after the OS is detected,
-  # Even if this task is a no-op, if other tasks depend on it, they will re-run
-  # if this task runs. Therefore it must not be defined at all for un-requested
-  # distros. That means calling detect_distro() now and presumably later in :known_distro.
-  distro = detect_distro()
+#
+# Sub-libraries
+#
 
-  distros = opts.delete :distros
-  if distros && !distros.member?(distro[0])
-    puts "#{distro[0]} does not need #{opts.inspect}" if ENV['debug_package']
-    return "/" # Return a file dependency that will presumably always work.
-  end
+require_relative 'lib/distros'
+require_relative 'lib/package_dep'
 
-  puts "Package dependency for #{distro[0]}: #{opts.inspect}" if ENV['debug_package']
-  program_file, package = opts.to_a.first
-
-  Rake.application.in_explicit_namespace(':') do
-    file program_file do
-      case distro[0]
-        when :ubuntu, :debian
-          installed = `dpkg --list`.split("\n").map { |x| x.split[1] } # Hm, this is out of scope if defined outside.
-          if !installed.member?(package)
-            sh "sudo apt-get -y install #{package}"
-          end
-        when :solaris
-          installed = `pkg-get -l`.split("\n")
-          if !installed.member?(package)
-            sh "sudo pkg-get install #{package}"
-          end
-        when :osx
-          installed = `brew list`.split("\n")
-          if !installed.member?(package)
-            sh "sudo brew install #{package}"
-          end
-        else
-          puts "Skipping package requirement '#{package}' on an unsupported platform"
-      end
-    end
-  end
-
-  program_file
-end
+#
+# Main code
+#
 
 # Return the directories needed in $PATH for this distro (:known_distro task must run already)
 def path_dirs_for_distro(opts={})
