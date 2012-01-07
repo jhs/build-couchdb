@@ -10,9 +10,8 @@ The objective (suggested by Mikeal in this project's infancy) is to pull spiderm
 
 1. `hg clone --verbose http://hg.mozilla.org/releases/mozilla-release`
 1. `hg checkout FIREFOX_6_0_RELEASE`
-1. `cd js/src`
-1. `tar cf /tmp/js_src.tar .`
-1. Move to build-couchdb/dependencies/js_src
+1. `tar cf /tmp/js.tar mfbt js/src`
+1. Move to build-couchdb/dependencies/spidermonkey
 1. `rm -r *`
 1. `tar xf /tmp/js_src.tar && rm /tmp/js_src.tar`
 1. `git add .`

@@ -8,7 +8,7 @@ namespace :tracemonkey do
   task :build => [:known_distro, 'environment:path', JS_LIB]
 
   file JS_LIB => [package_dep('/usr/bin/python' => 'python'), AUTOCONF_213] do
-    src = "#{DEPS}/js_src"
+    src = "#{DEPS}/spidermonkey/js/src"
     begin
       Dir.chdir src
 
@@ -26,8 +26,7 @@ namespace :tracemonkey do
 
       Dir.mktmpdir 'tracemonkey_build' do |dir|
         Dir.chdir dir do
-          cmd = ["#{src}/configure", "--prefix=#{BUILD}", "--without-x"]
-
+          cmd = ["#{src}/configure", "--prefix=#{BUILD}", "--without-x", "--disable-tests"]
           if DISTRO[0] == :solaris
             cmd = [
               "LDFLAGS='-L/opt/csw/gcc4/lib'",
@@ -56,6 +55,14 @@ namespace :tracemonkey do
           #    broke linking against libc, libgcc, libm, etc. and even if it could be done right, it seems brittle.
           # 3. Just symlink it so ld finds what it wants. And that worked.
           sh "ln", "-sf", "libmozjs.so", "#{BUILD}/lib/libmozjs185.so" unless DISTRO[0] == :osx
+
+          # Manually install the Mozilla header files.
+          mozilla_include = "#{BUILD}/include/js/mozilla"
+          Dir.mkdir mozilla_include unless File.directory?(mozilla_include)
+
+          Dir.glob("#{DEPS}/spidermonkey/mfbt/*").each do |header|
+            sh "cp", header, mozilla_include
+          end
         end
       end
 
