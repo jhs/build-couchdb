@@ -197,7 +197,10 @@ def with_autoconf ver
     files.each { |x| ln_canonical x }
     yield
   ensure
-    files.each { |x| FileUtils.rm_f(canonical_path(x)) }
+    files.each do |x|
+      puts "rm_f #{canonical_path x}"
+      FileUtils.rm_f(canonical_path(x))
+    end
   end
 end
 
