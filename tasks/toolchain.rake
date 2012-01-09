@@ -5,8 +5,7 @@ require 'fileutils'
 
 namespace :toolchain do
 
-  autotools_versions = %w[ 2.13 2.59 ]
-
+  autotools_versions = %w[ 2.13 2.59 2.62 ]
   autotools_versions.each do |version|
     label = "AUTOCONF_#{version.gsub(/\W/, '')}"
     raise "Woah, why am I bothering to build autoconf #{version}? There is no #{label} constant" unless Object.const_defined? label
@@ -38,6 +37,23 @@ namespace :toolchain do
             end
           end
         end
+      end
+    end
+  end
+
+  file AUTOMAKE => AUTOCONF_262 do |task|
+    Rake::Task['environment:path'].invoke
+    Dir.mktmpdir "automake_build" do |dir|
+      Dir.chdir dir do
+        with_autoconf "2.62" do
+          show_file('config.log') do
+            sh "#{AUTOMAKE_SOURCE}/configure", "--prefix=#{BUILD}"
+          end
+        end
+
+        gmake
+        gmake "install"
+        record_manifest task.name
       end
     end
   end

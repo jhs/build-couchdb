@@ -380,5 +380,9 @@ MANIFESTS = "#{BUILD}/manifests"
 
 PIDS = "#{BUILD}/var/run/couchdb"
 
+AUTOMAKE        = "#{BUILD}/bin/automake"
+AUTOMAKE_SOURCE = "#{DEPS}/automake-1.11.2"
+
 AUTOCONF_213 = "#{BUILD}/bin/autoconf2.13"
 AUTOCONF_259 = "#{BUILD}/bin/autoconf2.59"
+AUTOCONF_262 = "#{BUILD}/bin/autoconf2.62"
