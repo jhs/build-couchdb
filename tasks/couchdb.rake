@@ -52,7 +52,7 @@ namespace :couchdb do
 
   directory "#{BUILD}/var/run/couchdb"
 
-  file COUCH_BIN => [COUCH_SOURCE + '/.git', AUTOCONF_259, "#{BUILD}/var/run/couchdb"] do
+  file COUCH_BIN => [COUCH_SOURCE + '/.git', AUTOCONF_259, AUTOMAKE, "#{BUILD}/var/run/couchdb"] do
     source = COUCH_SOURCE
 
     begin
