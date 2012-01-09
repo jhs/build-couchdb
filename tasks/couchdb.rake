@@ -57,10 +57,12 @@ namespace :couchdb do
 
     begin
       Dir.chdir(source) do
-        # TODO: Use the built-in autoconf (with_autoconf '2.59') instead of depending on the system.
         cmd = "./bootstrap"
         cmd = "SED=`which sed` #{cmd}" if DISTRO[0] == :solaris
-        sh cmd
+
+        with_autoconf "2.59" do
+          sh cmd
+        end
 
         # GCC 4.1.2 from RHEL and CentOS 5 rejects utf8.h due to a missing final newline.
         utf8_h = File.new("src/couchdb/priv/couch_js/utf8.h", "a")
