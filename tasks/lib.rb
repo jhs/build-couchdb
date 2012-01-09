@@ -192,9 +192,13 @@ end
 
 def with_autoconf ver
   files = %w[ autoconf autoheader autom4te ].map { |x| "#{BUILD}/bin/#{x}#{ver}" }
+  old_AUTOM4TE = ENV['AUTOM4TE']
 
   begin
+    ENV['AUTOM4TE'] = "#{BUILD}/bin/autom4te#{ver}"
+    puts "$AUTOM4TE #{old_AUTOM4TE.inspect} => #{ENV['AUTOM4TE']}"
     files.each { |x| ln_canonical x }
+
     yield
   ensure
     files.each { |x| FileUtils.rm_f(canonical_path(x)) }
