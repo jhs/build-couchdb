@@ -41,6 +41,23 @@ namespace :toolchain do
     end
   end
 
+  file AUTOMAKE => AUTOCONF_262 do |task|
+    Rake::Task['environment:path'].invoke
+    Dir.mktmpdir "automake_build" do |dir|
+      Dir.chdir dir do
+        with_autoconf "2.62" do
+          show_file('config.log') do
+            sh "#{AUTOMAKE_SOURCE}/configure", "--prefix=#{BUILD}"
+          end
+        end
+
+        gmake
+        gmake "install"
+        record_manifest task.name
+      end
+    end
+  end
+
   task :clean do
     %w[ info share/emacs share/autoconf ].each do |dir|
       FileUtils.rm_rf "#{BUILD}/#{dir}"
