@@ -12,7 +12,7 @@ namespace :erlang do
   OTP_REMOVE = %w[ compiler syntax_tools parsetools ic erts erl_interface eunit ]
   OTP_SKIP_COMPILE = %w[
     appmon asn1 common_test cosEvent cosEventDomain cosFileTransfer cosNotification cosProperty cosTime cosTransactions
-    wx debugger ssh test_server toolbar odbc orber reltool observer dialyzer docbuilder edoc et
+    wx debugger ssh test_server toolbar odbc orber reltool observer dialyzer edoc et
     gs hipe runtime_tools percept pman tools inviso tv typer webtool jinterface megaco mnesia
     diameter erl_docgen
   ]
