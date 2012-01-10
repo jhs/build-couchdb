@@ -181,12 +181,14 @@ namespace :couchdb do
   end
 
   desc 'Run ./configure in a CouchDB checkout'
-  task :configure => [:known_distro, 'environment:path', 'couchdb:dependencies'] do
+  task :configure => [:known_distro, 'environment:path', 'couchdb:dependencies', AUTOCONF_262] do
     nocouch = "This task must run in a normal CouchDB checkout or tarball"
     raise nocouch unless File.directory?('src/couchdb')
 
     unless File.file? 'configure'
-      sh   './bootstrap'
+      with_autoconf "2.62" do
+        sh "./bootstrap"
+      end
     end
 
     if DISTRO[0] == :osx
