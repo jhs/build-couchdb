@@ -177,16 +177,13 @@ For example, to build with Erlang R13B04 release:
 Add a `git` parameter with the repository URL, then a space, then the branch,
 tag, or commit hash. (Remember to quote all of those so Rake sees the space.)
 
-Want to build [GeoCouch][geocouch]? No problem.
-
-    rake git="git://github.com/vmx/couchdb geocouch"
-
 ### CouchDB Plugins
 
 Any CouchDB plugin can be loaded remotely from Git, built, and installed
 into the final CouchDB system.
 
-    rake plugin="git://github.com/vmx/couchdb origin/gc-separate"
+    rake plugin="git://github.com/couchbase/geocouch origin/couchdb_1.2.x"
+    # (Or perhaps origin/couchdb_1.1.x)
 
 Multiple plugins can be processed together:
 
@@ -201,17 +198,13 @@ Add an `install` parameter to place the final couchdb binaries anywhere.
 
 Build CouchDB makes it simple to install several couchdb versions side-by-side.
 
-    rake git="git://github.com/vmx/couchdb geocouch" install=geocouch
+    rake install=stable
     rake git="git://git.apache.org/couchdb.git trunk" install=trunk
     for tag in 1.0.1 11.0 11.1; do
         rake git="git://git.apache.org/couchdb.git tags/$tag" install=$tag
     done
 
-Note that `install` needs to be an absolute path. Use:
-
-    `pwd`/geocouch
-
-e.g. creates the directory `geocouch` in your current directory.
+Note that `install` needs to be an absolute path.
 
 For **side-by-side installs** there is a small shortcut to avoid rebuilding Erlang:
 use the `couchdb_build` variable instead, which will install CouchDB separately
