@@ -40,8 +40,7 @@ the commands below.
 
 On **Fedora**:
 
-    sudo yum install gcc gcc-c++ libtool \
-                     zlib-devel openssl-devel rubygem-rake
+    sudo yum install gcc gcc-c++ make libtool zlib-devel openssl-devel rubygem-rake
 
 On **Red Hat Enterprise Linux**:
 
