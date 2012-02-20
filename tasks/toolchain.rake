@@ -18,10 +18,12 @@ namespace :toolchain do
         Dir.chdir dir do
           fakes = %w[ makeinfo help2man ]
           begin
-            fakes.each do |name|
-              fake = File.new("#{BUILD}/bin/#{name}", 'w')
-              fake.chmod 0700
-              fake.close
+            unless version == "2.62"
+              fakes.each do |name|
+                fake = File.new("#{BUILD}/bin/#{name}", 'w')
+                fake.chmod 0700
+                fake.close
+              end
             end
 
             show_file('config.log') do
