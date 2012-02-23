@@ -18,10 +18,12 @@ namespace :toolchain do
         Dir.chdir dir do
           fakes = %w[ makeinfo help2man ]
           begin
-            fakes.each do |name|
-              fake = File.new("#{BUILD}/bin/#{name}", 'w')
-              fake.chmod 0700
-              fake.close
+            unless version == "2.62"
+              fakes.each do |name|
+                fake = File.new("#{BUILD}/bin/#{name}", 'w')
+                fake.chmod 0700
+                fake.close
+              end
             end
 
             show_file('config.log') do
@@ -43,19 +45,36 @@ namespace :toolchain do
 
   file AUTOMAKE => AUTOCONF_262 do |task|
     Rake::Task['environment:path'].invoke
-    Dir.mktmpdir "automake_build" do |dir|
-      Dir.chdir dir do
-        with_autoconf "2.62" do
-          show_file('config.log') do
-            sh "#{AUTOMAKE_SOURCE}/configure", "--prefix=#{BUILD}"
+
+    # Automake needs a ./bootstrap, and then needs to be cleaned up afterward.
+    with_autoconf "2.62" do
+      Dir.chdir AUTOMAKE_SOURCE do
+        begin
+          sh "./bootstrap"
+
+          # Now automake can be built.
+          Dir.mktmpdir "automake_build" do |build_dir|
+            Dir.chdir build_dir do
+              show_file('config.log') do
+                sh "#{AUTOMAKE_SOURCE}/configure", "--prefix=#{BUILD}"
+              end
+
+              gmake
+              gmake "install"
+              record_manifest task.name
+            end
+          end # mktmpdir "automake_build"
+        ensure
+          if Dir.pwd != AUTOMAKE_SOURCE
+            puts "WARNING: Failed to reset files: #{AUTOMAKE_SOURCE}"
+          else
+            puts "Resetting changes automake made to itself: #{AUTOMAKE_SOURCE}"
+            sh "git", "checkout", "HEAD", "."
+            FileUtils.rm_rf "autom4te.cache"
           end
         end
-
-        gmake
-        gmake "install"
-        record_manifest task.name
-      end
-    end
+      end # chdir AUTOMAKE_SOURCE
+    end # with_autoconf
   end
 
   task :clean do
