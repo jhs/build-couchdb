@@ -5,17 +5,21 @@ namespace :curl do
   desc 'Build libcurl'
   task :build => [:known_distro, 'environment:path', CURL_BIN]
 
-  file CURL_BIN do
+  file CURL_BIN => AUTOCONF_262 do
     source = "#{DEPS}/curl"
     begin
       Dir.chdir(source) do
-        sh "./buildconf"
+        with_autoconf "2.62" do
+          sh "./buildconf"
+        end
       end
 
       Dir.mktmpdir 'curl-build' do |dir|
         Dir.chdir dir do
-          show_file("config.log") do
-            sh(configure_cmd(source, :prefix => :deps))
+          with_autoconf "2.62" do
+            show_file("config.log") do
+              sh(configure_cmd(source, :prefix => :deps))
+            end
           end
 
           gmake
