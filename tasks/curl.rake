@@ -5,7 +5,7 @@ namespace :curl do
   desc 'Build libcurl'
   task :build => [:known_distro, 'environment:path', CURL_BIN]
 
-  file CURL_BIN => AUTOCONF_262 do
+  file CURL_BIN => [AUTOMAKE, AUTOCONF_262] do
     source = "#{DEPS}/curl"
     begin
       Dir.chdir(source) do
