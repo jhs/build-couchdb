@@ -191,7 +191,7 @@ def show_file filename
 end
 
 def with_autoconf ver
-  files = %w[ autoconf autoheader autom4te ].map { |x| "#{BUILD}/bin/#{x}#{ver}" }
+  files = %w[ autoconf autoreconf autoheader autom4te ].map { |x| "#{BUILD}/bin/#{x}#{ver}" }
 
   begin
     files.each { |x| ln_canonical x }
