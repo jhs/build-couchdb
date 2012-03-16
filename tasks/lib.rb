@@ -128,7 +128,7 @@ def install_env_script(opts={})
   # XXX: Code duplication from :configure.
   dirs['DYLD_LIBRARY_PATH'] = {'insert' => ["#{target}/lib"]} if DISTRO[0] == :osx
 
-  template = ERB.new(File.open("#{HERE}/templates/#{script}.erb").read())
+  template = ERB.new(File.open("#{HERE}/lib/templates/#{script}.erb").read())
   FileUtils.mkdir_p(target)
   File.open("#{target}/#{script}", 'w') do |outfile|
     outfile.write(template.result(binding))
