@@ -181,7 +181,7 @@ tag, or commit hash. (Remember to quote all of those so Rake sees the space.)
 Any CouchDB plugin can be loaded remotely from Git, built, and installed
 into the final CouchDB system.
 
-    rake plugin="git://github.com/couchbase/geocouch origin/couchdb_1.2.x"
+    rake plugin="git://github.com/couchbase/geocouch origin/couchdb1.2.x"
     # (Or perhaps origin/couchdb_1.1.x)
 
 Multiple plugins can be processed together:
