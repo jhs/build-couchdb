@@ -150,6 +150,7 @@ namespace :couchdb do
           begin
             ENV['ERL_COMPILER_OPTIONS'] = "[{i, \"#{COUCH_SOURCE}/src/couchdb\"}]"
             sh "./rebar clean"
+            sh "./rebar get-deps" unless ENV['skip_deps']
             sh "./rebar compile"
           ensure
             ENV.delete('ERL_COMPILER_OPTIONS')
