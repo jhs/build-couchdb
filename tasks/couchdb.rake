@@ -147,13 +147,23 @@ namespace :couchdb do
           gmake "COUCH_SRC='#{COUCH_SOURCE}/src/couchdb' clean"
           gmake "COUCH_SRC='#{COUCH_SOURCE}/src/couchdb'"
         elsif File.exists? 'rebar'
+          make_script = false
           begin
-            ENV['ERL_COMPILER_OPTIONS'] = "[{i, \"#{COUCH_SOURCE}/src/couchdb\"}]"
+            if File.exists?("rebar.config") && !File.exists?("rebar.config.script")
+              make_script = true
+              ENV['COUCHDB_DEP'] = "#{COUCH_BUILD}/lib/couchdb/erlang/lib"
+              sh "cp", "-n", "#{HERE}/lib/templates/rebar.config.script", "." # noclobber
+            else
+              ENV['ERL_COMPILER_OPTIONS'] = "[{i, \"#{COUCH_SOURCE}/src/couchdb\"}]"
+            end
+
             sh "./rebar clean"
             sh "./rebar get-deps" unless ENV['skip_deps']
             sh "./rebar compile"
           ensure
             ENV.delete('ERL_COMPILER_OPTIONS')
+            ENV.delete('COUCHDB_DEP')
+            sh "rm", "-f", "rebar.config.script" if make_script
           end
         else
           raise "I do not know how to build this plugin: #{source}"
