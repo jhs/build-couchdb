@@ -401,3 +401,6 @@ AUTOCONF_213 = "#{BUILD}/bin/autoconf2.13"
 AUTOCONF_259 = "#{BUILD}/bin/autoconf2.59"
 AUTOCONF_262 = "#{BUILD}/bin/autoconf2.62"
 AUTOCONF_269 = "#{BUILD}/bin/autoconf2.69"
+
+AUTOCONF_ARCHIVE = "#{BUILD}/bin/autoconf-archive"
+AUTOCONF_ARCHIVE_SOURCE = "#{DEPS}/autoconf-archive"

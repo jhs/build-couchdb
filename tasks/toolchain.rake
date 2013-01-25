@@ -79,6 +79,17 @@ namespace :toolchain do
     end # with_autoconf
   end
 
+  file AUTOCONF_ARCHIVE => ["environment:path", AUTOMAKE, AUTOCONF_269] do |task|
+    # Gnulib must be in the path to build this.
+    with_path "#{DEPS}/gnulib" do
+      with_autoconf "2.69" do
+        Dir.chdir AUTOCONF_ARCHIVE_SOURCE do
+          sh "./bootstrap.sh"
+        end
+      end
+    end
+  end
+
   task :clean do
     %w[ info share/emacs share/autoconf ].each do |dir|
       FileUtils.rm_rf "#{BUILD}/#{dir}"
