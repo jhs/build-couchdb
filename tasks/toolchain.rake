@@ -95,17 +95,20 @@ namespace :toolchain do
           end
 
           fakes = %w[ makeinfo help2man ] # Needed for `make` and `make install`
-          begin
-            fakes.each do |name|
-              fake = File.new("#{BUILD}/bin/#{name}", 'w')
-              fake.write "#!/bin/sh\n"
-              fake.chmod 0700
-              fake.close
-            end
+          fakes.each do |name|
+            fake = File.new("#{BUILD}/bin/#{name}", 'w')
+            fake.write "#!/bin/sh\n"
+            fake.chmod 0700
+            fake.close
+          end
 
+          begin
             gmake "maintainer-all"
             gmake
             gmake "install"
+
+            # XXX: Wow, this feels very dangerous and unportable. On Ubuntu 12.04 it is in /usr/share/aclocal/pkg.m4.
+            FileUtils.touch "#{BUILD}/share/aclocal/pkg.m4"
           ensure
             fakes.each do |name|
               FileUtils.rm_f "#{BUILD}/bin/#{name}"
