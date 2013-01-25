@@ -107,8 +107,8 @@ namespace :toolchain do
             gmake
             gmake "install"
 
-            # XXX: Wow, this feels very dangerous and unportable. On Ubuntu 12.04 it is in /usr/share/aclocal/pkg.m4.
-            FileUtils.touch "#{BUILD}/share/aclocal/pkg.m4"
+            # Just copy the pkg.m4 that comes with Spidermonkey for now.
+            sh "cp", "#{DEPS}/spidermonkey/js/src/build/autoconf/pkg.m4", "#{BUILD}/share/aclocal/pkg.m4"
           ensure
             fakes.each do |name|
               FileUtils.rm_f "#{BUILD}/bin/#{name}"
