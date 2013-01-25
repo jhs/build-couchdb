@@ -201,6 +201,19 @@ def with_path(dir)
   end
 end
 
+# Run a block in a Git checkout and clean up afterward.
+def git_work(dir)
+  Dir.chdir(dir) do
+    begin
+      yield
+    ensure
+      sh "git", "reset", "--hard"
+      sh "git", "clean", "-f", "-d"
+      sh "git ls-files --others -i --exclude-standard | xargs rm || true"
+    end
+  end
+end
+
 def with_autoconf ver
   files = %w[ autoconf autoreconf autoheader autom4te ].map { |x| "#{BUILD}/bin/#{x}#{ver}" }
 
