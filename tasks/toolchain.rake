@@ -5,7 +5,7 @@ require 'fileutils'
 
 namespace :toolchain do
 
-  autotools_versions = %w[ 2.13 2.59 2.62 ]
+  autotools_versions = %w[ 2.13 2.59 2.62 2.69 ]
   autotools_versions.each do |version|
     label = "AUTOCONF_#{version.gsub(/\W/, '')}"
     raise "Woah, why am I bothering to build autoconf #{version}? There is no #{label} constant" unless Object.const_defined? label
