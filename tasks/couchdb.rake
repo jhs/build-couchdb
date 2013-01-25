@@ -52,7 +52,7 @@ namespace :couchdb do
 
   directory "#{BUILD}/var/run/couchdb"
 
-  file COUCH_BIN => [COUCH_SOURCE + '/.git', AUTOCONF_259, AUTOMAKE, "#{BUILD}/var/run/couchdb"] do
+  file COUCH_BIN => [COUCH_SOURCE + '/.git', AUTOCONF_259, AUTOMAKE, AUTOCONF_ARCHIVE, "#{BUILD}/var/run/couchdb"] do
     source = COUCH_SOURCE
 
     begin
@@ -192,7 +192,7 @@ namespace :couchdb do
   end
 
   desc 'Run ./configure in a CouchDB checkout'
-  task :configure => [:known_distro, 'environment:path', 'couchdb:dependencies', AUTOCONF_262] do
+  task :configure => [:known_distro, 'environment:path', 'couchdb:dependencies', AUTOCONF_262, AUTOCONF_ARCHIVE] do
     nocouch = "This task must run in a normal CouchDB checkout or tarball"
     raise nocouch unless File.directory?('src/couchdb')
 
