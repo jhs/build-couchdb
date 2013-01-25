@@ -29,7 +29,9 @@ namespace :toolchain do
             end
 
             show_file('config.log') do
-              sh "#{DEPS}/autoconf-#{version}/configure --prefix=#{BUILD} --program-suffix=#{version}"
+              datadir = %w[ 2.13 2.59 ].include?(version) ? "datadir" : "datarootdir"
+              sh "#{DEPS}/autoconf-#{version}/configure", "--prefix=#{BUILD}", "--program-suffix=#{version}",
+                 "--#{datadir}=#{BUILD}/share/autoconf-#{version}"
             end
 
             gmake

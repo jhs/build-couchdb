@@ -215,12 +215,17 @@ def git_work(dir)
 end
 
 def with_autoconf ver
+  old_perl5lib = (ENV['PERL5LIB'] || "").split(":")
+  new_perl5lib = ["#{BUILD}/share/autoconf-#{ver}/autoconf"] + old_perl5lib
+
   files = %w[ autoconf autoreconf autoheader autom4te ].map { |x| "#{BUILD}/bin/#{x}#{ver}" }
 
   begin
+    ENV['PERL5LIB'] = new_perl5lib.join(":")
     files.each { |x| ln_canonical x }
     yield
   ensure
+    ENV['PERL5LIB'] = old_perl5lib.join(":")
     files.each do |x|
       puts "rm_f #{canonical_path x}"
       FileUtils.rm_f(canonical_path(x))
