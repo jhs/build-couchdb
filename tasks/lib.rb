@@ -209,7 +209,7 @@ def git_work(dir)
     ensure
       sh "git", "reset", "--hard"
       sh "git", "clean", "-f", "-d"
-      sh "git ls-files --others -i --exclude-standard | xargs rm || true"
+      sh "git ls-files --others -i --exclude-standard | xargs rm -f || true"
     end
   end
 end
