@@ -81,7 +81,9 @@ namespace :toolchain do
     end # with_autoconf
   end
 
-  file AUTOCONF_ARCHIVE => ["environment:path", AUTOMAKE, AUTOCONF_269] do |task|
+  file AUTOCONF_ARCHIVE => [AUTOMAKE, AUTOCONF_269] do |task|
+    Rake::Task['environment:path'].invoke
+
     # Gnulib must be in the path to build this.
     with_path "#{DEPS}/gnulib" do
       with_autoconf "2.69" do
