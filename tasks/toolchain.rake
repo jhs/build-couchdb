@@ -83,11 +83,36 @@ namespace :toolchain do
     # Gnulib must be in the path to build this.
     with_path "#{DEPS}/gnulib" do
       with_autoconf "2.69" do
-        Dir.chdir AUTOCONF_ARCHIVE_SOURCE do
+        git_work AUTOCONF_ARCHIVE_SOURCE do
           sh "./bootstrap.sh"
-        end
-      end
-    end
+
+          show_file('config.log') do
+            sh "./configure", "--prefix=#{BUILD}"
+          end
+
+          fakes = %w[ makeinfo help2man ] # Needed for `make` and `make install`
+          begin
+            fakes.each do |name|
+              fake = File.new("#{BUILD}/bin/#{name}", 'w')
+              fake.write "#!/bin/sh\n"
+              fake.chmod 0700
+              fake.close
+            end
+
+            gmake "maintainer-all"
+            gmake
+            gmake "install"
+          ensure
+            fakes.each do |name|
+              FileUtils.rm_f "#{BUILD}/bin/#{name}"
+            end
+          end
+
+          record_manifest task.name
+          puts "Manifest: #{task.name.inspect}"
+        end # git_work AUTOCONF_ARCHIVE_SOURCE
+      end # with_autoconf "2.69"
+    end # with_path "DEPS/gnulib"
   end
 
   task :clean do
