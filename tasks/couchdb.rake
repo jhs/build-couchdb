@@ -52,7 +52,7 @@ namespace :couchdb do
 
   directory "#{BUILD}/var/run/couchdb"
 
-  file COUCH_BIN => [COUCH_SOURCE + '/.git', AUTOCONF_259, AUTOMAKE, AUTOCONF_ARCHIVE, "#{BUILD}/var/run/couchdb"] do
+  file COUCH_BIN => [COUCH_SOURCE + '/.git', AUTOCONF_269, AUTOMAKE, AUTOCONF_ARCHIVE, "#{BUILD}/var/run/couchdb"] do
     source = COUCH_SOURCE
 
     begin
@@ -60,7 +60,7 @@ namespace :couchdb do
         cmd = "./bootstrap"
         cmd = "SED=`which sed` #{cmd}" if DISTRO[0] == :solaris
 
-        with_autoconf "2.59" do
+        with_autoconf "2.69" do
           sh cmd
         end
 
@@ -192,12 +192,12 @@ namespace :couchdb do
   end
 
   desc 'Run ./configure in a CouchDB checkout'
-  task :configure => [:known_distro, 'environment:path', 'couchdb:dependencies', AUTOCONF_262, AUTOCONF_ARCHIVE] do
+  task :configure => [:known_distro, 'environment:path', 'couchdb:dependencies', AUTOCONF_269, AUTOCONF_ARCHIVE] do
     nocouch = "This task must run in a normal CouchDB checkout or tarball"
     raise nocouch unless File.directory?('src/couchdb')
 
     unless File.file? 'configure'
-      with_autoconf "2.62" do
+      with_autoconf "2.69" do
         sh "./bootstrap"
       end
     end
