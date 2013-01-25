@@ -190,6 +190,17 @@ def show_file filename
   end
 end
 
+# Run a block with a new directory added to the path.
+def with_path(dir)
+  old_path = ENV['PATH'].split(/:/)
+  ENV['PATH'] = "#{dir}:" + ENV['PATH'] unless old_path.include? dir
+  begin
+    yield
+  ensure
+    ENV['PATH'] = old_path.join(":")
+  end
+end
+
 def with_autoconf ver
   files = %w[ autoconf autoreconf autoheader autom4te ].map { |x| "#{BUILD}/bin/#{x}#{ver}" }
 
