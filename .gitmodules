@@ -7,3 +7,6 @@
 [submodule "dependencies/curl"]
 	path = dependencies/curl
 	url = git://github.com/bagder/curl.git
+[submodule "dependencies/autoconf-archive"]
+	path = dependencies/autoconf-archive
+	url = git://git.sv.gnu.org/autoconf-archive.git
