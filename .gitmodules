@@ -10,3 +10,6 @@
 [submodule "dependencies/autoconf-archive"]
 	path = dependencies/autoconf-archive
 	url = git://git.sv.gnu.org/autoconf-archive.git
+[submodule "dependencies/gnulib"]
+	path = dependencies/gnulib
+	url = git://git.savannah.gnu.org/gnulib.git
