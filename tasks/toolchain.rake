@@ -10,36 +10,46 @@ namespace :toolchain do
     label = "AUTOCONF_#{version.gsub(/\W/, '')}"
     raise "Woah, why am I bothering to build autoconf #{version}? There is no #{label} constant" unless Object.const_defined? label
 
+    autoconf_src = "#{DEPS}/autoconf-#{version}"
     packages = [ package_dep('/opt/csw/bin/gm4'  => 'gm4', :distros => [:solaris]),
                  package_dep('/opt/csw/bin/gsed' => 'gsed', :distros => [:solaris])
                ]
 
     file Object.const_get(label) => packages do |task|
       Rake::Task['environment:path'].invoke
+
       Dir.mktmpdir "autoconf-#{version}_build" do |dir|
         Dir.chdir dir do
-          fakes = %w[ makeinfo help2man ]
           begin
-            unless version == "2.62"
+            fakes = %w[ makeinfo help2man ]
+            begin
+              unless version == "2.62"
+                fakes.each do |name|
+                  fake = File.new("#{BUILD}/bin/#{name}", 'w')
+                  fake.chmod 0700
+                  fake.close
+                end
+              end
+
+              show_file('config.log') do
+                datadir = %w[ 2.13 2.59 ].include?(version) ? "datadir" : "datarootdir"
+                sh "#{autoconf_src}/configure", "--prefix=#{BUILD}", "--program-suffix=#{version}",
+                   "--#{datadir}=#{BUILD}/share/autoconf-#{version}"
+              end
+
+              gmake
+              gmake "install"
+              record_manifest task.name
+            ensure
               fakes.each do |name|
-                fake = File.new("#{BUILD}/bin/#{name}", 'w')
-                fake.chmod 0700
-                fake.close
+                FileUtils.rm_f "#{BUILD}/bin/#{name}"
               end
             end
-
-            show_file('config.log') do
-              datadir = %w[ 2.13 2.59 ].include?(version) ? "datadir" : "datarootdir"
-              sh "#{DEPS}/autoconf-#{version}/configure", "--prefix=#{BUILD}", "--program-suffix=#{version}",
-                 "--#{datadir}=#{BUILD}/share/autoconf-#{version}"
-            end
-
-            gmake
-            gmake "install"
-            record_manifest task.name
           ensure
-            fakes.each do |name|
-              FileUtils.rm_f "#{BUILD}/bin/#{name}"
+            # Clean the git code.
+            Dir.chdir autoconf_src do
+              sh "git", "checkout", "HEAD", "."
+              sh "rm", "-rf", "autom4te.cache"
             end
           end
         end
