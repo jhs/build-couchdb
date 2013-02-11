@@ -55,7 +55,7 @@ namespace :build do
   task :ubuntu_dependencies => :known_distro do
     if DISTRO[0] == :ubuntu
       libz_dev = "libz-dev"
-      libz_dev = "zlib1g-dev" if DISTRO[1] =~ /~12\./
+      libz_dev = "zlib1g-dev" if DISTRO[1] =~ /^12\./
 
       # For building OTP
       install_packages(%w[ flex dctrl-tools libsctp-dev ed ] + [ libz_dev ])
