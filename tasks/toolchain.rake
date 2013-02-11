@@ -88,7 +88,11 @@ namespace :toolchain do
     with_path "#{DEPS}/gnulib" do
       with_autoconf "2.69" do
         git_work AUTOCONF_ARCHIVE_SOURCE do
-          sh "sed", "-i.build-couchdb", "-e", "s/sed -i/sed -i.build-couchdb/", "bootstrap.sh" if DISTRO[0] == :osx
+          if DISTRO[0] == :osx
+            sh "sed", "-i.build-couchdb", "-e", "s/sed -i/sed -i.build-couchdb/", "bootstrap.sh"
+            sh "sed", "-i.build-couchdb", "-e", "s/echo/\\/bin\\/echo/"         , "configure.ac"
+          end
+
           sh "./bootstrap.sh"
 
           show_file('config.log') do
