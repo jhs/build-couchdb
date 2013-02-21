@@ -198,10 +198,10 @@ Add an `install` parameter to place the final couchdb binaries anywhere.
 
 Build CouchDB makes it simple to install several couchdb versions side-by-side.
 
-    rake install=stable
-    rake git="git://git.apache.org/couchdb.git trunk" install=trunk
+    rake install=$PWD/stable
+    rake git="git://git.apache.org/couchdb.git trunk" install=$PWD/trunk
     for tag in 1.0.1 11.0 11.1; do
-        rake git="git://git.apache.org/couchdb.git tags/$tag" install=$tag
+        rake git="git://git.apache.org/couchdb.git tags/$tag" install=$PWD/$tag
     done
 
 Note that `install` needs to be an absolute path.
