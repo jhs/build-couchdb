@@ -59,7 +59,7 @@ namespace :toolchain do
 
   file LIBTOOL => AUTOCONF_262 do |task|
     Rake::Task['environment:path'].invoke
-  
+
     with_autoconf "2.62" do
       Dir.chdir LIBTOOL_SOURCE do
         begin
@@ -69,7 +69,7 @@ namespace :toolchain do
               show_file('config.log') do
                 sh "#{LIBTOOL_SOURCE}/configure", "--prefix=#{BUILD}"
               end
-  
+
               gmake
               gmake "install"
               record_manifest task.name
@@ -86,7 +86,7 @@ namespace :toolchain do
       end # chdir LIBTOOL_SOURCE
     end # with_autoconf
   end
-  
+
   file AUTOMAKE => LIBTOOL do |task|
     Rake::Task['environment:path'].invoke
 

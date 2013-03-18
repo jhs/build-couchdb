@@ -12,7 +12,7 @@ def detect_distro
     return [:solaris, `uname -r`.chomp]
   end
 
-  if `uname -r`.chomp[-4..-1] == "ARCH" 
+  if `uname -r`.chomp[-4..-1] == "ARCH"
     return [:arch, `uname -r`.chomp]
   end
 
