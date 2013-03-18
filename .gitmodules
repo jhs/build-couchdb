@@ -13,3 +13,6 @@
 [submodule "dependencies/gnulib"]
 	path = dependencies/gnulib
 	url = git://git.savannah.gnu.org/gnulib.git
+[submodule "dependencies/libtool"]
+	path = dependencies/libtool
+	url = git://git.savannah.gnu.org/libtool.git
