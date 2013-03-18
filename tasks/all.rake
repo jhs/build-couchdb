@@ -42,8 +42,8 @@ namespace :build do
         # For building OTP
         %w[ flex dctrl-tools libsctp-dev ed ],
 
-        # All Ubuntu gets these.
-        %w[ libxslt1-dev automake make ruby libtool g++ ],
+        # All Debian gets these.
+        %w[ libxslt1-dev automake make libtool g++ ],
         %w[ zip libcap2-bin ],
 
         # Needed for Varnish
@@ -61,7 +61,7 @@ namespace :build do
       install_packages(%w[ flex dctrl-tools libsctp-dev ed ] + [ libz_dev ])
 
       # All Ubuntu gets these.
-      install_packages %w[ libxslt1-dev automake make ruby libtool g++ ]
+      install_packages %w[ libxslt1-dev automake make libtool g++ ]
       install_packages %w[ zip libcap2-bin ]
 
       # Needed for Varnish
@@ -75,7 +75,7 @@ namespace :build do
       install_packages %w[ flex lksctp-tools zlib zip ]
 
       # All Arch gets these.
-      install_packages %w[ libxslt automake make ruby libtool gcc libcap m4 openssl ]
+      install_packages %w[ libxslt automake make libtool gcc libcap m4 openssl ]
     end
   end
 
