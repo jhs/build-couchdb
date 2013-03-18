@@ -199,13 +199,42 @@ def show_file filename
   end
 end
 
+# Run a block with a new directory added to the path.
+def with_path(dir)
+  old_path = ENV['PATH'].split(/:/)
+  ENV['PATH'] = "#{dir}:" + ENV['PATH'] unless old_path.include? dir
+  begin
+    yield
+  ensure
+    ENV['PATH'] = old_path.join(":")
+  end
+end
+
+# Run a block in a Git checkout and clean up afterward.
+def git_work(dir)
+  Dir.chdir(dir) do
+    begin
+      yield
+    ensure
+      sh "git", "reset", "--hard"
+      sh "git", "clean", "-f", "-d"
+      sh "git ls-files --others -i --exclude-standard | xargs rm -f || true"
+    end
+  end
+end
+
 def with_autoconf ver
+  old_perl5lib = (ENV['PERL5LIB'] || "").split(":")
+  new_perl5lib = ["#{BUILD}/share/autoconf-#{ver}/autoconf"] + old_perl5lib
+
   files = %w[ autoconf autoreconf autoheader autom4te ].map { |x| "#{BUILD}/bin/#{x}#{ver}" }
 
   begin
+    ENV['PERL5LIB'] = new_perl5lib.join(":")
     files.each { |x| ln_canonical x }
     yield
   ensure
+    ENV['PERL5LIB'] = old_perl5lib.join(":")
     files.each do |x|
       puts "rm_f #{canonical_path x}"
       FileUtils.rm_f(canonical_path(x))
@@ -398,3 +427,7 @@ AUTOMAKE_SOURCE = "#{DEPS}/automake-1.11.2"
 AUTOCONF_213 = "#{BUILD}/bin/autoconf2.13"
 AUTOCONF_259 = "#{BUILD}/bin/autoconf2.59"
 AUTOCONF_262 = "#{BUILD}/bin/autoconf2.62"
+AUTOCONF_269 = "#{BUILD}/bin/autoconf2.69"
+
+AUTOCONF_ARCHIVE = "#{BUILD}/share/aclocal/ax_check_icu.m4"
+AUTOCONF_ARCHIVE_SOURCE = "#{DEPS}/autoconf-archive"

@@ -5,37 +5,51 @@ require 'fileutils'
 
 namespace :toolchain do
 
-  autotools_versions = %w[ 2.13 2.59 2.62 ]
+  autotools_versions = %w[ 2.13 2.59 2.62 2.69 ]
   autotools_versions.each do |version|
     label = "AUTOCONF_#{version.gsub(/\W/, '')}"
     raise "Woah, why am I bothering to build autoconf #{version}? There is no #{label} constant" unless Object.const_defined? label
 
-    packages = [ package_dep('/opt/csw/bin/gm4'  => 'gm4' , :distros => [:solaris]), package_dep('/opt/csw/bin/gsed' => 'gsed', :distros => [:solaris]) ]
+    autoconf_src = "#{DEPS}/autoconf-#{version}"
+    packages = [ package_dep('/opt/csw/bin/gm4'  => 'gm4', :distros => [:solaris]),
+                 package_dep('/opt/csw/bin/gsed' => 'gsed', :distros => [:solaris])
+               ]
 
     file Object.const_get(label) => packages do |task|
       Rake::Task['environment:path'].invoke
+
       Dir.mktmpdir "autoconf-#{version}_build" do |dir|
         Dir.chdir dir do
-          fakes = %w[ makeinfo help2man ]
           begin
-            unless version == "2.62"
+            fakes = %w[ makeinfo help2man ]
+            begin
+              unless version == "2.62"
+                fakes.each do |name|
+                  fake = File.new("#{BUILD}/bin/#{name}", 'w')
+                  fake.chmod 0700
+                  fake.close
+                end
+              end
+
+              show_file('config.log') do
+                datadir = %w[ 2.13 2.59 ].include?(version) ? "datadir" : "datarootdir"
+                sh "#{autoconf_src}/configure", "--prefix=#{BUILD}", "--program-suffix=#{version}",
+                   "--#{datadir}=#{BUILD}/share/autoconf-#{version}"
+              end
+
+              gmake
+              gmake "install"
+              record_manifest task.name
+            ensure
               fakes.each do |name|
-                fake = File.new("#{BUILD}/bin/#{name}", 'w')
-                fake.chmod 0700
-                fake.close
+                FileUtils.rm_f "#{BUILD}/bin/#{name}"
               end
             end
-
-            show_file('config.log') do
-              sh "#{DEPS}/autoconf-#{version}/configure --prefix=#{BUILD} --program-suffix=#{version}"
-            end
-
-            gmake
-            gmake "install"
-            record_manifest task.name
           ensure
-            fakes.each do |name|
-              FileUtils.rm_f "#{BUILD}/bin/#{name}"
+            # Clean the git code.
+            Dir.chdir autoconf_src do
+              sh "git", "checkout", "HEAD", "."
+              sh "rm", "-rf", "autom4te.cache"
             end
           end
         end
@@ -75,6 +89,52 @@ namespace :toolchain do
         end
       end # chdir AUTOMAKE_SOURCE
     end # with_autoconf
+  end
+
+  file AUTOCONF_ARCHIVE => [AUTOMAKE, AUTOCONF_269] do |task|
+    Rake::Task['environment:path'].invoke
+
+    # Gnulib must be in the path to build this.
+    with_path "#{DEPS}/gnulib" do
+      with_autoconf "2.69" do
+        git_work AUTOCONF_ARCHIVE_SOURCE do
+          if DISTRO[0] == :osx
+            sh "sed", "-i.build-couchdb", "-e", "s/sed -i/sed -i.build-couchdb/", "bootstrap.sh"
+            sh "sed", "-i.build-couchdb", "-e", "s/echo/\\/bin\\/echo/"         , "configure.ac"
+          end
+
+          sh "./bootstrap.sh"
+
+          show_file('config.log') do
+            sh "./configure", "--prefix=#{BUILD}"
+          end
+
+          fakes = %w[ makeinfo help2man ] # Needed for `make` and `make install`
+          fakes.each do |name|
+            fake = File.new("#{BUILD}/bin/#{name}", 'w')
+            fake.write "#!/bin/sh\n"
+            fake.chmod 0700
+            fake.close
+          end
+
+          begin
+            gmake "maintainer-all"
+            gmake
+            gmake "install"
+
+            # Just copy the pkg.m4 that comes with Spidermonkey for now.
+            sh "cp", "#{DEPS}/spidermonkey/js/src/build/autoconf/pkg.m4", "#{BUILD}/share/aclocal/pkg.m4"
+          ensure
+            fakes.each do |name|
+              FileUtils.rm_f "#{BUILD}/bin/#{name}"
+            end
+          end
+
+          record_manifest task.name
+          puts "Manifest: #{task.name.inspect}"
+        end # git_work AUTOCONF_ARCHIVE_SOURCE
+      end # with_autoconf "2.69"
+    end # with_path "DEPS/gnulib"
   end
 
   task :clean do

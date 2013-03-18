@@ -52,7 +52,7 @@ namespace :couchdb do
 
   directory "#{BUILD}/var/run/couchdb"
 
-  file COUCH_BIN => [COUCH_SOURCE + '/.git', AUTOCONF_259, AUTOMAKE, "#{BUILD}/var/run/couchdb"] do
+  file COUCH_BIN => [COUCH_SOURCE + '/.git', AUTOCONF_269, AUTOMAKE, AUTOCONF_ARCHIVE, "#{BUILD}/var/run/couchdb"] do
     source = COUCH_SOURCE
 
     begin
@@ -60,7 +60,7 @@ namespace :couchdb do
         cmd = "./bootstrap"
         cmd = "SED=`which sed` #{cmd}" if DISTRO[0] == :solaris
 
-        with_autoconf "2.59" do
+        with_autoconf "2.69" do
           sh cmd
         end
 
@@ -147,13 +147,23 @@ namespace :couchdb do
           gmake "COUCH_SRC='#{COUCH_SOURCE}/src/couchdb' clean"
           gmake "COUCH_SRC='#{COUCH_SOURCE}/src/couchdb'"
         elsif File.exists? 'rebar'
+          make_script = false
           begin
-            ENV['ERL_COMPILER_OPTIONS'] = "[{i, \"#{COUCH_SOURCE}/src/couchdb\"}]"
+            if File.exists?("rebar.config") && !File.exists?("rebar.config.script")
+              make_script = true
+              ENV['COUCHDB_DEP'] = "#{COUCH_BUILD}/lib/couchdb/erlang/lib"
+              sh "cp", "-n", "#{HERE}/lib/templates/rebar.config.script", "." # noclobber
+            else
+              ENV['ERL_COMPILER_OPTIONS'] = "[{i, \"#{COUCH_SOURCE}/src/couchdb\"}]"
+            end
+
             sh "./rebar clean"
             sh "./rebar get-deps" unless ENV['skip_deps']
             sh "./rebar compile"
           ensure
             ENV.delete('ERL_COMPILER_OPTIONS')
+            ENV.delete('COUCHDB_DEP')
+            sh "rm", "-f", "rebar.config.script" if make_script
           end
         else
           raise "I do not know how to build this plugin: #{source}"
@@ -182,12 +192,12 @@ namespace :couchdb do
   end
 
   desc 'Run ./configure in a CouchDB checkout'
-  task :configure => [:known_distro, 'environment:path', 'couchdb:dependencies', AUTOCONF_262] do
+  task :configure => [:known_distro, 'environment:path', 'couchdb:dependencies', AUTOCONF_269, AUTOCONF_ARCHIVE] do
     nocouch = "This task must run in a normal CouchDB checkout or tarball"
     raise nocouch unless File.directory?('src/couchdb')
 
     unless File.file? 'configure'
-      with_autoconf "2.62" do
+      with_autoconf "2.69" do
         sh "./bootstrap"
       end
     end

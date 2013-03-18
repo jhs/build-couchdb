@@ -33,7 +33,7 @@ namespace :curl do
 
       record_manifest 'curl'
     ensure
-      Dir.chdir(source) { sh "git ls-files --others --ignored --exclude-standard | xargs rm || true" }
+      Dir.chdir(source) { sh "git ls-files --others --ignored --exclude-standard | xargs rm -f || true" }
     end
   end
 

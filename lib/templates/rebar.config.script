@@ -1,0 +1,27 @@
+Add = fun(Dirs, Dir) -> ok
+  , case lists:member(Dir, Dirs)
+    of true -> Dirs
+    ; _     -> Dirs ++ [Dir]
+    end
+  end
+.
+
+case os:getenv("COUCHDB_DEP")
+  of false -> CONFIG % env var not defined
+  ; ""     -> CONFIG % env var set to empty string
+  ; Dir -> ok
+    % Always replace the library path given. This guarantees the most isolation and portability of the plugin. However, it may
+    % make things brittle.
+    , Dirs = case lists:keyfind(lib_dirs, 1, CONFIG)
+      of false -> ok
+        , []
+      ; {lib_dirs, Lib_dirs} -> ok
+        %, Lib_dirs % Nope
+        , []
+      end
+    , New_dirs = Add(Dirs, Dir)
+    , Result = lists:keystore(lib_dirs, 1, CONFIG, {lib_dirs, New_dirs})
+    , io:format(standard_error, "Rebar config:\n~p\n", [Result])
+    , Result
+  end
+.
