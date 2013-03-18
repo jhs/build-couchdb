@@ -61,29 +61,15 @@ namespace :toolchain do
     Rake::Task['environment:path'].invoke
 
     with_autoconf "2.62" do
-      Dir.chdir LIBTOOL_SOURCE do
-        begin
-          # Now libtool can be built.
-          Dir.mktmpdir "libtool_build" do |build_dir|
-            Dir.chdir build_dir do
-              show_file('config.log') do
-                sh "#{LIBTOOL_SOURCE}/configure", "--prefix=#{BUILD}"
-              end
-
-              gmake
-              gmake "install"
-              record_manifest task.name
-            end
-          end # mktmpdir "libtool_build"
-        ensure
-          if Dir.pwd != LIBTOOL_SOURCE
-            puts "WARNING: Failed to reset files: #{LIBTOOL_SOURCE}"
-          else
-            puts "Resetting changes libtool made to itself: #{LIBTOOL_SOURCE}"
-            sh "git", "checkout", "HEAD", "."
-          end
+      git_work LIBTOOL_SOURCE do
+        show_file('config.log') do
+          sh "#{LIBTOOL_SOURCE}/configure", "--prefix=#{BUILD}"
         end
-      end # chdir LIBTOOL_SOURCE
+
+        gmake
+        gmake "install"
+        record_manifest task.name
+      end # git_work LIBTOOL_SOURCE
     end # with_autoconf
   end
 

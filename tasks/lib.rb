@@ -433,4 +433,4 @@ AUTOCONF_ARCHIVE = "#{BUILD}/share/aclocal/ax_check_icu.m4"
 AUTOCONF_ARCHIVE_SOURCE = "#{DEPS}/autoconf-archive"
 
 LIBTOOL        = "#{BUILD}/bin/libtool"
-LIBTOOL_SOURCE = "#{DEPS}/libtool-2.4.2"
+LIBTOOL_SOURCE = "#{DEPS}/libtool"
