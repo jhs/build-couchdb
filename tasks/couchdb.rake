@@ -78,6 +78,16 @@ namespace :couchdb do
 
           gmake
           gmake "check" if ENV['make_check']
+
+          # Build Fauxton if possible.
+          fauxton_src = "#{source}/src/fauxton"
+          if File.directory? fauxton_src
+            Dir.chdir fauxton_src do
+              sh "npm", "install"
+              sh "./node_modules/.bin/grunt", "couchdb"
+            end
+          end
+
           gmake "install"
 
           compress_beams "#{COUCH_BUILD}/lib/couchdb/erlang"
