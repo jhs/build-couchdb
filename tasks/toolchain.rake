@@ -62,12 +62,16 @@ namespace :toolchain do
 
     with_autoconf "2.62" do
       git_work LIBTOOL_SOURCE do
-        show_file('config.log') do
-          sh "#{LIBTOOL_SOURCE}/configure", "--prefix=#{BUILD}"
-        end
+        with_fakes 'makeinfo', 'help2man' do
+          sh "./bootstrap"
 
-        gmake
-        gmake "install"
+          show_file('config.log') do
+            sh "#{LIBTOOL_SOURCE}/configure", "--prefix=#{BUILD}"
+          end
+
+          gmake
+          gmake "install"
+        end
         record_manifest task.name
       end # git_work LIBTOOL_SOURCE
     end # with_autoconf
