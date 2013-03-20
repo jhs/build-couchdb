@@ -214,6 +214,26 @@ def with_path(dir)
   end
 end
 
+def with_fakes(*cmds)
+  cmds.each do |cmd_name|
+    cmd_path = "#{BUILD}/bin/#{cmd_name}"
+    fake = File.new(cmd_path, 'w')
+    fake.write "#!/bin/sh\n"
+    fake.chmod 0700
+    fake.close
+
+    puts "Faked: #{cmd_path}"
+  end
+
+  begin
+    yield
+  ensure
+    cmds.each do |cmd_name|
+      sh "rm", "-f", "#{BUILD}/bin/#{cmd_name}"
+    end
+  end
+end
+
 # Run a block in a Git checkout and clean up afterward.
 def git_work(dir)
   Dir.chdir(dir) do

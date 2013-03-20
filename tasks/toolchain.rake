@@ -125,25 +125,13 @@ namespace :toolchain do
             sh "./configure", "--prefix=#{BUILD}"
           end
 
-          fakes = %w[ makeinfo help2man ] # Needed for `make` and `make install`
-          fakes.each do |name|
-            fake = File.new("#{BUILD}/bin/#{name}", 'w')
-            fake.write "#!/bin/sh\n"
-            fake.chmod 0700
-            fake.close
-          end
-
-          begin
+          with_fakes 'makeinfo', 'help2man' do
             gmake "maintainer-all"
             gmake
             gmake "install"
 
             # Just copy the pkg.m4 that comes with Spidermonkey for now.
             sh "cp", "#{DEPS}/spidermonkey/js/src/build/autoconf/pkg.m4", "#{BUILD}/share/aclocal/pkg.m4"
-          ensure
-            fakes.each do |name|
-              FileUtils.rm_f "#{BUILD}/bin/#{name}"
-            end
           end
 
           record_manifest task.name
