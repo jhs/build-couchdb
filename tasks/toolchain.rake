@@ -21,16 +21,6 @@ namespace :toolchain do
       Dir.mktmpdir "autoconf-#{version}_build" do |dir|
         Dir.chdir dir do
           begin
-            fakes = %w[ makeinfo help2man ]
-            begin
-              unless version == "2.62"
-                fakes.each do |name|
-                  fake = File.new("#{BUILD}/bin/#{name}", 'w')
-                  fake.chmod 0700
-                  fake.close
-                end
-              end
-
               if ! File.file? "#{autoconf_src}/configure"
                 #puts "Must autoreconf -i"
                 Dir.chdir autoconf_src do
@@ -48,11 +38,6 @@ namespace :toolchain do
               gmake
               gmake "install"
               record_manifest task.name
-            ensure
-              fakes.each do |name|
-                FileUtils.rm_f "#{BUILD}/bin/#{name}"
-              end
-            end
           ensure
             # Clean the git code.
             Dir.chdir autoconf_src do
