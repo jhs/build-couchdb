@@ -31,6 +31,14 @@ namespace :toolchain do
                 end
               end
 
+              if ! File.file? "#{autoconf_src}/configure"
+                #puts "Must autoreconf -i"
+                Dir.chdir autoconf_src do
+                  #sh "bash"
+                  sh "autoreconf", "-i"
+                end
+              end
+
               show_file('config.log') do
                 datadir = %w[ 2.13 2.59 ].include?(version) ? "datadir" : "datarootdir"
                 sh "#{autoconf_src}/configure", "--prefix=#{BUILD}", "--program-suffix=#{version}",
