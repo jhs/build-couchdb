@@ -193,9 +193,13 @@ def show_file filename
   begin
     yield
   ensure
-    puts "== Output of #{filename} =="
-    sh "cat #{filename}"
-    puts "== End of #{filename} =="
+    if ! File.file?(filename)
+      puts "No file to see: #{filename}"
+    else
+      puts "== Output of #{filename} =="
+      sh "cat", filename
+      puts "== End of #{filename} =="
+    end
   end
 end
 
