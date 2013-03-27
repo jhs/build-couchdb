@@ -43,7 +43,7 @@ namespace :build do
         %w[ flex dctrl-tools libsctp-dev ed ],
 
         # All Debian gets these.
-        %w[ libxslt1-dev automake make g++ ],
+        %w[ libxslt1-dev make g++ ],
         %w[ zip libcap2-bin ],
 
         # Needed for Varnish
@@ -58,7 +58,7 @@ namespace :build do
       install_packages(%w[ flex dctrl-tools libsctp-dev ed ])
 
       # All Ubuntu gets these.
-      install_packages %w[ libxslt1-dev automake make g++ ]
+      install_packages %w[ libxslt1-dev make g++ ]
       install_packages %w[ zip libcap2-bin ]
 
       # Needed for Varnish
@@ -72,7 +72,7 @@ namespace :build do
       install_packages %w[ flex lksctp-tools zlib zip ]
 
       # All Arch gets these.
-      install_packages %w[ libxslt automake make gcc libcap m4 openssl ]
+      install_packages %w[ libxslt make gcc libcap m4 openssl ]
     end
   end
 
@@ -88,7 +88,7 @@ namespace :build do
       install_packages %w[ flex lksctp-tools-devel zip]
 
       # All OpenSUSE gets these.
-      install_packages %w[ rubygem-rake gcc-c++ make m4 zlib-devel libopenssl-devel automake ]
+      install_packages %w[ rubygem-rake gcc-c++ make m4 zlib-devel libopenssl-devel ]
 
     end
   end
@@ -97,7 +97,7 @@ namespace :build do
     if DISTRO[0] == :solaris
       install_packages %w[ gcc4core gcc4g++ arc gmake zlib openssl readline ] # General
       install_packages %w[ flex ]  # OTP
-      install_packages %w[ automake autoconf curl_devel ]
+      install_packages %w[ autoconf curl_devel ]
     end
   end
 
