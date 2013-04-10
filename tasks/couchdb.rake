@@ -83,7 +83,7 @@ namespace :couchdb do
 
           # Build Fauxton if possible.
           fauxton_src = "#{source}/src/fauxton"
-          if File.directory? fauxton_src
+          if File.directory?(fauxton_src) && ENV['skip_fauxton'].nil?
             Dir.chdir fauxton_src do
               sh "npm", "install"
               sh "./node_modules/.bin/grunt", "couchdb"
