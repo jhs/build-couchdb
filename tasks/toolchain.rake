@@ -106,6 +106,9 @@ namespace :toolchain do
   file AUTOCONF_ARCHIVE => [AUTOMAKE, AUTOCONF_269] do |task|
     Rake::Task['environment:path'].invoke
 
+    py_version = `python --version 2>&1`
+    is_old_python = py_version.match /2\.[0-6]/
+
     # Gnulib must be in the path to build this.
     with_path "#{DEPS}/gnulib" do
       with_autoconf "2.69" do
@@ -113,6 +116,10 @@ namespace :toolchain do
           if DISTRO[0] == :osx
             sh "sed", "-i.build-couchdb", "-e", "s/sed -i/sed -i.build-couchdb/", "bootstrap.sh"
             sh "sed", "-i.build-couchdb", "-e", "s/echo/\\/bin\\/echo/"         , "configure.ac"
+          end
+
+          if is_old_python
+            raise StandardError, "Cannot build with old Python"
           end
 
           sh "./bootstrap.sh"
