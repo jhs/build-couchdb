@@ -119,7 +119,11 @@ namespace :toolchain do
           end
 
           if is_old_python
-            raise StandardError, "Cannot build with old Python"
+            puts "Attempting to backport macro.py to old Python. Wish me luck."
+            ed("macro.py",
+               "/subprocess.check_output",
+               "s/check_output/Popen/",
+               "s/)$/, stdout=subprocess.PIPE).communicate()[0]/")
           end
 
           sh "./bootstrap.sh"
