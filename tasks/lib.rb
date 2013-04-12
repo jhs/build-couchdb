@@ -247,6 +247,14 @@ def git_work(dir)
   end
 end
 
+def ed(filename, *cmds)
+  raise StandardError, "Unknown file: #{filename}" unless File.file?(filename)
+
+  cmds << "wq"
+  cmds = cmds.join "\\n"
+  sh "echo '#{cmds}' | ed '#{filename}'"
+end
+
 def with_autoconf ver
   old_perl5lib = (ENV['PERL5LIB'] || "").split(":")
   new_perl5lib = ["#{BUILD}/share/autoconf-#{ver}/autoconf"] + old_perl5lib
