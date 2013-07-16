@@ -312,9 +312,11 @@ def record_manifest task_name
   seen = {}
   Dir.glob("#{MANIFESTS}/*").each do |manifest|
     File.new(manifest).each do |line|
-      path = line.chomp
-      raise "Woa! #{path} is in #{task_name} but was already seen in #{seen[path]}" if seen[path]
-      seen[path] = File.basename(manifest)
+      path = line.strip
+      if ! path.empty?
+        raise "Woa! #{path} is in #{task_name} but was already seen in #{seen[path]}" if seen[path]
+        seen[path] = File.basename(manifest)
+      end
     end
   end
 
