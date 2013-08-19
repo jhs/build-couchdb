@@ -253,7 +253,12 @@ library names.
 
     rake otp_keep="compiler eunit"
 
-Or, you can keep them all this way:
+For example, if you will use this project with Rebar, then you need the *tools*
+package.
+
+    rake otp_keep="tools"
+
+Or, you can keep everything this way:
 
     rake otp_keep="*"
 
