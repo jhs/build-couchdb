@@ -189,6 +189,12 @@ namespace :couchdb do
 
         copy_parts :source => ".", :target => target, :dirs => %w[ ebin priv ]
 
+        Dir.glob("deps/*").each do |dep|
+          FileUtils.mkdir_p("#{target}/#{dep}")
+          puts "copy_parts #{ {:source => dep, :target => "#{target}/#{dep}", :dirs => %w[ ebin priv ]}.inspect }"
+          copy_parts :source => dep, :target => "#{target}/#{dep}", :dirs => %w[ ebin priv ]
+        end
+
         # Manually copy "build/" to support GeoCouch.
         if File.directory?('build')
           FileUtils.mkdir_p("#{target}/ebin")
