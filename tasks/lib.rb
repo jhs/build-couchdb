@@ -183,6 +183,14 @@ def canonical_path path
   path.gsub(/[\.\d]*$/, '')
 end
 
+# Take a plugin Git URL and return a plugin name satisfactory to Erlang.
+def safe_erl_application_name(name)
+  name = name.gsub /\/\.git$/, ""
+  name = File.basename(name)
+  name = name.gsub /[^a-zA-Z0-9]+/, "_"
+  name = name.split(/_+/)[0..1].join("_")
+  return name
+end
 
 def ln_canonical path
   puts "#{path} => #{canonical_path path}"
