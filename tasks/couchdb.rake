@@ -130,9 +130,12 @@ namespace :couchdb do
     git_url = /^(file:|git[@:]).* /
     if plugin_path.match(git_url)
       remote, commit = plugin_path.split
+
       # It seems that, If a plugin is an OTP application, it must be in a directory of the application name.
       # Therefore instead of a full Git URL as the mark, just use the base name.
-      plugin_mark = "#{COUCH_BUILD}/lib/couchdb/plugins/#{File.basename(remote)}"
+      plugin_mark = "#{COUCH_BUILD}/lib/couchdb/plugins/#{safe_erl_application_name remote}"
+      puts "Plugin from Git: #{remote} => #{plugin_mark}"
+
       source = git_checkout(plugin_path, :noop => true)
     else
       plugin_mark = "#{COUCH_BUILD}/lib/couchdb/plugins/#{File.basename plugin_path}"
@@ -151,7 +154,6 @@ namespace :couchdb do
     end
 
     task :plugins => ['environment:path', plugin_mark]
-    puts "file #{plugin_mark} => #{source}"
     file plugin_mark => ['environment:path', source, :known_distro, :couchdb] do
       puts "Building plugin in: #{source}"
       Dir.chdir(source) do
