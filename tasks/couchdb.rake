@@ -127,7 +127,7 @@ namespace :couchdb do
 
   plugins.each do |plugin_path|
     #puts "plugin_path #{plugin_path.inspect}"
-    git_url = /^git[@:].* /
+    git_url = /^(file:|git[@:]).* /
     if plugin_path.match(git_url)
       remote, commit = plugin_path.split
       # It seems that, If a plugin is an OTP application, it must be in a directory of the application name.
