@@ -80,6 +80,7 @@ namespace :couchdb do
 
           gmake
           gmake "check" if ENV['make_check']
+          gmake "install"
 
           # Build Fauxton if possible.
           fauxton_src = "#{source}/src/fauxton"
@@ -87,10 +88,12 @@ namespace :couchdb do
             Dir.chdir fauxton_src do
               sh "npm", "install"
               sh "./node_modules/.bin/grunt", "couchdb"
+
+              futon_target = "#{COUCH_BUILD}/share/couchdb/www"
+              copy_parts :source => "dist", :target => futon_target, :dirs => %w[ release ]
+              sh "mv", "#{futon_target}/release", "#{futon_target}/fauxton"
             end
           end
-
-          gmake "install"
 
           compress_beams "#{COUCH_BUILD}/lib/couchdb/erlang"
 
