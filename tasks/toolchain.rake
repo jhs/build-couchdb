@@ -55,8 +55,6 @@ namespace :toolchain do
 
     with_autoconf "2.62" do
       git_work LIBTOOL_SOURCE do
-        sh "./bootstrap"
-
         show_file('config.log') do
           sh "#{LIBTOOL_SOURCE}/configure", "--prefix=#{BUILD}"
         end
