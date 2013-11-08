@@ -4,9 +4,6 @@
 [submodule "dependencies/otp"]
 	path = dependencies/otp
 	url = git://github.com/erlang/otp.git
-[submodule "dependencies/curl"]
-	path = dependencies/curl
-	url = git://github.com/bagder/curl.git
 [submodule "dependencies/autoconf-archive"]
 	path = dependencies/autoconf-archive
 	url = git://git.sv.gnu.org/autoconf-archive.git

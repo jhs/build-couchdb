@@ -97,7 +97,7 @@ namespace :build do
     if DISTRO[0] == :solaris
       install_packages %w[ gcc4core gcc4g++ arc gmake zlib openssl readline ] # General
       install_packages %w[ flex ]  # OTP
-      install_packages %w[ autoconf curl_devel ]
+      install_packages %w[ autoconf ]
     end
   end
 
