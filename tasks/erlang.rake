@@ -102,6 +102,12 @@ namespace :erlang do
           sh configure.join(' ') + ' ' + erlang_confopts
         end
 
+        # Redo the SKIP files. This works around lib/odbc/configure removing its own SKIP file for some reason. Perhaps other
+        # modules do too.
+        OTP_SKIP_COMPILE.each do |lib|
+          skip_otp_app(lib) unless otp_app_useful?(lib)
+        end
+
         gmake
         gmake "install"
 
