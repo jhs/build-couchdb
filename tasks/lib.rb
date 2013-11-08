@@ -361,8 +361,8 @@ def configure_cmd(source, opts={})
   end
 
   ldflags = libs.map do |lib|
-    if DISTRO[0] == :osx && /^1[12]\.\d+\.|^10\.8\./.match(DISTRO[1]) # 11.*, 12.*
-      "-L#{lib}"                        # llvm in OS X Lion
+    if DISTRO[0] == :osx && /^1[12345]\.\d+\.|^10\.8\./.match(DISTRO[1]) # 11.* - 15.*
+      "-L#{lib}"                        # llvm in OS X Lion, Mountain Lion, Mavericks, etc.
     else
       "-Xlinker -rpath=#{lib} -L#{lib}" # GCC
     end
