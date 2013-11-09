@@ -37,33 +37,11 @@ namespace :build do
   end
 
   task :debian_dependencies => :known_distro do
-    if DISTRO[0] == :debian
-      install_packages [
-        # For building OTP
-        %w[ flex dctrl-tools libsctp-dev ed ],
-
-        # All Debian gets these.
-        %w[ libxslt1-dev make g++ ],
-        %w[ zip libcap2-bin ],
-
-        # Needed for Varnish
-        # %w[ libpcre3-dev ]
-      ].flatten
-    end
+    # Nothing to do.
   end
 
   task :ubuntu_dependencies => :known_distro do
-    if DISTRO[0] == :ubuntu
-      # For building OTP
-      install_packages(%w[ flex dctrl-tools libsctp-dev ed ])
-
-      # All Ubuntu gets these.
-      install_packages %w[ libxslt1-dev make g++ ]
-      install_packages %w[ zip libcap2-bin ]
-
-      # Needed for Varnish
-      #install_packages %w[ libpcre3-dev ]
-    end
+    # Nothing to do.
   end
 
   task :arch_dependencies => :known_distro do
