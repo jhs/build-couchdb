@@ -260,7 +260,7 @@ def ed(filename, *cmds)
 
   cmds << "wq"
   cmds = cmds.join "\\n"
-  sh "echo '#{cmds}' | ed '#{filename}'"
+  sh "echo -e '#{cmds}' | ed '#{filename}'"
 end
 
 def with_autoconf ver
