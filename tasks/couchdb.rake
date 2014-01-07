@@ -82,18 +82,7 @@ namespace :couchdb do
           gmake "check" if ENV['make_check']
           gmake "install"
 
-          # Build Fauxton if possible.
-          fauxton_src = "#{source}/src/fauxton"
-          if File.directory?(fauxton_src) && ENV['fauxton']
-            Dir.chdir fauxton_src do
-              sh "npm", "install"
-              sh "./node_modules/.bin/grunt", "couchdb"
-
-              futon_target = "#{COUCH_BUILD}/share/couchdb/www"
-              copy_parts :source => "dist", :target => futon_target, :dirs => %w[ release ]
-              sh "mv", "#{futon_target}/release", "#{futon_target}/fauxton"
-            end
-          end
+          # Looks like Fauxton is simply included in CouchDB now. So let Couch decide.
 
           compress_beams "#{COUCH_BUILD}/lib/couchdb/erlang"
 
