@@ -105,7 +105,7 @@ Install Xcode from Mac App Store. Launch XCode.app, then go to Perferences, sele
 You will need the Git tool. Check out the code and pull in the third-party
 submodules.
 
-    git clone git://github.com/iriscouch/build-couchdb
+    git clone git://github.com/jhs/build-couchdb.git
     cd build-couchdb
     git submodule init
     git submodule update
