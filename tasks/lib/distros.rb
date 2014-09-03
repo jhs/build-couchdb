@@ -47,7 +47,7 @@ def detect_distro
 
   # CentOS # TODO: Do not piggyback the :fedora version
   if File.exist? '/etc/redhat-release'
-    match = File.new('/etc/redhat-release').readline.match(/CentOS release (\S+)/)
+    match = File.new('/etc/redhat-release').readline.match(/CentOS.* release (\S+)/)
     if match
       release = match[1]
       return [:fedora, release]
