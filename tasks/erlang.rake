@@ -28,6 +28,10 @@ namespace :erlang do
     OTP_SKIP_COMPILE << "os_mon"
     OTP_SKIP_COMPILE << "otp_mibs"
   end
+  
+  if ENV['erl_checkout']
+	OTP_REMOVE << "appmon" if /^tags\/OTP-/.match(ENV['erl_checkout'])
+  end
 
   file ERL_BIN => AUTOCONF_259 do
     source = "#{DEPS}/otp"
