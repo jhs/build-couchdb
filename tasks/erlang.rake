@@ -28,10 +28,6 @@ namespace :erlang do
     OTP_SKIP_COMPILE << "os_mon"
     OTP_SKIP_COMPILE << "otp_mibs"
   end
-  
-  if ENV['erl_checkout']
-	OTP_REMOVE << "appmon" if /^tags\/OTP-/.match(ENV['erl_checkout'])
-  end
 
   file ERL_BIN => AUTOCONF_259 do
     source = "#{DEPS}/otp"
@@ -98,7 +94,9 @@ namespace :erlang do
         end
 
         OTP_SKIP_COMPILE.each do |lib|
-          skip_otp_app(lib) unless otp_app_useful?(lib)
+		  if Dir.exists?("#{source}/lib/#{lib}")
+            skip_otp_app(lib) unless otp_app_useful?(lib)
+		  end
         end
 
         erlang_confopts = ENV['erlang_confopts'] || ""
@@ -112,7 +110,9 @@ namespace :erlang do
         # Redo the SKIP files. This works around lib/odbc/configure removing its own SKIP file for some reason. Perhaps other
         # modules do too.
         OTP_SKIP_COMPILE.each do |lib|
-          skip_otp_app(lib) unless otp_app_useful?(lib)
+		  if Dir.exists?("#{source}/lib/#{lib}")
+            skip_otp_app(lib) unless otp_app_useful?(lib)
+		  end
         end
 
         gmake
@@ -149,7 +149,9 @@ namespace :erlang do
     lib = "#{erlang}/lib"
 
     (OTP_REMOVE + OTP_SKIP_COMPILE).each do |component|
-      sh "rm -rf #{lib}/#{component}-*" unless otp_app_useful?(component)
+	  if Dir.exists?("#{lib}/#{component}")
+        sh "rm -rf #{lib}/#{component}-*" unless otp_app_useful?(component)
+	  end	
     end
 
     # Remove unnecessary directories for running.
