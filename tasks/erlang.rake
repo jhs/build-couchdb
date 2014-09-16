@@ -48,7 +48,8 @@ namespace :erlang do
           ldflags = '-L/opt/csw/lib'
         end
 		if ENV['erl_cflags']
-			cflags += ' '+ENV['erl_cflags']
+			env_erl_cflags = ENV['erl_cflags']
+			cflags += " #{env_erl_cflags}"
 		end
 		
         configure = [
