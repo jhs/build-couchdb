@@ -44,7 +44,7 @@ On **Fedora**:
 
 On **Red Hat Enterprise Linux**:
 
-The procedure is the same as Fedora, but also install the `ruby-rdoc` package.
+The procedure is the same as Fedora, but also install the `ruby-rdoc` and `help2man` packages.
 
 On **Debian**, first install `sudo` and add yourself to `/etc/sudoers`.
 
