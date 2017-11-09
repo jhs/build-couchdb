@@ -1,6 +1,6 @@
 [submodule "dependencies/couchdb"]
 	path = dependencies/couchdb
-        url = https://github.com/jhs/build-couchdb.git
+        url = https://github.com/apache/couchdb.git
 [submodule "dependencies/otp"]
 	path = dependencies/otp
 	url = git://github.com/erlang/otp.git
