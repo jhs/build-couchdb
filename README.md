@@ -61,6 +61,7 @@ On **Ubuntu and Debian**:
 Spidermonkey and potentially other dependencies don't build with gcc-6. On Debian Stretch you therefore need to prepare an older gcc first, here I use gcc-4.9:
 
 *Before running rake, in a root shell*
+
     export CC="gcc-4.9"
     export CPP="gcc-4.9 -E"
     export CXX="g++-4.9"
@@ -77,6 +78,7 @@ Spidermonkey and potentially other dependencies don't build with gcc-6. On Debia
         ln -s /usr/bin/${CXX} ${HOME}/bin/x86_64-linux-gnu-g++
 
 *Cleaning up after running rake, in a root shell*
+
     head -n -2 /etc/apt/sources.list > ${HOME}/sources.list.temp && \
         mv ${HOME}/sources.list.temp /etc/apt/sources.list && \
         apt-get update
