@@ -16,9 +16,7 @@ Build CouchDB is developed and tested on the following operating systems:
 
 * Red Hat Enterprise Linux Server release 5.5 (Tikanga)
 * CentOS 5.5
-* Debian GNU/Linux 
-  * 5.0 (Lenny)
-  * 9.2 (Stretch), but requires you to get gcc-4.9 on your path first
+* Debian GNU/Linux 5.0 (Lenny)
 * Ubuntu
   * 9.10 (Karmic Koala)
   * 10.04 LTS (Lucid Lynx)
@@ -57,35 +55,6 @@ On **Debian**, first install `sudo` and add yourself to `/etc/sudoers`.
 On **Ubuntu and Debian**:
 
     sudo apt-get install help2man make gcc zlib1g-dev libssl-dev rake texinfo flex dctrl-tools libsctp-dev libxslt1-dev libcap2-bin ed
-
-Spidermonkey and potentially other dependencies don't build with gcc-6. On Debian Stretch you therefore need to prepare an older gcc first, here I use gcc-4.9:
-
-*Before running rake, in a root shell*
-
-    export CC="gcc-4.9"
-    export CPP="gcc-4.9 -E"
-    export CXX="g++-4.9"
-    export PATH_BEFORE_COUCH="${HOME}/bin:${PATH}"
-    export PATH="${HOME}/bin:${PATH}"
-    echo "deb http://ftp.us.debian.org/debian/ jessie main contrib non-free" >> /etc/apt/sources.list && \
-        echo "deb-src http://ftp.us.debian.org/debian/ jessie main contrib non-free" >> /etc/apt/sources.list && \
-        apt-get update && \
-        apt-get install -y gcc-4.9 g++-4.9 && \
-        mkdir -p ${HOME}/bin && cd ${HOME}/bin && \
-        ln -s /usr/bin/${CC} ${HOME}/bin/gcc && \
-        ln -s /usr/bin/${CC} ${HOME}/bin/x86_64-linux-gnu-gcc && \
-        ln -s /usr/bin/${CXX} ${HOME}/bin/g++ && \
-        ln -s /usr/bin/${CXX} ${HOME}/bin/x86_64-linux-gnu-g++
-
-*Cleaning up after running rake, in a root shell*
-
-    head -n -2 /etc/apt/sources.list > ${HOME}/sources.list.temp && \
-        mv ${HOME}/sources.list.temp /etc/apt/sources.list && \
-        apt-get update
-    export PATH="${PATH_BEFORE_V8}"
-    export CC=""
-    export CPP=""
-    export CXX=""
 
 On **OpenSUSE**:
 
